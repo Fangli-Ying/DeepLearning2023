@@ -8,7 +8,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Welcome to Introduction to Engineering &#8212; My sample book</title>
+    <title>2.1 手写数字识别任务 &#8212; My sample book</title>
   
   
   
@@ -59,10 +59,11 @@ const thebe_selector_input = "pre"
 const thebe_selector_output = ".output, .cell_output"
 </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '2.1_MNIST_Task_Intro';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="1. 3 波士顿房价预测任务" href="1.%20Regression.html" />
+    <link rel="next" title="结合框架上认知代码，可以改进的方面：" href="2.2_MNIST_Model.html" />
+    <link rel="prev" title="1. 3 波士顿房价预测任务" href="1.%20Regression.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   </head>
@@ -128,7 +129,7 @@ const thebe_selector_output = ".output, .cell_output"
         <div class="sidebar-primary-item">
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="intro.html">
   
   
   
@@ -147,15 +148,15 @@ const thebe_selector_output = ".output, .cell_output"
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
                     Welcome to Introduction to Engineering
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="1.%20Regression.html">1. 3 波士顿房价预测任务</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2.1_MNIST_Task_Intro.html">2.1 手写数字识别任务</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2.1 手写数字识别任务</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2.2_MNIST_Model.html">结合框架上认知代码，可以改进的方面：</a></li>
 
 </ul>
@@ -229,7 +230,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2F2.1_MNIST_Task_Intro.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -259,7 +260,7 @@ const thebe_selector_output = ".output, .cell_output"
       
       
       
-      <li><a href="_sources/intro.md" target="_blank"
+      <li><a href="_sources/2.1_MNIST_Task_Intro.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -269,7 +270,7 @@ const thebe_selector_output = ".output, .cell_output"
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -341,7 +342,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Welcome to Introduction to Engineering</h1>
+    <h1>2.1 手写数字识别任务</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -351,10 +352,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-will-learn-from-this-course">What we will learn from this course</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-the-tools-for-this-course">What are the tools for this course</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author">Author</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mnist">MNIST数据集</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">构建手写数字识别的神经网络模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">深度学习框架的好处</a></li>
 </ul>
             </nav>
         </div>
@@ -366,53 +366,37 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article" role="main">
                   
-  <div class="tex2jax_ignore mathjax_ignore section" id="welcome-to-introduction-to-engineering">
-<h1>Welcome to Introduction to Engineering<a class="headerlink" href="#welcome-to-introduction-to-engineering" title="Permalink to this headline">#</a></h1>
-<p>This is a course textbook to give a general introduction to the engineering issues in the field of Computer Science, especially for the issues raised in the scope of data science. This course also intends to provide a set of practical artificial intelligence and machine learning skills to help the students to work as a data scientist and provide potential solutions to the data engineering problems.</p>
-<p>This course is mainly for the third year foreign undergraduate students in East China University of Science and Technology (ECUST)  and the tutor of this course is <strong><a class="reference external" href="https://fangli-ying.github.io/">Dr. Fangli Ying</a></strong>(应方立). He is a Lecturer in the department of Computer Science at ECUST and he creates this <strong>fully open-sourced executable notebook <a class="reference external" href="https://github.com/Fangli-Ying/Introduction2Engineering">[Github repository]</a></strong> for the online course of “Introduction to the Engineering”.</p>
-<div class="section" id="what-we-will-learn-from-this-course">
-<h2>What we will learn from this course<a class="headerlink" href="#what-we-will-learn-from-this-course" title="Permalink to this headline">#</a></h2>
+  <div class="tex2jax_ignore mathjax_ignore section" id="id1">
+<h1>2.1 手写数字识别任务<a class="headerlink" href="#id1" title="Permalink to this headline">#</a></h1>
+<p>数字识别是计算机从纸质文档、照片或其他来源接收、理解并识别可读的数字的能力，目前比较受关注的是手写数字识别。手写数字识别是一个典型的图像分类问题，已经被广泛应用于汇款单号识别、手写邮政编码识别等领域，大大缩短了业务处理时间，提升了工作效率和质量。</p>
+<p>在处理如 图1 所示的手写邮政编码的简单图像分类任务时，可以使用基于MNIST数据集的手写数字识别模型。MNIST是深度学习领域标准、易用的成熟数据集，包含50 000条训练样本和10 000条测试样本。</p>
+<p><img alt="img" src="_images/mnist.png" /></p>
 <ul class="simple">
-<li><p>The fundamentals of Artificial Intelligence and some applications using machine learning algorithms</p></li>
-<li><p>How to apply A.I. and M.L. to help to solve the engineering problems in computer science and we demonstrate a number of applications with simple executable python code examples.</p></li>
-<li><p>The principles of machine learning approaches and the development of data science applications in the era of big data.</p></li>
+<li><p>任务输入：一系列手写数字图片，其中每张图片都是28x28的像素矩阵。</p></li>
+<li><p>任务输出：经过了大小归一化和居中处理，输出对应的0~9的数字标签。</p></li>
 </ul>
+<div class="section" id="mnist">
+<h2>MNIST数据集<a class="headerlink" href="#mnist" title="Permalink to this headline">#</a></h2>
+<p>MNIST数据集是从NIST的Special Database 3（SD-3）和Special Database 1（SD-1）构建而来。Yann LeCun等人从SD-1和SD-3中各取一半数据作为MNIST训练集和测试集，其中训练集来自250位不同的标注员，且训练集和测试集的标注员完全不同。</p>
+<p>MNIST数据集的发布，吸引了大量科学家训练模型。1998年，LeCun分别用单层线性分类器、多层感知器（Multilayer Perceptron, MLP）和多层卷积神经网络LeNet进行实验，使得测试集的误差不断下降（从12%下降到0.7%）。在研究过程中，LeCun提出了卷积神经网络（Convolutional Neural Network，CNN），大幅度地提高了手写字符的识别能力，也因此成为了深度学习领域的奠基人之一。</p>
+<p>如今在深度学习领域，卷积神经网络占据了至关重要的地位，从最早LeCun提出的简单LeNet，到如今ImageNet大赛上的优胜模型VGGNet、GoogLeNet、ResNet等，人们在图像分类领域，利用卷积神经网络得到了一系列惊人的结果。</p>
+<p>手写数字识别的模型是深度学习中相对简单的模型，非常适用初学者。正如学习编程时，我们输入的第一个程序是打印“Hello World！”一样。</p>
 </div>
-<div class="section" id="what-are-the-tools-for-this-course">
-<h2>What are the tools for this course<a class="headerlink" href="#what-are-the-tools-for-this-course" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
-<li><p>Programming Language: Python Only</p></li>
-<li><p>Tools: <a class="reference external" href="https://jupyter.org/">Jupyter Notebook</a>, <a class="reference external" href="https://www.anaconda.com/">Anaconda</a>, <a class="reference external" href="https://numpy.org/">Numpy</a>, <a class="reference external" href="https://pandas.pydata.org/">Pandas</a>,<a class="reference external" href="https://matplotlib.org/">matplotlib</a>, <a class="reference external" href="https://scikit-learn.org/stable/">SkLearn for ML</a>, <a class="reference external" href="https://keras.io/">Keras</a> and <a class="reference external" href="https://pytorch.org/">Pytorch for deep learing</a></p></li>
-<li><p>Install them <a class="reference external" href="https://www.youtube.com/watch?v=EI_xyppkWCA">Anaconda with python</a>,<a class="reference external" href="https://www.youtube.com/watch?v=EI_xyppkWCA">Install Lib of python</a></p></li>
-</ul>
-<div class="figure align-default" id="eco">
-<a class="reference internal image-reference" href="figures/python_ecosystem.png"><img alt="figures/python_ecosystem.png" src="figures/python_ecosystem.png" style="width: 650px;" /></a>
+<div class="section" id="id2">
+<h2>构建手写数字识别的神经网络模型<a class="headerlink" href="#id2" title="Permalink to this headline">#</a></h2>
+<p>完成手写数字识别模型任务的代码结构如 图2 所示，与使用飞桨完成房价预测模型任务的流程一致，下面的章节中我们将详细介绍每个步骤的具体实现方法和优化思路。</p>
+<p><img alt="img" src="_images/step.png" /></p>
 </div>
-</div>
-<div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">#</a></h2>
-<p>All chapters are written as <a class="reference external" href="https://jupyter.org/">Jupyter Notebooks</a> combining explanations and example code. When teaching, I use <a class="reference external" href="https://revealjs.com/">reveal.js</a> and <a class="reference external" href="https://rise.readthedocs.io/en/stable/">RISE</a> to showcase them as live presentations.</p>
-<p>The content of this site is designed to be browsed thematically rather than sequentially.</p>
-<div class="tip admonition">
-<p class="admonition-title">Interactivity</p>
-<p>From any chapter, you can launch a live session in the cloud by pressing the <i class="fas fa-rocket" title="rocket"></i> button in the toolbar above and selecting a hosted runtime environment. You will be able to test the code and regenerate the chapter output.</p>
-</div>
-</div>
-<div class="section" id="author">
-<h2>Author<a class="headerlink" href="#author" title="Permalink to this headline">#</a></h2>
-<div class="figure align-left" id="bio">
-<a class="reference internal image-reference" href="figures/bio.PNG"><img alt="figures/bio.PNG" src="figures/bio.PNG" style="width: 200px;" /></a>
-</div>
-<p><strong><a class="reference external" href="https://fangli-ying.github.io/">Dr. Fangli Ying</a></strong>(应方立) is currently a lecturer at Department of Computer Science in East China University of Science and Technology (ECUST). He is a supervisor for Master program and co-supervisor for Ph.D. program in Computer Science and he is supervising 3 international Ph.D. students. He is also a visiting professor in the International College of Digital Innovation at Chiang Mai University (CMU) in Thailand. He is working on the development of artificial intelligence industrial applications for solving practical problems in multidisciplinary research and he is cooperating with State Key Laboratory of Bioreactor Engineering, Department of Finance and National Engineering Laboratory for Big Data Distribution and Exchange Technologies in ECUST. He has authored many articles in  journals and conferences in the fields of Artificial Intelligence and Computer Science. His current research interests include Computer Vision, Reinforcement Learning for Portfolio Management, Bioinformatics with Synthetic Biology.</p>
-<p>Check out the chapter pages bundled with this  book to see more.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="1.%20Regression.html">1. 3 波士顿房价预测任务</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2.1_MNIST_Task_Intro.html">2.1 手写数字识别任务</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2.2_MNIST_Model.html">结合框架上认知代码，可以改进的方面：</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2.2_MNIST_Model.html#id3">其他改进点</a></li>
-</ul>
-</div>
+<div class="section" id="id3">
+<h2>深度学习框架的好处<a class="headerlink" href="#id3" title="Permalink to this headline">#</a></h2>
+<p>从代码结构上看，模型均为数据处理、定义网络结构和训练过程三个部分。</p>
+<p>这就是使用像pytroch，tensorflow，或百度飞桨等框架搭建深度学习模型的优势，只要完成一个模型的案例学习，其它任务即可触类旁通。在应用实践中，程序员用熟悉的框架搭建模型，无需每次都另起炉灶，多数情况是先在模型库中寻找与目标任务类似的模型，再在该模型的基础上修改少量代码即可完成新的任务。</p>
+<p><img alt="img" src="_images/teach.png" /></p>
+<p>在“横纵式”教学法中，纵向概要介绍模型的基本代码结构和极简实现方案。横向深入探讨构建模型的每个环节中，更优但相对复杂的实现方案。例如在模型设计环节，除了在极简版本使用的单层神经网络（与房价预测模型一样）外，还可以尝试更复杂的网络结构，如多层神经网络、加入非线性的激活函数，甚至专门针对视觉任务优化的卷积神经网络。</p>
+<p>这种“横纵式”教学法的设计思路尤其适用于深度学习的初学者，具有如下两点优势：</p>
+<p>帮助读者轻松掌握深度学习内容：采用这种方式设计教学案例，读者在学习过程中接收到的信息是线性增长的，在难度上不会有阶跃式的提高。
+模拟真实建模的实战体验：先使用熟悉的模型构建一个可用但不够出色的基础版本（Baseline），再逐渐分析每个建模环节可优化的点，一点点的提升优化效果，让读者获得真实建模的实战体验。
+相信在本章结束时，大家将会对深入实践深度学习建模有一个更全面的认识，接下来我们将逐步学习建模的方法。</p>
 </div>
 </div>
 
@@ -447,12 +431,21 @@ document.write(`
   
     <div class="footer-article-item"><!-- Previous / next buttons -->
 <div class="prev-next-area">
-    <a class="right-next"
+    <a class="left-prev"
        href="1.%20Regression.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1. 3 波士顿房价预测任务</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2.2_MNIST_Model.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">1. 3 波士顿房价预测任务</p>
+        <p class="prev-next-title">结合框架上认知代码，可以改进的方面：</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -474,10 +467,9 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-we-will-learn-from-this-course">What we will learn from this course</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-are-the-tools-for-this-course">What are the tools for this course</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#author">Author</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#mnist">MNIST数据集</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">构建手写数字识别的神经网络模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">深度学习框架的好处</a></li>
 </ul>
   </nav></div>
 
