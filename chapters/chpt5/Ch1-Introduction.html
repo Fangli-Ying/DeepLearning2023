@@ -1,0 +1,621 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. NLP模型简介 (Introduction to NLP Model)（未完待续） &#8212; 深度学习</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt5/Ch1-Introduction';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="第六章 图理论基础 （未完待续）" href="../chpt6/graph.html" />
+    <link rel="prev" title="5. CNN-LSTM" href="../chpt4/Ch5-CNN-LSTM.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dp.gif" class="logo__image only-light" alt="深度学习 - Home"/>
+    <img src="../../_static/dp.gif" class="logo__image only-dark pst-js-only" alt="深度学习 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    欢迎来到《深度学习原理及其应用》
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2-EDA.html">2. 数据探索</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch1-Time-Series.html">1. Time Series 时间序列简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch3-preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch4-LSTM.html">4. LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch5-CNN-LSTM.html">5. CNN-LSTM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">自然语言处理</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Fangli-Ying/DeepLearning2023/master?urlpath=tree/chapters/chpt5/Ch1-Introduction.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://jupyter.org/hub/hub/user-redirect/git-pull?repo=https%3A//github.com/Fangli-Ying/DeepLearning2023&urlpath=tree/DeepLearning2023/chapters/chpt5/Ch1-Introduction.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/master/chapters/chpt5/Ch1-Introduction.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chpt5/Ch1-Introduction.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1. NLP模型简介 (Introduction to NLP Model)（未完待续）</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-generation-task">1.1 问题生成任务 (Question Generation Task)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t5">1.2 T5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert">1.3 BERT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt">1.4 GPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.5 结论</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.6 相关文献</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="nlp-introduction-to-nlp-model">
+<h1>1. NLP模型简介 (Introduction to NLP Model)（未完待续）<a class="headerlink" href="#nlp-introduction-to-nlp-model" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://fangli-ying.github.io/"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>语言模型（Language Model）是一种为句子或单词分配概率，以便计算机能够进行处理的模型。更进一步来说，语言建模（Language Modeling）是指基于现有的数据集，在给定任务范围内对单词或句子进行预测的工作。在自然语言处理（Natural Language Processing）中，自然语言顾名思义就是人类所使用的语言，其他种类的语言包括计算机语言（Computer Language）、手语（Sign Language）、肢体语言（Body Language）等。将计算机处理自然语言的过程加上 “处理”（Processing）这一表述，就称之为自然语言处理（Natural Language Processing）。
+为了进行自然语言处理，预处理（preprocessing）是必不可少的，之后我们将通过多种语言模型来试着进行问题生成工作。在本教程中，我们将介绍的不是传统上使用的基于统计的语言模型，而是近来经常使用的基于深度学习的自然语言处理模型。
+迁移学习（Transfer Learning）在自然语言处理领域带来了惊人的发展。像谷歌的 BERT、OpenAI 的 GPT 这类迁移学习模型，以性能优异而闻名。此后，XLNet、RoBERTa、T5 等也在不断被开发，以便迁移学习能够应用于多种方式。在本教程中，我们希望通过基于迁移学习的模型 T5、BERT、GPT-2 来执行问题生成工作。</p>
+<section id="question-generation-task">
+<h2>1.1 问题生成任务 (Question Generation Task)<a class="headerlink" href="#question-generation-task" title="Link to this heading">#</a></h2>
+<p>关于问题生成工作的分类因学者不同而有多种划分方式。首先，在本章中，我们将基于库尔迪等人（Kurdi et al.）的《面向教育目的的自动问题生成的系统综述》（“A Systematic Review of Automatic Question Generation for Educational Purposes”）这项研究来进行说明。在问题生成过程中，大致存在理解阶段和生成过程这两个阶段。将接收作为输入数据的句子，计算机对其进行理解的过程视为理解环节。经过这样的理解过程后，以输入数据为基础进行问题生成的过程被称为生成过程。</p>
+<p>在理解阶段，存在基于句法学（syntax-based）和基于语义学（semantic-based）的方法。</p>
+<p>基于句法学的方法是通过输入诸如文本的句法树（syntax tree）这样的输入内容来生成问题。例如，基于句法学的模型会不考虑句子内单词的含义，而是通过词性（Part of Speech）标注，提取句子内的句法特征，把握词性之间的关系，进而决定问题的生成。</p>
+<p>基于语义学的方法是通过把握句子中的语义关系来生成问题。它超越了句法层面的方法，有必要对输入数据进行更深入的理解，不仅仅是提取词性的含义，还必须能够推断词性之间的含义。例如，“bank”这个词的意思可能是“银行”，也可能是“堤岸”。这是由其在段落中与相关单词的关系来确定具体含义的。</p>
+<p>在生成过程中，存在模板（template）、规则（rule）以及统计方法（statistical methods）。</p>
+<p>在基于模板（template-based）的情况下，先确定问题结构的模板，然后通过文本的语义或句法学方法来提取特征，进而生成问题。规则方法是利用句子中词性的注释（annotations）信息来生成问题。例如，如果是要生成诸如“where”“which”“when”这类以“wh”开头的疑问词问题的工作，就会接收在相应位置带有“wh”的词性注释信息，进而生成以“wh”开头的疑问词问题。最后，统计方法的典型代表是序列到序列（sequence-to-sequence）方法。通过对数据集进行学习，利用句子中某个单词出现的概率来生成问题。但是，如果在学习过的语料库中没有相应的单词序列，就会出现概率为0或者未定义的情况，从而无法准确预测单词，这一问题被称为稀疏问题（the Sparsity Problem）。为了解决这个问题，虽然会使用诸如n-gram这样的方法，但仍然无法突破统计方法的局限性。</p>
+<p>接下来，让我们简要了解一下将用于问题生成工作的T5、BERT、GPT模型。</p>
+</section>
+<section id="t5">
+<h2>1.2 T5<a class="headerlink" href="#t5" title="Link to this heading">#</a></h2>
+<p>T5 模型以“Text-to-Text Transfer Transformer”中出现 5 次的首字母 T 命名。 T5 模型是在“Colossal Clean Crawled Corpus”（C4）数据集上进行预训练的。 C4数据集是文本数据，是一个文本没有标注的大数据集，是为了学习T5模型而创建的数据集。</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/NLP-ch1img01.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图1-1 T5模型工作原理可视化（来源：<a class="reference external" href="https://ai.googleblog.com/2020/02/exploring-transfer-learning-with-t5.html">https://ai.googleblog.com/2020/02/exploring-transfer-learning-with-t5.html</a>)</p></li>
+</ul>
+<p>T5 模型在 C4 数据集上进行了预训练，旨在适应各种下游任务。例如，如图 1-1 所示，现在使用 T5 模型可以轻松实现机器翻译、问答和文本摘要等任务。与 BERT 只能在输入范围内输出不同，T5 模型的优势在于可以以文本到文本的格式输入和输出。</p>
+</section>
+<section id="bert">
+<h2>1.3 BERT<a class="headerlink" href="#bert" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/google-research/bert">BERT</a> (Bidirectional Encoder Representations from Transformers)它是 2019 年 10 月 25 日由谷歌研究团队公开的自然语言处理预训练模型。BERT 模型支持超过 100 种语言的学习，有 “BERT-Base”“BERT-Large”“BERT-Base, Multilingual” 以及 “BERT-Base, Chinese” 等模型。在各个模型后面会加上 “Cased” 和 “Uncased”，其中 “Uncased” 这种情况对应的是不区分大小写的模型。
+可以利用 BERT 来执行特定任务，为此，需要进行微调（fine-tuning）工作以执行具体任务。BERT 作为预训练的语言模型，通过微调能够执行期望的工作。利用预训练的语言模型来执行下游任务（down-stream tasks）的方法有 “基于特征”（feature-based）和微调（fine-tuning）这两种方式。“基于特征” 的方法包含像 Word2Vec、GloVe、ELMo 这样的方式，而微调（fine-tuning）方式的典型代表是 GPT 模型。
+在 BERT 发布之时，人们经常将它与 GPT-2 进行比较，这两个模型都使用微调（fine-tuning）方式，不过 GPT-2 是单向（unidirectional）语言模型，而 BERT 是双向（bidirectional）语言模型，这就是二者的差异所在。在之后，开发了 GPT 的 OpenAI 推出了像 BERT 一样的双向语言模型 GPT-3。
+双向语言模型的优点在于，像 “填空”（fill-in-the-blanks）这类需要依据前后语境来推测空白处合适单词的工作中，它展现出了非常高的性能。</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/NLP-ch1img02.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图1-2 BERT模型预学习和微调可视化 (Devlin et al.)</p></li>
+</ul>
+<p>BERT模型经历两个过程：先验学习（ pre-training）和微调（ ）。fine-tuning在预学习过程中，使用未标记的数据通过预学习任务来学习模型。在后续的微调过程中，BERT模型从预先训练的参数开始，利用标记数据进行微调。</p>
+<p>通过微调 BERT 模型，您可以执行各种任务，例如单词预测、问题生成和情感分析。在本教程中，我们将使用它来执行问题生成任务。</p>
+</section>
+<section id="gpt">
+<h2>1.4 GPT<a class="headerlink" href="#gpt" title="Link to this heading">#</a></h2>
+<p>GPT模型是由Elon Musk和Sam Altman创立的openAI开发的自然语言处理模型。 GPT-1、GPT-2、GPT-3依次发布，继2019年GPT-2发布后，其令人难以置信的性能让很多人感到惊讶，2020年6月，GPT-3再次引入全球。给人工智能界带来了一场风暴。</p>
+<p>然而，GPT 模型并不完美。 GPT-2 是一种单向语言模型，经过训练可以预测输入提示后的单词。有人指出，这与双向语言模型 BERT 相比具有明显的缺点。然而，2019 年，有工作展示了 GPT-2（一种单向语言模型）在文本生成方面的真正价值。在使用人工智能的文本生成任务中，单向模型比双向模型表现出更好的性能。 GPT-1有1.17亿个参数，GPT-2有15.42亿个参数，大约是GPT-1的12.8倍，大约800万个文档，40GB的数据，这是一个学习了三个的模型。</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/NLP-ch1img03.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图1-3 BERT、T5、GPT-3模型训练时间 (Brown, et al.)</p></li>
+</ul>
+<p>2020 年 6 月宣布的 GPT-3 代表了一次巨大的飞跃。 GPT-3 拥有 1750 亿个参数，大约是 GPT-2 的 12 倍，是在过滤前 45TB、过滤后 570GB 的海量数据集上训练的模型。如图1-3所示，可以推断GPT-3训练时间足够大，足以超过BERT和T5模型。</p>
+</section>
+<section id="id1">
+<h2>1.5 结论<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>在本章中，我们简要介绍了 T5、BERT 和 GPT 模型，它们都是基于迁移学习的模型。在下一章中，我们将查看教程中使用的数据集，在第 3 章和第 4 章中，我们将使用 T5、BERT 和 GPT 模型执行问题创建任务。</p>
+</section>
+<section id="id2">
+<h2>1.6 相关文献<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Brown, T. B., Mann, B., Ryder, N., Subbiah, M., Kaplan, J., Dhariwal, P., … &amp; Amodei, D. (2020). Language models are few-shot learners. arXiv preprint arXiv:2005.14165.</p></li>
+<li><p>Devlin, J., Chang, M. W., Lee, K., &amp; Toutanova, K. (2018). Bert: Pre-training of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805.</p></li>
+<li><p>Kurdi, G., Leo, J., Parsia, B., Sattler, U., &amp; Al-Emari, S. (2020). A systematic review of automatic question generation for educational purposes. International Journal of Artificial Intelligence in Education, 30(1), 121-204.</p></li>
+<li><p>Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., &amp; Sutskever, I. (2019). Language models are unsupervised multitask learners. OpenAI blog, 1(8), 9.</p></li>
+<li><p>Raffel, C., Shazeer, N., Roberts, A., Lee, K., Narang, S., Matena, M., … &amp; Liu, P. J. (2019). Exploring the limits of transfer learning with a unified text-to-text transformer. arXiv preprint arXiv:1910.10683.</p></li>
+<li><p>Roberts, A., &amp; Raffel, C. (2020). Exploring Transfer Learning with T5: The Text-To-Text Transfer Transformer. (<a class="reference external" href="https://ai.googleblog.com/2020/02/exploring-transfer-learning-with-t5.html">https://ai.googleblog.com/2020/02/exploring-transfer-learning-with-t5.html</a>)</p></li>
+</ol>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\chpt5"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chpt4/Ch5-CNN-LSTM.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">5. CNN-LSTM</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chpt6/graph.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">第六章 图理论基础 （未完待续）</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#question-generation-task">1.1 问题生成任务 (Question Generation Task)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#t5">1.2 T5</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bert">1.3 BERT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpt">1.4 GPT</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.5 结论</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.6 相关文献</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://fangli-ying.github.io/">Dr. Fangli Ying</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

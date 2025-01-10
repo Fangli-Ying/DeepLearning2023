@@ -1,0 +1,1294 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5. Faster R-CNN &#8212; 深度学习</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt2/Ch5-Faster-R-CNN';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1. 生成对抗网络（GAN）简介" href="../chpt3/Ch1-Introduction.html" />
+    <link rel="prev" title="4. RetinaNet" href="Ch4-RetinaNet.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dp.gif" class="logo__image only-light" alt="深度学习 - Home"/>
+    <img src="../../_static/dp.gif" class="logo__image only-dark pst-js-only" alt="深度学习 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    欢迎来到《深度学习原理及其应用》
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Ch1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Faster R-CNN</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch1-Time-Series.html">1. Time Series 时间序列简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch3-preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch4-LSTM.html">4. LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch5-CNN-LSTM.html">5. CNN-LSTM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">自然语言处理</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt5/Ch1-Introduction.html">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Fangli-Ying/DeepLearning2023/master?urlpath=tree/chapters/chpt2/Ch5-Faster-R-CNN.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://jupyter.org/hub/hub/user-redirect/git-pull?repo=https%3A//github.com/Fangli-Ying/DeepLearning2023&urlpath=tree/DeepLearning2023/chapters/chpt2/Ch5-Faster-R-CNN.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/master/chapters/chpt2/Ch5-Faster-R-CNN.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chpt2/Ch5-Faster-R-CNN.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>5. Faster R-CNN</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.1 데이터 불러오기</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.2 数据分离</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.3 数据集类定义</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.4 加载模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.5 迁移学习</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.6 预测</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="faster-r-cnn">
+<h1>5. Faster R-CNN<a class="headerlink" href="#faster-r-cnn" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://fangli-ying.github.io/"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>在第4章中，我们使用了One-Stage Detector模型RetinaNet来构建了一个医疗口罩检测模型。在本章中，我们将使用Two-Stage Detector模型Faster R-CNN来进行对象检测。</p>
+<p>从5.1节到5.3节，我们将基于第2章和第3章中所学到的内容，加载数据并将其划分为训练集和测试集，然后定义数据集类。在5.4节中，我们将使用torchvision API来加载预训练模型。在5.5节中，我们将通过迁移学习来训练模型，并在5.6节中计算预测值并评估模型性能。</p>
+<p>在进行实验之前，由于Google Colab会随机分配GPU，因此可能会出现内存不足的情况。</p>
+<p>首先，请检查GPU是否有足够的内存，如果有足够的内存，建议进行实验。如果运行时被初始化，您将能够获得一个新的GPU。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+
+<span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">():</span>    
+    <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;There are </span><span class="si">%d</span><span class="s1"> GPU(s) available.&#39;</span> <span class="o">%</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">device_count</span><span class="p">())</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;We will use the GPU:&#39;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">get_device_name</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No GPU available, using the CPU instead.&#39;</span><span class="p">)</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>No GPU available, using the CPU instead.
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id1">
+<h2>5.1 데이터 불러오기<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>为了进行建模实验，我们将使用2.1节中的代码来加载数据。以下是从假研究室GitHub的Tutorial-Book-Utils中的PL_data_loader.py文件下载FascMaskDetection数据集并解压缩文件的顺</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Pseudo-Lab/Tutorial-Book-Utils
+<span class="o">!</span>python<span class="w"> </span>Tutorial-Book-Utils/PL_data_loader.py<span class="w"> </span>--data<span class="w"> </span>FaceMaskDetection
+<span class="o">!</span>unzip<span class="w"> </span>-q<span class="w"> </span>Face<span class="se">\ </span>Mask<span class="se">\ </span>Detection.zip
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;git&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>python: can&#39;t open file &#39;D:\3000-code\deeplearning\DeepLearning2023\Deeplearning\chapters\chpt2\Tutorial-Book-Utils\PL_data_loader.py&#39;: [Errno 2] No such file or directory
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;unzip&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>5.2 数据分离<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>正如在3.3节中一样，让我们尝试分离数据集。通过下面的代码，随机提取170张图像并将它们移动到测试文件夹中</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;annotations&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">)))</span>
+
+<span class="o">!</span>mkdir<span class="w"> </span>test_images
+<span class="o">!</span>mkdir<span class="w"> </span>test_annotations
+
+
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+<span class="n">idx</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">853</span><span class="p">),</span> <span class="mi">170</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">)))[</span><span class="n">idx</span><span class="p">]:</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="s1">&#39;images/&#39;</span><span class="o">+</span><span class="n">img</span><span class="p">,</span> <span class="s1">&#39;test_images/&#39;</span><span class="o">+</span><span class="n">img</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">annot</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;annotations&#39;</span><span class="p">)))[</span><span class="n">idx</span><span class="p">]:</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="s1">&#39;annotations/&#39;</span><span class="o">+</span><span class="n">annot</span><span class="p">,</span> <span class="s1">&#39;test_annotations/&#39;</span><span class="o">+</span><span class="n">annot</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;annotations&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;test_annotations&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;test_images&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">6</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">shutil</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;annotations&#39;</span><span class="p">)))</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;images&#39;</span><span class="p">)))</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;mkdir test_images&#39;</span><span class="p">)</span>
+
+<span class="ne">FileNotFoundError</span>: [WinError 3] 系统找不到指定的路径。: &#39;annotations&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>此外，还将导入建模所需的包。torchvision用于图像处理，内置了有关数据集和模型的包。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">patches</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span><span class="p">,</span> <span class="n">datasets</span><span class="p">,</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">torchvision.models.detection.faster_rcnn</span> <span class="kn">import</span> <span class="n">FastRCNNPredictor</span>
+<span class="kn">import</span> <span class="nn">time</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>5.3 数据集类定义<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>这次，就像在2.3节中一样，我们将为边界框定义函数。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_box</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    
+    <span class="n">xmin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;xmin&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">ymin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ymin&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;xmax&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">ymax</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ymax&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span><span class="p">]</span>
+
+<span class="n">adjust_label</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="k">def</span> <span class="nf">generate_label</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;with_mask&quot;</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">adjust_label</span>
+
+    <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;mask_weared_incorrect&quot;</span><span class="p">:</span>
+
+        <span class="k">return</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">adjust_label</span>
+
+    <span class="k">return</span> <span class="mi">0</span> <span class="o">+</span> <span class="n">adjust_label</span>
+
+<span class="k">def</span> <span class="nf">generate_target</span><span class="p">(</span><span class="n">file</span><span class="p">):</span> 
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+
+        <span class="n">num_objs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
+
+        <span class="n">boxes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+            <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generate_box</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generate_label</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+
+        <span class="n">boxes</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">boxes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> 
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> 
+        
+        <span class="n">target</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">target</span><span class="p">[</span><span class="s2">&quot;boxes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">boxes</span>
+        <span class="n">target</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+        
+        <span class="k">return</span> <span class="n">target</span>
+
+<span class="k">def</span> <span class="nf">plot_image_from_output</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
+    
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">permute</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">annotation</span><span class="p">[</span><span class="s2">&quot;boxes&quot;</span><span class="p">])):</span>
+        <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="s2">&quot;boxes&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">annotation</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">:</span>
+            <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymin</span><span class="p">),(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">),(</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">),</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="n">annotation</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="p">:</span>
+            
+            <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymin</span><span class="p">),(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">),(</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">),</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+            
+        <span class="k">else</span> <span class="p">:</span>
+        
+            <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymin</span><span class="p">),(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">),(</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">),</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>此外，像在4.3节中一样，我们将定义数据集类和数据加载器。数据集将通过torch.utils.data.DataLoader函数加载，批处理大小设置为4。批处理大小可以根据个人内存大小自由设置。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MaskDataset</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">transforms</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        path: path to train folder or test folder</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># transform module과 img path 경로를 정의</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span> <span class="o">=</span> <span class="n">transforms</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imgs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)))</span>
+
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span> <span class="c1">#special method</span>
+        <span class="c1"># load images ad masks</span>
+        <span class="n">file_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">file_label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">imgs</span><span class="p">[</span><span class="n">idx</span><span class="p">][:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;xml&#39;</span>
+        <span class="n">img_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="n">file_image</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="s1">&#39;test&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+            <span class="n">label_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;test_annotations/&quot;</span><span class="p">,</span> <span class="n">file_label</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">label_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;annotations/&quot;</span><span class="p">,</span> <span class="n">file_label</span><span class="p">)</span>
+
+        <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span>
+        <span class="c1">#Generate Label</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">generate_target</span><span class="p">(</span><span class="n">label_path</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">target</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> 
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imgs</span><span class="p">)</span>
+
+<span class="n">data_transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>   <span class="c1"># transforms.Compose : 能够连续调用列表内的操作的类</span>
+        <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()</span> <span class="c1"># ToTensor :  将numpy图像转换为torch图像</span>
+    <span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">collate_fn</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">))</span>
+
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">MaskDataset</span><span class="p">(</span><span class="n">data_transform</span><span class="p">,</span> <span class="s1">&#39;images/&#39;</span><span class="p">)</span>
+<span class="n">test_dataset</span> <span class="o">=</span> <span class="n">MaskDataset</span><span class="p">(</span><span class="n">data_transform</span><span class="p">,</span> <span class="s1">&#39;test_images/&#39;</span><span class="p">)</span>
+
+<span class="n">data_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">collate_fn</span><span class="p">)</span>
+<span class="n">test_data_loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">test_dataset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">collate_fn</span><span class="o">=</span><span class="n">collate_fn</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>5.4 加载模型<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>在 torchvision.models.detection 中，提供了 Faster R-CNN API (torchvision.models.detection.fasterrcnn_resnet50_fpn)，因此可以轻松实现。它提供了使用 ResNet50 在 COCO 数据集上预训练的模型，可以通过 pretrained=True/False 进行设置。</p>
+<p>之后加载模型时，只需在 num_classes 中设置所需的类数量，然后使用模型即可。使用 Faster R-CNN 时需要注意的是，必须在 num_classes 中指定包括背景类在内的数量。也就是说，必须在实际数据集的类数量上增加1个来添加背景类。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_model_instance_segmentation</span><span class="p">(</span><span class="n">num_classes</span><span class="p">):</span>
+  
+    <span class="n">model</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">detection</span><span class="o">.</span><span class="n">fasterrcnn_resnet50_fpn</span><span class="p">(</span><span class="n">pretrained</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">in_features</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">roi_heads</span><span class="o">.</span><span class="n">box_predictor</span><span class="o">.</span><span class="n">cls_score</span><span class="o">.</span><span class="n">in_features</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">roi_heads</span><span class="o">.</span><span class="n">box_predictor</span> <span class="o">=</span> <span class="n">FastRCNNPredictor</span><span class="p">(</span><span class="n">in_features</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">model</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>5.5 迁移学习<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>我们将对口罩检测进行迁移学习。口罩检测数据集由3个类组成，但在包含背景类后，将num_classes设置为4，然后加载模型。</p>
+<p>如果环境支持使用GPU，则将其指定为设备，并将加载的模型发送到GPU。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">get_model_instance_segmentation</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+
+<span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cuda&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span> 
+<span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FasterRCNN(
+  (transform): GeneralizedRCNNTransform(
+      Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+      Resize(min_size=(800,), max_size=1333, mode=&#39;bilinear&#39;)
+  )
+  (backbone): BackboneWithFPN(
+    (body): IntermediateLayerGetter(
+      (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+      (bn1): FrozenBatchNorm2d(64)
+      (relu): ReLU(inplace=True)
+      (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+      (layer1): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(64)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(64)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(256)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): FrozenBatchNorm2d(256)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(64)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(64)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(256)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(64)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(64)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(256)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer2): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): FrozenBatchNorm2d(512)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512)
+          (relu): ReLU(inplace=True)
+        )
+        (3): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer3): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): FrozenBatchNorm2d(1024)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024)
+          (relu): ReLU(inplace=True)
+        )
+        (3): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024)
+          (relu): ReLU(inplace=True)
+        )
+        (4): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024)
+          (relu): ReLU(inplace=True)
+        )
+        (5): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer4): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(512)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(512)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(2048)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): FrozenBatchNorm2d(2048)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(512)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(512)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(2048)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(512)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(512)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(2048)
+          (relu): ReLU(inplace=True)
+        )
+      )
+    )
+    (fpn): FeaturePyramidNetwork(
+      (inner_blocks): ModuleList(
+        (0): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1))
+        (1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1))
+        (2): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1))
+        (3): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1))
+      )
+      (layer_blocks): ModuleList(
+        (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (1): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+        (3): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      )
+      (extra_blocks): LastLevelMaxPool()
+    )
+  )
+  (rpn): RegionProposalNetwork(
+    (anchor_generator): AnchorGenerator()
+    (head): RPNHead(
+      (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (cls_logits): Conv2d(256, 3, kernel_size=(1, 1), stride=(1, 1))
+      (bbox_pred): Conv2d(256, 12, kernel_size=(1, 1), stride=(1, 1))
+    )
+  )
+  (roi_heads): RoIHeads(
+    (box_roi_pool): MultiScaleRoIAlign()
+    (box_head): TwoMLPHead(
+      (fc6): Linear(in_features=12544, out_features=1024, bias=True)
+      (fc7): Linear(in_features=1024, out_features=1024, bias=True)
+    )
+    (box_predictor): FastRCNNPredictor(
+      (cls_score): Linear(in_features=1024, out_features=4, bias=True)
+      (bbox_pred): Linear(in_features=1024, out_features=16, bias=True)
+    )
+  )
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>通过上述输出结果，可以了解到Faster R-CNN是由哪些层组成的。此时，GPU的可用性可以通过torch.cuda.is_available()来确定</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+<p>现在模型已经创建好了，让我们开始训练吧。训练次数（num_epochs）设置为10，我们将使用SGD方法进行优化。每个超参数都可以自由修改并使用。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_epochs</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">params</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">()</span> <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">requires_grad</span><span class="p">]</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span>
+                                <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">weight_decay</span><span class="o">=</span><span class="mf">0.0005</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>现在我们将开始训练。我们将依次使用上面创建的数据加载器中的每个批次，并通过计算损失来执行优化。通过每个epoch输出的损失，我们可以确认训练正在进行。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;----------------------train start--------------------------&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>    
+    <span class="n">epoch_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">annotations</span> <span class="ow">in</span> <span class="n">data_loader</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">imgs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">imgs</span><span class="p">)</span>
+        <span class="n">annotations</span> <span class="o">=</span> <span class="p">[{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">annotations</span><span class="p">]</span>
+        <span class="n">loss_dict</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">imgs</span><span class="p">,</span> <span class="n">annotations</span><span class="p">)</span> 
+        <span class="n">losses</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">loss</span> <span class="k">for</span> <span class="n">loss</span> <span class="ow">in</span> <span class="n">loss_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>        
+
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span> 
+        <span class="n">epoch_loss</span> <span class="o">+=</span> <span class="n">losses</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;epoch : </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">, Loss : </span><span class="si">{</span><span class="n">epoch_loss</span><span class="si">}</span><span class="s1">, time : </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>----------------------train start--------------------------
+epoch : 1, Loss : 77.14759063720703, time : 252.42370867729187
+epoch : 2, Loss : 48.91315460205078, time : 263.22984743118286
+epoch : 3, Loss : 43.18947982788086, time : 264.4591932296753
+epoch : 4, Loss : 36.07373046875, time : 265.2568733692169
+epoch : 5, Loss : 31.8864688873291, time : 265.57766008377075
+epoch : 6, Loss : 31.76308250427246, time : 265.0076003074646
+epoch : 7, Loss : 31.24744415283203, time : 265.16882514953613
+epoch : 8, Loss : 29.340274810791016, time : 265.73448038101196
+epoch : 9, Loss : 25.922008514404297, time : 267.91367626190186
+epoch : 10, Loss : 23.59230613708496, time : 266.9004054069519
+</pre></div>
+</div>
+</div>
+</div>
+<p>如果你想保存训练好的权重，可以使用torch.save进行保存，以后随时都可以加载使用。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span><span class="sa">f</span><span class="s1">&#39;model_</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s1">.pt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;model_</span><span class="si">{</span><span class="n">num_epochs</span><span class="si">}</span><span class="s1">.pt&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;All keys matched successfully&gt;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id6">
+<h2>5.6 预测<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<p>既然模型训练已经完成，让我们来检查一下预测结果，看看模型是否训练得很好。预测结果将包括边界框的坐标（boxes）、类别（labels）和分数（scores）。分数（scores）将存储每个类别的置信度值，我们将定义一个函数make_prediction，只提取阈值为0.5或更高的结果。我们将只输出测试数据加载器的第一个批次的结果。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_prediction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">threshold</span><span class="p">):</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">preds</span><span class="p">))</span> <span class="p">:</span>
+        <span class="n">idx_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">preds</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;scores&#39;</span><span class="p">])</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">threshold</span> <span class="p">:</span> 
+                <span class="n">idx_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+        <span class="n">preds</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;boxes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;boxes&#39;</span><span class="p">][</span><span class="n">idx_list</span><span class="p">]</span>
+        <span class="n">preds</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">idx_list</span><span class="p">]</span>
+        <span class="n">preds</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;scores&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">preds</span><span class="p">[</span><span class="nb">id</span><span class="p">][</span><span class="s1">&#39;scores&#39;</span><span class="p">][</span><span class="n">idx_list</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">preds</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span> 
+    <span class="c1"># 테스트셋 배치사이즈= 2</span>
+    <span class="k">for</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">annotations</span> <span class="ow">in</span> <span class="n">test_data_loader</span><span class="p">:</span>
+        <span class="n">imgs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">imgs</span><span class="p">)</span>
+
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">make_prediction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">imgs</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+        <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&#39;boxes&#39;: tensor([[117.7811,   1.4936, 132.9596,  18.4192],
+        [214.8204,  59.8669, 249.7893,  97.6275]], device=&#39;cuda:0&#39;), &#39;labels&#39;: tensor([2, 2], device=&#39;cuda:0&#39;), &#39;scores&#39;: tensor([0.9430, 0.9414], device=&#39;cuda:0&#39;)}, {&#39;boxes&#39;: tensor([[218.8598,  99.3362, 260.0332, 138.8516],
+        [130.5172, 109.1189, 179.2908, 152.5566],
+        [ 29.2499,  88.7732,  45.5664, 104.5635],
+        [ 40.9168, 109.1093,  67.3653, 140.0567],
+        [165.5889,  90.0294, 179.4471, 109.1606],
+        [ 83.7276,  84.3918,  94.5928,  96.4693],
+        [302.4648, 130.4534, 332.0580, 158.8674],
+        [258.4624,  90.7134, 269.2498, 102.2883],
+        [  2.8419, 103.6409,  21.9580, 125.5492]], device=&#39;cuda:0&#39;), &#39;labels&#39;: tensor([2, 2, 1, 1, 1, 1, 1, 1, 1], device=&#39;cuda:0&#39;), &#39;scores&#39;: tensor([0.9962, 0.9918, 0.9900, 0.9894, 0.9891, 0.9653, 0.9652, 0.9573, 0.9046],
+       device=&#39;cuda:0&#39;)}]
+</pre></div>
+</div>
+</div>
+</div>
+<p>利用预测结果，我们将在图像上绘制边界框。使用上面定义的plot_image_from_output函数输出图像。Target是实际边界框的位置，Prediction是模型的预测结果。可以确认模型很好地找到了实际边界框的位置。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">_idx</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Target : &quot;</span><span class="p">,</span> <span class="n">annotations</span><span class="p">[</span><span class="n">_idx</span><span class="p">][</span><span class="s1">&#39;labels&#39;</span><span class="p">])</span>
+<span class="n">plot_image_from_output</span><span class="p">(</span><span class="n">imgs</span><span class="p">[</span><span class="n">_idx</span><span class="p">],</span> <span class="n">annotations</span><span class="p">[</span><span class="n">_idx</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Prediction : &quot;</span><span class="p">,</span> <span class="n">pred</span><span class="p">[</span><span class="n">_idx</span><span class="p">][</span><span class="s1">&#39;labels&#39;</span><span class="p">])</span>
+<span class="n">plot_image_from_output</span><span class="p">(</span><span class="n">imgs</span><span class="p">[</span><span class="n">_idx</span><span class="p">],</span> <span class="n">pred</span><span class="p">[</span><span class="n">_idx</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Target :  tensor([1, 1, 1, 2, 2, 1, 1, 1])
+</pre></div>
+</div>
+<img alt="../../_images/12b496f0079e8e5404f598466de03cda5311f88fbe1504e24494b58cf06ee878.png" src="../../_images/12b496f0079e8e5404f598466de03cda5311f88fbe1504e24494b58cf06ee878.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Prediction :  tensor([2, 2, 1, 1, 1, 1, 1, 1, 1], device=&#39;cuda:0&#39;)
+</pre></div>
+</div>
+<img alt="../../_images/683d07ebff728389144a274c3a28fcbc1a0253855c05668b138b03b3c574e12a.png" src="../../_images/683d07ebff728389144a274c3a28fcbc1a0253855c05668b138b03b3c574e12a.png" />
+</div>
+</div>
+<p>这次我们将评估整个测试数据的预测结果。首先，将所有测试数据的预测结果和实际标签分别存储在preds_adj_all和annot_all中。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">preds_adj_all</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">annot_all</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">im</span><span class="p">,</span> <span class="n">annot</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">test_data_loader</span><span class="p">,</span> <span class="n">position</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">leave</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="n">im</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">im</span><span class="p">)</span>
+    <span class="c1">#annot = [{k: v.to(device) for k, v in t.items()} for t in annot]</span>
+
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">annot</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">+=</span> <span class="n">t</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">]</span>
+
+    <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+        <span class="n">preds_adj</span> <span class="o">=</span> <span class="n">make_prediction</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">im</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">preds_adj</span> <span class="o">=</span> <span class="p">[{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">preds_adj</span><span class="p">]</span>
+        <span class="n">preds_adj_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">preds_adj</span><span class="p">)</span>
+        <span class="n">annot_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">annot</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>100%|██████████| 85/85 [00:25&lt;00:00,  3.34it/s]
+</pre></div>
+</div>
+</div>
+</div>
+<p>并且通过Tutorial-Book-Utils文件夹中的utils_ObjectDetection.py文件计算mAP值。通过get_batch_statistics函数计算满足IoU（交并比）条件的边界框之间的统计值，然后通过ap_per_class函数计算每个类别的AP值。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cd</span> Tutorial-Book-Utils/
+<span class="kn">import</span> <span class="nn">utils_ObjectDetection</span> <span class="k">as</span> <span class="nn">utils</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/content/Tutorial-Book-Utils
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sample_metrics</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">batch_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">preds_adj_all</span><span class="p">)):</span>
+    <span class="n">sample_metrics</span> <span class="o">+=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_batch_statistics</span><span class="p">(</span><span class="n">preds_adj_all</span><span class="p">[</span><span class="n">batch_i</span><span class="p">],</span> <span class="n">annot_all</span><span class="p">[</span><span class="n">batch_i</span><span class="p">],</span> <span class="n">iou_threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span> 
+
+<span class="n">true_positives</span><span class="p">,</span> <span class="n">pred_scores</span><span class="p">,</span> <span class="n">pred_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">sample_metrics</span><span class="p">))]</span>  <span class="c1"># 배치가 전부 합쳐짐</span>
+<span class="n">precision</span><span class="p">,</span> <span class="n">recall</span><span class="p">,</span> <span class="n">AP</span><span class="p">,</span> <span class="n">f1</span><span class="p">,</span> <span class="n">ap_class</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">ap_per_class</span><span class="p">(</span><span class="n">true_positives</span><span class="p">,</span> <span class="n">pred_scores</span><span class="p">,</span> <span class="n">pred_labels</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+<span class="n">mAP</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">AP</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;mAP : </span><span class="si">{</span><span class="n">mAP</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;AP : </span><span class="si">{</span><span class="n">AP</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mAP : 0.7182363990382057
+AP : tensor([0.8694, 0.9189, 0.3664], dtype=torch.float64)
+</pre></div>
+</div>
+</div>
+</div>
+<p>AP值仅针对实际的3个类别（不包括背景类别）显示。尽管只训练了10次，但可以看到与第4章的RetinaNet结果相比有所改进。特别是对于第1类（戴口罩的对象），其准确度达到了0.9189 AP，对于第2类（未正确佩戴口罩的对象），也达到了0.3664 AP。</p>
+<p>一般认为，尽管RetinaNet是使用FPN和Focal loss的单阶段方法，但它仍具有较高的性能。当然，通过超参数调整也可以优化RetinaNet的性能，但根据目前的实验结果，Faster-RCNN在这个数据集上表现出了更好的性能。</p>
+<p>以上就是医疗用口罩检测教程的全部内容。通过这次教程，我们从数据集预处理到模型训练和预测都进行了实践。为了获得更好的性能，还可以尝试增加训练次数或进行超参数调整。希望大家能够自由地将对象检测模型应用到自己想要的数据中。</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\chpt2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Ch4-RetinaNet.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4. RetinaNet</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chpt3/Ch1-Introduction.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">1. 生成对抗网络（GAN）简介</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.1 데이터 불러오기</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.2 数据分离</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.3 数据集类定义</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.4 加载模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.5 迁移学习</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">5.6 预测</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://fangli-ying.github.io/">Dr. Fangli Ying</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

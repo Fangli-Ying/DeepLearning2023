@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. 目标检测简介 &#8212; 深度学习</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt2/Ch1-Object-Detection';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2. 数据探索" href="Ch2-EDA.html" />
+    <link rel="prev" title="第一章 深度学习基础" href="../chpt1/DeepLearning.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dp.gif" class="logo__image only-light" alt="深度学习 - Home"/>
+    <img src="../../_static/dp.gif" class="logo__image only-dark pst-js-only" alt="深度学习 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    欢迎来到《深度学习原理及其应用》
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch2-EDA.html">2. 数据探索</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch1-Time-Series.html">1. Time Series 时间序列简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch3-preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch4-LSTM.html">4. LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch5-CNN-LSTM.html">5. CNN-LSTM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">自然语言处理</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt5/Ch1-Introduction.html">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Fangli-Ying/DeepLearning2023/master?urlpath=tree/chapters/chpt2/Ch1-Object-Detection.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://jupyter.org/hub/hub/user-redirect/git-pull?repo=https%3A//github.com/Fangli-Ying/DeepLearning2023&urlpath=tree/DeepLearning2023/chapters/chpt2/Ch1-Object-Detection.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/master/chapters/chpt2/Ch1-Object-Detection.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chpt2/Ch1-Object-Detection.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1. 目标检测简介</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bounding-box">1.1. 边界框 Bounding Box</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-type">1.2. 模型类型 Model Type</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-stage-detector">1.2.1. 一阶段检测 One-Stage Detector</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-stage-detector">1.2.2. 二阶段检测 Two-Stage Detector</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-structure">1.3. 模型架构 Model Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-cnn">1.3.1. R-CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fast-r-cnn">1.3.2. Fast R-CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faster-r-cnn">1.3.3. Faster R-CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolo">1.3.4. YOLO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ssd">1.3.5. SSD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retinanet">1.3.6. RetinaNet</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>1. 目标检测简介<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/Pseudo-Lab/Tutorial-Book-en/blob/master/book/chapters/en/object-detection/Ch1-Object-Detection.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>目标检测是对给定图像内感兴趣的对象进行检测的计算机视觉技术领域，如果人工智能模型确定图1-1左侧的图像是狗的，则该模型为图像分类模型；但如果人工智能模型将对象分类为狗的同时还检测对象的位置，如右图所示，则该模型为目标检测模型。</p>
+<p><img alt="chpt2" src="../../_images/1_dog.PNG" /></p>
+<ul class="simple">
+<li><p>图 1-1 图像分类模型和目标检测模型的比较（来源：<a class="reference external" href="https://www.pexels.com/search/dog/%EF%BC%89">https://www.pexels.com/search/dog/）</a></p></li>
+</ul>
+<p>目标检测模型可以用于许多领域。最具代表性的案例是在自动驾驶汽车中。为了创造一辆自动驾驶汽车，计算机必须能够自己识别周围的物体。例如，计算机应该识别交通信号；当有红灯时，车辆应该知道停下来。</p>
+<p>对象检测技术也被用于安全领域的高效资源管理。一般情况下，闭路电视连续记录，因此需要大量内存。然而，结合对象检测技术，只有在检测到特定对象时才开始记录，内存才能得到有效利用。</p>
+<p>在本章中，我们将构建一个检测蒙版的目标检测模型，我们构建的模型检测人脸在给定图像中的位置，并检查人脸是否被蒙版。</p>
+<section id="bounding-box">
+<h2>1.1. 边界框 Bounding Box<a class="headerlink" href="#bounding-box" title="Link to this heading">#</a></h2>
+<p>在创建目标检测模型之前，第一步是创建一个边界框，由于目标检测模型使用的数据量是浩瀚的，因此可以通过一个边界框来正确检测对象，在深度学习过程中，只针对边界框区域，因此我们可以高效地进行训练。
+包围盒是一种通过检测特定对象来帮助我们高效训练模型的方法，在目标检测模型中，包围盒用于指定目标位置，目标位置使用X和Y轴表示为矩形，包围盒值表示为（X min， Y min，X max，Y max）。</p>
+<p><img alt="" src="https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection/raw/master/img/bc1.PNG" /></p>
+<p>-图1-2指定为像素值的边界框区域（来源：<a class="reference external" href="https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection%EF%BC%89">https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection）</a></p>
+<p>如图1-2所示，最小和最大X和Y值之间的区域被设置为边界框区域。然而，图1-2中的X和Y值是像素值，为了高效计算，应该转换成0到1之间的值。</p>
+<p><img alt="" src="https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection/raw/master/img/bc2.PNG" /></p>
+<p>-图1-3以百分位数指定的边界框面积（来源：<a class="reference external" href="https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection/raw/master/img/bc2.PNG%EF%BC%89">https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection/raw/master/img/bc2.PNG）</a></p>
+<p>图1-3中的X和Y值是通过将边界框的原始像素X和Y值分别除以最大像素X值971和最大像素Y值547来计算的。例如，边界框最小X值640除以971得到0.66。这种归一化可以看作是一个高效计算的过程，但不是必不可少的。</p>
+<p>根据数据集的不同，边界框值可能作为元数据被包括在内，如果没有元数据，可以通过单独的代码实现来指定边界框，本教程中使用的【面罩检测】（<a class="reference external" href="https://www.kaggle.com/andrewmvd/face-mask-detection%EF%BC%89%E6%95%B0%E6%8D%AE%E9%9B%86%E6%8F%90%E4%BE%9B%E4%BA%86%E8%BE%B9%E7%95%8C%E6%A1%86%EF%BC%8C%E6%88%91%E4%BB%AC%E5%B0%86%E5%9C%A8%E7%AC%AC%E4%BA%8C%E7%AB%A0%E4%B8%AD%E5%AF%B9%E8%BE%B9%E7%95%8C%E6%A1%86%E8%BF%9B%E8%A1%8C%E5%9B%BE%E8%A7%A3%E3%80%82">https://www.kaggle.com/andrewmvd/face-mask-detection）数据集提供了边界框，我们将在第二章中对边界框进行图解。</a></p>
+</section>
+<section id="model-type">
+<h2>1.2. 模型类型 Model Type<a class="headerlink" href="#model-type" title="Link to this heading">#</a></h2>
+<p>目标检测模型很大程度上可以分为一阶段和两阶段模型，我们来看看每种模型类型。</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img04.PNG?raw=true" /></p>
+<p>-图1-4目标检测算法时间表（来源：Zou et al.2019.20年目标检测：调查）</p>
+<p>图1-4显示了目标检测模型的谱系，基于深度学习的对象检测模型出现在2012年，可以分为一阶段检测器和两阶段检测器，要理解这两类流，我们需要理解分类和区域提议的概念，分类是对一个对象进行分类，区域提议是一种算法，找到一个对象有可能在的区域。</p>
+<p>两级检测器在目标检测精度方面表现良好，但由于其预测速度较慢而局限于实时检测，为了解决这一速度问题，创建了同时执行分类和区域命题的一级检测器，在下一节中，我们将考察一级和两级检测器的结构。</p>
+<section id="one-stage-detector">
+<h3>1.2.1. 一阶段检测 One-Stage Detector<a class="headerlink" href="#one-stage-detector" title="Link to this heading">#</a></h3>
+<p>一阶段检测是一种通过同时进行分类和区域提议来获得结果的方法。将图像输入模型后，如图 1-5 所示，使用卷积层提取图像特征。</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img05.png?raw=true" /></p>
+<p>-图1-5一级探测器结构（来源：<a class="reference external" href="https://jdselectron.tistory.com/101%EF%BC%89">https://jdselectron.tistory.com/101）</a></p>
+</section>
+<section id="two-stage-detector">
+<h3>1.2.2. 二阶段检测 Two-Stage Detector<a class="headerlink" href="#two-stage-detector" title="Link to this heading">#</a></h3>
+<p>两阶段检测是一种通过依次执行分类和区域提议来获得结果的方法。如图 1-6 所示，我们可以看到区域提议和分类是依次执行的。</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img06.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图1-6两级探测器结构（来源：<a class="reference external" href="https://jdselectron.tistory.com/101%EF%BC%89">https://jdselectron.tistory.com/101）</a></p></li>
+</ul>
+<p>因此，一阶段检测相对较快但准确率较低，两阶段检测相对较慢但准确率较高。</p>
+</section>
+</section>
+<section id="model-structure">
+<h2>1.3. 模型架构 Model Structure<a class="headerlink" href="#model-structure" title="Link to this heading">#</a></h2>
+<p>对于每一种一阶段和二阶段的检测器都有几种结构。R-CNN、Fast R-CNN 和 Faster R-CNN 是二阶段检测器，而 YOLO、SSD 和 RetinaNet 是一阶段检测器。让我们来看一下每个模型结构的特点。</p>
+<section id="r-cnn">
+<h3>1.3.1. R-CNN<a class="headerlink" href="#r-cnn" title="Link to this heading">#</a></h3>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img08.png?raw=true" /></p>
+<ul class="simple">
+<li><p>Figure 1-8 R-CNN structure (Source: Girshick et al. 2014. Rich feature gierarchies for accurate object detection and semantic segmentation)</p></li>
+</ul>
+<p>R-CNN creates a region proposal for an image using Selective Search. Each created candidate region is wrapped in a fixed size by force and used as an input to the CNN. The feature map from the CNN is classified through SVM and the bounding-box is adjusted through Regressor. It has the disadvantage that it requires a large amount of storage space and is slow, since the image must be transformed or lost by wrapping and the CNN must be rotated as many times as the number of candidate regions.</p>
+</section>
+<section id="fast-r-cnn">
+<h3>1.3.2. Fast R-CNN<a class="headerlink" href="#fast-r-cnn" title="Link to this heading">#</a></h3>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img09.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图1-9 Fast R-CNN结构（来源：Girshick。ICCV 2015。Fast R-CNN）
+与R-CNN对每个候选区域应用一个CNN不同，在Fast R-CNN结构中，从对整个图像应用一个CNN生成的特征图中创建一个候选区域，生成的候选区域通过RoI池化提取为固定大小的特征向量，通过特征向量上的FC层后，通过Softmax进行分类，通过Regressor调整边界框。</p></li>
+</ul>
+</section>
+<section id="faster-r-cnn">
+<h3>1.3.3. Faster R-CNN<a class="headerlink" href="#faster-r-cnn" title="Link to this heading">#</a></h3>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img10.png?raw=true" /> <img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img10-2.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图1-10 Faster R-CNN结构（来源：Ren et al.2016. Faster R-CNN：使用区域提议网络进行实时目标检测）</p></li>
+</ul>
+<p>更快的R-CNN使用区域建议网络（RPN），该网络使用深度学习代替选择性搜索步骤。RPN在计算特征图中的CNN时，在滑动窗口所取的每个点上预测带有锚框的候选区域。锚框是具有几个预设比率和大小的边界框。从RPN中获得的候选区域按照IoU的顺序排序，并通过非最大抑制（NMS）算法选择最终候选区域。为了固定所选候选区域的大小，执行RoI池化，然后该过程以与Fast R-CNN相同的方式进行。</p>
+</section>
+<section id="yolo">
+<h3>1.3.4. YOLO<a class="headerlink" href="#yolo" title="Link to this heading">#</a></h3>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img11.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图1-11活在当下的结构（来源：Redmon et al.2016。你只看一次：统一的实时对象检测）</p></li>
+<li></li>
+</ul>
+<p>将边界框和类概率视为单个问题，活在当下的结构同时预测对象的类和位置。为了使用它，我们将图像分成一定大小的网格来预测每个网格的边界框。我们将使用边界框的置信度得分值和网格单元的类得分值来训练模型。这是一个非常快速和简单的过程，但对于小物体来说相对不准确。</p>
+</section>
+<section id="ssd">
+<h3>1.3.5. SSD<a class="headerlink" href="#ssd" title="Link to this heading">#</a></h3>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img12.PNG?raw=true" /></p>
+<ul class="simple">
+<li><p>图1-12 SSD结构（来源：Liu et al.2016. SSD：SingShot MultiBox Detector）</p></li>
+</ul>
+<p>SSD为每个卷积层之后出现的每个特征图计算边界框的类分数和偏移量（位置坐标）。最终的边界框是通过NMS算法确定的。这具有能够检测大小物体的优点，因为每个特征图都有不同的比例。</p>
+</section>
+<section id="retinanet">
+<h3>1.3.6. RetinaNet<a class="headerlink" href="#retinanet" title="Link to this heading">#</a></h3>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch1img13.PNG?raw=true" /></p>
+<ul class="simple">
+<li><p>图1-13焦距损失（来源：Lin et al.2018.密集物体检测的焦距损失）</p></li>
+</ul>
+<p>RetinaNet通过改变模型训练期间计算的损失函数来改进现有单级检测器的低性能。单级检测器通过在训练阶段建议多达100,000个候选者来训练自己。其中大多数被归类为背景类，只有10个或更少的候选者真正检测到感兴趣的对象。通过降低相对容易分类的背景候选者的损失值，增加了难以分类的真实对象的损失权重。因此，我们专注于对感兴趣的对象进行训练。RetinaNet速度快，性能类似于两级检测器。</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\chpt2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chpt1/DeepLearning.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">第一章 深度学习基础</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Ch2-EDA.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2. 数据探索</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bounding-box">1.1. 边界框 Bounding Box</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-type">1.2. 模型类型 Model Type</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#one-stage-detector">1.2.1. 一阶段检测 One-Stage Detector</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#two-stage-detector">1.2.2. 二阶段检测 Two-Stage Detector</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-structure">1.3. 模型架构 Model Structure</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#r-cnn">1.3.1. R-CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fast-r-cnn">1.3.2. Fast R-CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#faster-r-cnn">1.3.3. Faster R-CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#yolo">1.3.4. YOLO</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ssd">1.3.5. SSD</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#retinanet">1.3.6. RetinaNet</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://fangli-ying.github.io/">Dr. Fangli Ying</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

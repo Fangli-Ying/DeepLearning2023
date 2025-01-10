@@ -1,0 +1,1165 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>5. CNN-LSTM &#8212; 深度学习</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt4/Ch5-CNN-LSTM';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1. NLP模型简介 (Introduction to NLP Model)（未完待续）" href="../chpt5/Ch1-Introduction.html" />
+    <link rel="prev" title="4. LSTM" href="Ch4-LSTM.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dp.gif" class="logo__image only-light" alt="深度学习 - Home"/>
+    <img src="../../_static/dp.gif" class="logo__image only-dark pst-js-only" alt="深度学习 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    欢迎来到《深度学习原理及其应用》
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2-EDA.html">2. 数据探索</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Ch1-Time-Series.html">1. Time Series 时间序列简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch3-preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch4-LSTM.html">4. LSTM</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. CNN-LSTM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">自然语言处理</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt5/Ch1-Introduction.html">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Fangli-Ying/DeepLearning2023/master?urlpath=tree/chapters/chpt4/Ch5-CNN-LSTM.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://jupyter.org/hub/hub/user-redirect/git-pull?repo=https%3A//github.com/Fangli-Ying/DeepLearning2023&urlpath=tree/DeepLearning2023/chapters/chpt4/Ch5-CNN-LSTM.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/master/chapters/chpt4/Ch5-CNN-LSTM.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chpt4/Ch5-CNN-LSTM.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>5. CNN-LSTM</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.1 数据集下载和预处理</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.2 CNN-LSTM模型定义¶</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-cnn-conv1d">5.2.1 1D CNN（一维卷积神经网络）/Conv1D ¶</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cnn">5.2.2 一维 CNN 测试</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.3 CNN-LSTM 模型创建</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.4 模型训练</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.5预测确诊病例数</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="cnn-lstm">
+<h1>5. CNN-LSTM<a class="headerlink" href="#cnn-lstm" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://fangli-ying.github.io/"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>在第 4 章中，我们使用 LSTM 来预测韩国确诊的 COVID-19 病例数。 LSTM由<a class="reference external" href="http://www.bioinf.jku.at/publications/older/2604.pdf">Hochreiter &amp; Schmidhuber (1997)</a>首次提出，此后随着研究的不断发展。</p>
+<p>在本章中，我们将尝试不同的方法来提高模型性能。为了提高模型性能，有一些方法，例如更改批量大小和时期数、数据集整理、调整数据集比率、更改损失函数和更改模型，但在本练习中，我们将尝试通过更改来提高性能模型结构。让我们使用 CNN-LSTM 模型来看看它在预测韩国确诊的 COVID-19 病例数方面是否能表现更好。</p>
+<p>首先，让我们加载本章所需的库。我们将使用最基本的torch、numpy以及pandas显示进程状态的tqdm可视化库。pylabmatplotlib</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">pylab</span> <span class="kn">import</span> <span class="n">rcParams</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">rc</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">from</span> <span class="nn">pandas.plotting</span> <span class="kn">import</span> <span class="n">register_matplotlib_converters</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span><span class="p">,</span> <span class="n">optim</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="o">%</span><span class="k">config</span> InlineBackend.figure_format=&#39;retina&#39;
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s1">&#39;muted&#39;</span><span class="p">,</span> <span class="n">font_scale</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+<span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">10</span>
+<span class="n">register_matplotlib_converters</span><span class="p">()</span>
+<span class="n">RANDOM_SEED</span> <span class="o">=</span> <span class="mi">42</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_SEED</span><span class="p">)</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">RANDOM_SEED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x1aaf4758850&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<section id="id1">
+<h2>5.1 数据集下载和预处理<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>为了进行建模实践，我们将导入韩国累计确诊的冠状病毒数据。我们将使用 2.1 节中的代码。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Pseudo-Lab/Tutorial-Book-Utils
+<span class="o">!</span>python<span class="w"> </span>Tutorial-Book-Utils/PL_data_loader.py<span class="w"> </span>--data<span class="w"> </span>COVIDTimeSeries
+<span class="o">!</span>unzip<span class="w"> </span>-q<span class="w"> </span>COVIDTimeSeries.zip
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;git&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>python: can&#39;t open file &#39;D:\3000-code\deeplearning\DeepLearning2023\Deeplearning\chapters\chpt4\Tutorial-Book-Utils\PL_data_loader.py&#39;: [Errno 2] No such file or directory
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;unzip&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+</div>
+</div>
+<p>pandas我们将使用该库加载新冠确诊患者数据，然后执行第 3 章中练习的数据预处理。数据集时段为2020年1月22日至2020年12月18日。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 读取全球COVID-19确诊数据</span>
+<span class="n">confirmed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;time_series_covid19_confirmed_global.csv&#39;</span><span class="p">)</span>
+<span class="c1"># 筛选出韩国的数据</span>
+<span class="n">confirmed</span><span class="p">[</span><span class="n">confirmed</span><span class="p">[</span><span class="s1">&#39;Country/Region&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Korea, South&#39;</span><span class="p">]</span>
+<span class="c1"># 提取韩国数据中从第4列开始的所有列，并转置</span>
+<span class="n">korea</span> <span class="o">=</span> <span class="n">confirmed</span><span class="p">[</span><span class="n">confirmed</span><span class="p">[</span><span class="s1">&#39;Country/Region&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Korea, South&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">4</span><span class="p">:]</span><span class="o">.</span><span class="n">T</span>
+<span class="c1"># 将索引转换为日期格式</span>
+<span class="n">korea</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">korea</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="c1"># 计算每日新增确诊病例数</span>
+<span class="n">daily_cases</span> <span class="o">=</span> <span class="n">korea</span><span class="o">.</span><span class="n">diff</span><span class="p">()</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">korea</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">create_sequences</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    创建时间序列数据。</span>
+
+<span class="sd">    参数:</span>
+<span class="sd">    data (pandas.DataFrame): 输入数据。</span>
+<span class="sd">    seq_length (int): 序列长度。</span>
+
+<span class="sd">    返回:</span>
+<span class="sd">    tuple: 包含输入序列和目标值的元组。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">xs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="n">seq_length</span><span class="p">):</span>
+        <span class="c1"># 取长度为seq_length的时间序列作为输入特征</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="n">seq_length</span><span class="p">)]</span>
+        <span class="c1"># 取时间序列的下一个值作为目标值</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">seq_length</span><span class="p">]</span>
+        <span class="n">xs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">ys</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+
+<span class="c1"># 设置序列长度为5</span>
+<span class="n">seq_length</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1"># 调用create_sequences函数生成时间序列数据</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">create_sequences</span><span class="p">(</span><span class="n">daily_cases</span><span class="p">,</span> <span class="n">seq_length</span><span class="p">)</span>
+
+<span class="c1"># 划分训练集、验证集和测试集</span>
+<span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">327</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">)</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:</span><span class="n">train_size</span><span class="p">],</span> <span class="n">y</span><span class="p">[:</span><span class="n">train_size</span><span class="p">]</span>
+<span class="n">X_val</span><span class="p">,</span> <span class="n">y_val</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_size</span><span class="p">:</span><span class="n">train_size</span><span class="o">+</span><span class="mi">33</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">train_size</span><span class="p">:</span><span class="n">train_size</span><span class="o">+</span><span class="mi">33</span><span class="p">]</span>
+<span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">train_size</span><span class="o">+</span><span class="mi">33</span><span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="n">train_size</span><span class="o">+</span><span class="mi">33</span><span class="p">:]</span>
+
+<span class="c1"># 计算训练集的最小值和最大值</span>
+<span class="n">MIN</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+<span class="n">MAX</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">MinMaxScale</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="nb">min</span><span class="p">,</span> <span class="nb">max</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    对数据进行最小-最大归一化。</span>
+
+<span class="sd">    参数:</span>
+<span class="sd">    array (numpy.ndarray): 输入数据。</span>
+<span class="sd">    min (float): 最小值。</span>
+<span class="sd">    max (float): 最大值。</span>
+
+<span class="sd">    返回:</span>
+<span class="sd">    numpy.ndarray: 归一化后的数据。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">array</span> <span class="o">-</span> <span class="nb">min</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="nb">max</span> <span class="o">-</span> <span class="nb">min</span><span class="p">)</span>
+
+<span class="c1"># 对训练集、验证集和测试集进行归一化</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">MinMaxScale</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">MIN</span><span class="p">,</span> <span class="n">MAX</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">MinMaxScale</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">MIN</span><span class="p">,</span> <span class="n">MAX</span><span class="p">)</span>
+<span class="n">X_val</span> <span class="o">=</span> <span class="n">MinMaxScale</span><span class="p">(</span><span class="n">X_val</span><span class="p">,</span> <span class="n">MIN</span><span class="p">,</span> <span class="n">MAX</span><span class="p">)</span>
+<span class="n">y_val</span> <span class="o">=</span> <span class="n">MinMaxScale</span><span class="p">(</span><span class="n">y_val</span><span class="p">,</span> <span class="n">MIN</span><span class="p">,</span> <span class="n">MAX</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">MinMaxScale</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">MIN</span><span class="p">,</span> <span class="n">MAX</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">MinMaxScale</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">MIN</span><span class="p">,</span> <span class="n">MAX</span><span class="p">)</span>
+
+<span class="c1"># 定义一个函数，用于将数据转换为张量</span>
+<span class="k">def</span> <span class="nf">make_Tensor</span><span class="p">(</span><span class="n">array</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    将数据转换为张量。</span>
+
+<span class="sd">    参数:</span>
+<span class="sd">    array (numpy.ndarray): 输入数据。</span>
+
+<span class="sd">    返回:</span>
+<span class="sd">    torch.Tensor: 转换后的张量。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+
+<span class="c1"># 将训练集、验证集和测试集转换为张量</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">make_Tensor</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">y_train</span> <span class="o">=</span> <span class="n">make_Tensor</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
+<span class="n">X_val</span> <span class="o">=</span> <span class="n">make_Tensor</span><span class="p">(</span><span class="n">X_val</span><span class="p">)</span>
+<span class="n">y_val</span> <span class="o">=</span> <span class="n">make_Tensor</span><span class="p">(</span><span class="n">y_val</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">make_Tensor</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">make_Tensor</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># 读取全球COVID-19确诊数据</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">confirmed</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;time_series_covid19_confirmed_global.csv&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># 筛选出韩国的数据</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">confirmed</span><span class="p">[</span><span class="n">confirmed</span><span class="p">[</span><span class="s1">&#39;Country/Region&#39;</span><span class="p">]</span><span class="o">==</span><span class="s1">&#39;Korea, South&#39;</span><span class="p">]</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\pandas\io\parsers\readers.py:1026,</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options, dtype_backend)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1013</span> <span class="n">kwds_defaults</span> <span class="o">=</span> <span class="n">_refine_defaults_read</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1014</span>     <span class="n">dialect</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1015</span>     <span class="n">delimiter</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1022</span>     <span class="n">dtype_backend</span><span class="o">=</span><span class="n">dtype_backend</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1023</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1024</span> <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="ne">-&gt; </span><span class="mi">1026</span> <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\pandas\io\parsers\readers.py:620,</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">617</span> <span class="n">_validate_names</span><span class="p">(</span><span class="n">kwds</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;names&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">619</span> <span class="c1"># Create the parser.</span>
+<span class="ne">--&gt; </span><span class="mi">620</span> <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">622</span> <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">623</span>     <span class="k">return</span> <span class="n">parser</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\pandas\io\parsers\readers.py:1620,</span> in <span class="ni">TextFileReader.__init__</span><span class="nt">(self, f, engine, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1617</span>     <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwds</span><span class="p">[</span><span class="s2">&quot;has_index_names&quot;</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1619</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="p">:</span> <span class="n">IOHandles</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="ne">-&gt; </span><span class="mi">1620</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\pandas\io\parsers\readers.py:1880,</span> in <span class="ni">TextFileReader._make_engine</span><span class="nt">(self, f, engine)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1878</span>     <span class="k">if</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1879</span>         <span class="n">mode</span> <span class="o">+=</span> <span class="s2">&quot;b&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1880</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="o">=</span> <span class="n">get_handle</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1881</span>     <span class="n">f</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1882</span>     <span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1883</span>     <span class="n">encoding</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1884</span>     <span class="n">compression</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;compression&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1885</span>     <span class="n">memory_map</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;memory_map&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1886</span>     <span class="n">is_text</span><span class="o">=</span><span class="n">is_text</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1887</span>     <span class="n">errors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;encoding_errors&quot;</span><span class="p">,</span> <span class="s2">&quot;strict&quot;</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1888</span>     <span class="n">storage_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;storage_options&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+<span class="g g-Whitespace">   </span><span class="mi">1889</span> <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1890</span> <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+<span class="g g-Whitespace">   </span><span class="mi">1891</span> <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="o">.</span><span class="n">handle</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\pandas\io\common.py:873,</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">868</span> <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">869</span>     <span class="c1"># Check whether the filename is to be opened in binary mode.</span>
+<span class="g g-Whitespace">    </span><span class="mi">870</span>     <span class="c1"># Binary mode does not support &#39;encoding&#39; and &#39;newline&#39;.</span>
+<span class="g g-Whitespace">    </span><span class="mi">871</span>     <span class="k">if</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">and</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">872</span>         <span class="c1"># Encoding</span>
+<span class="ne">--&gt; </span><span class="mi">873</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">874</span>             <span class="n">handle</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">875</span>             <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">876</span>             <span class="n">encoding</span><span class="o">=</span><span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">877</span>             <span class="n">errors</span><span class="o">=</span><span class="n">errors</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">878</span>             <span class="n">newline</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">879</span>         <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">880</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">881</span>         <span class="c1"># Binary mode</span>
+<span class="g g-Whitespace">    </span><span class="mi">882</span>         <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">)</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;time_series_covid19_confirmed_global.csv&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">daily_cases</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&lt;matplotlib.lines.Line2D at 0x7f77cc4d1438&gt;]
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/33b1f37e6466f4a8390f6794b33d1e946daeec48c17b6d11076292d19028dc26.png"><img alt="../../_images/33b1f37e6466f4a8390f6794b33d1e946daeec48c17b6d11076292d19028dc26.png" src="../../_images/33b1f37e6466f4a8390f6794b33d1e946daeec48c17b6d11076292d19028dc26.png" style="width: 838px; height: 580px;" /></a>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>5.2 CNN-LSTM模型定义¶<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="d-cnn-conv1d">
+<h3>5.2.1 1D CNN（一维卷积神经网络）/Conv1D ¶<a class="headerlink" href="#d-cnn-conv1d" title="Link to this heading">#</a></h3>
+<p>第4章使用LSTM模型预测确诊病例数。在本章中，我们将通过向 LSTM 添加 CNN 层来进行预测。</p>
+<p>CNN模型分为1D、2D和3D，一般的CNN是指通常用于图像分类的2D模型。这里，D是维度的缩写，根据输入数据类型使用1D、2D和3D CNN模型。</p>
+<br>
+<p><img alt="图 5-1 " src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/TS-ch5img01.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图 5-1 时间序列数据图（来源：理解 1D 和 3D 卷积神经网络 | Keras）</p></li>
+</ul>
+<p>图 5-1 是一维 CNN 中内核运动的主要可视化。随着时间的推移，内核向右移动。一维 CNN 适用于处理时间序列数据。使用一维 CNN，可以提取变量之间的局部特征。</p>
+</section>
+<section id="cnn">
+<h3>5.2.2 一维 CNN 测试<a class="headerlink" href="#cnn" title="Link to this heading">#</a></h3>
+<p><img alt="그림 5-2" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/TS-ch5img02.png?raw=true" />
+<img alt="그림 5-3" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/TS-ch5img03.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图 5-2 和 5-3 1D CNN 可视化</p></li>
+</ul>
+<p>图 5-2 和 5-3 是一维 CNN 结构的可视化。如图5-2至图5-3所示，stride如果为1，则可以认为是一位一位移动。现在让我们通过简短的代码来了解一下 1D CNN。</p>
+<p>首先，定义一维 CNN 层并将c其保存在 .如图5-2、5-3所示，1、1、2 in_channels、、均设置为1。然后，定义要用作输入值的变量并将其输入以计算预测值。out_channelskernel_sizestrideinputc</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">input</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]]])</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+<span class="n">output</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[[-0.3875, -0.8842, -1.3808, -1.8774]]], grad_fn=&lt;SqueezeBackward1&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>当5 个输入示例kernel_size通过 2 个 1D CNN 时，计算出 4 个值。让我们看看这些值是如何计算的。首先，c我们检查一下存储在 中的权重和偏差值。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Parameter containing:
+tensor([[[-0.1021, -0.3946]]], requires_grad=True)
+Parameter containing:
+tensor([0.5037], requires_grad=True)
+</pre></div>
+</div>
+</div>
+</div>
+<p>第一个值代表权重值。kernel_size由于 是 2，所以总共有 2 个权重值。下一个值是偏置值。一个一维 CNN 层有一个偏置值。现在，让我们分别将值存储在变量w1、w2中。b</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">param</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">parameters</span><span class="p">():</span>
+    <span class="n">w_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">w_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">w_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">w1</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">w2</span> <span class="o">=</span> <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">w1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">w2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor(-0.1021, grad_fn=&lt;SelectBackward&gt;)
+tensor(-0.3946, grad_fn=&lt;SelectBackward&gt;)
+Parameter containing:
+tensor([0.5037], requires_grad=True)
+</pre></div>
+</div>
+</div>
+</div>
+<p>通过索引，权重值分别存储在变量w1、w2中。b在图5-2和5-3中y1
+班级y2
+您可以应用用于计算 的公式来output计算通过 1D CNN 时获得的值。 1D CNN滤波器经过3和4时的计算值如下。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w1</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">w2</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">+</span> <span class="n">b</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([-1.3808], grad_fn=&lt;AddBackward0&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+<p>可以看到这和output的第3个值是一样的，可以看到剩下的值也是这样计算的。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">output</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>tensor([[[-0.3875, -0.8842, -1.3808, -1.8774]]], grad_fn=&lt;SqueezeBackward1&gt;)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="id3">
+<h2>5.3 CNN-LSTM 模型创建<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>现在让我们创建一个 CNN-LSTM 模型。与第 4 章中创建的 LSTM 模型最大的区别是添加了 1D CNN 层。如果您查看下面的代码，您可以看到 1D CNN 层已添加CovidPredictor到该类中。nn.Conv1d</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">CovidPredictor</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">n_hidden</span><span class="p">,</span> <span class="n">seq_len</span><span class="p">,</span> <span class="n">n_layers</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CovidPredictor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span> <span class="o">=</span> <span class="n">n_hidden</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span> <span class="o">=</span> <span class="n">seq_len</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span> <span class="o">=</span> <span class="n">n_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">c1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv1d</span><span class="p">(</span><span class="n">in_channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">out_channels</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">kernel_size</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="c1"># 1D CNN 레이어 추가</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">LSTM</span><span class="p">(</span>
+            <span class="n">input_size</span><span class="o">=</span><span class="n">n_features</span><span class="p">,</span>
+            <span class="n">hidden_size</span><span class="o">=</span><span class="n">n_hidden</span><span class="p">,</span>
+            <span class="n">num_layers</span><span class="o">=</span><span class="n">n_layers</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">linear</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="n">n_hidden</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">reset_hidden_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span><span class="p">),</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sequences</span><span class="p">):</span>
+        <span class="n">sequences</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c1</span><span class="p">(</span><span class="n">sequences</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">lstm_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lstm</span><span class="p">(</span>
+            <span class="n">sequences</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">hidden</span>
+        <span class="p">)</span>
+        <span class="n">last_time_step</span> <span class="o">=</span> <span class="n">lstm_out</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seq_len</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_hidden</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear</span><span class="p">(</span><span class="n">last_time_step</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y_pred</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>5.4 模型训练<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>让我们使用第 4 章中构建的train_model函数来学习模型。Adam被选为优化器。学习率0.001设置为 。被选为损失函数。MAE (Mean Absolute Error)</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">train_data</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">,</span> <span class="n">val_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">val_labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">num_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">patience</span> <span class="o">=</span> <span class="mi">10</span><span class="p">):</span>
+    <span class="n">loss_fn</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">L1Loss</span><span class="p">()</span> <span class="c1">#</span>
+    <span class="n">optimiser</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+    <span class="n">train_hist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">val_hist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_epochs</span><span class="p">):</span>
+
+        <span class="n">epoch_loss</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">seq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_data</span><span class="p">):</span> <span class="c1"># sample 별 hidden state reset을 해줘야 함 </span>
+
+            <span class="n">model</span><span class="o">.</span><span class="n">reset_hidden_state</span><span class="p">()</span>
+
+            <span class="c1"># train loss</span>
+            <span class="n">seq</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">y_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">(),</span> <span class="n">train_labels</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span> <span class="c1"># 1개의 step에 대한 loss</span>
+
+            <span class="c1"># update weights</span>
+            <span class="n">optimiser</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+            <span class="n">optimiser</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+            <span class="n">epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+
+        <span class="n">train_hist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">epoch_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">val_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+
+                <span class="n">val_loss</span> <span class="o">=</span> <span class="mi">0</span>
+
+                <span class="k">for</span> <span class="n">val_idx</span><span class="p">,</span> <span class="n">val_seq</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">val_data</span><span class="p">):</span>
+
+                    <span class="n">model</span><span class="o">.</span><span class="n">reset_hidden_state</span><span class="p">()</span> <span class="c1">#seq 별로 hidden state 초기화 </span>
+
+                    <span class="n">val_seq</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">val_seq</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">y_val_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">val_seq</span><span class="p">)</span>
+                    <span class="n">val_step_loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">y_val_pred</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">float</span><span class="p">(),</span> <span class="n">val_labels</span><span class="p">[</span><span class="n">val_idx</span><span class="p">])</span>
+
+                    <span class="n">val_loss</span> <span class="o">+=</span> <span class="n">val_step_loss</span>
+                
+            <span class="n">val_hist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_data</span><span class="p">))</span> <span class="c1"># val hist에 추가</span>
+
+            <span class="c1">## verbose 번째 마다 loss 출력 </span>
+            <span class="k">if</span> <span class="n">t</span> <span class="o">%</span> <span class="n">verbose</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1"> train loss: </span><span class="si">{</span><span class="n">epoch_loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span><span class="si">}</span><span class="s1"> val loss: </span><span class="si">{</span><span class="n">val_loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">val_data</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="c1">## patience 번째 마다 early stopping 여부 확인</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">%</span> <span class="n">patience</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">t</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+                
+                <span class="c1">## loss가 커졌다면 early stop</span>
+                <span class="k">if</span> <span class="n">val_hist</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="n">patience</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">val_hist</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="p">:</span>
+
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Early Stopping&#39;</span><span class="p">)</span>
+
+                    <span class="k">break</span>
+
+        <span class="k">elif</span> <span class="n">t</span> <span class="o">%</span> <span class="n">verbose</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1"> train loss: </span><span class="si">{</span><span class="n">epoch_loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">train_hist</span><span class="p">,</span> <span class="n">val_hist</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">CovidPredictor</span><span class="p">(</span>
+    <span class="n">n_features</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">n_hidden</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">seq_len</span><span class="o">=</span><span class="n">seq_length</span><span class="p">,</span>
+    <span class="n">n_layers</span><span class="o">=</span><span class="mi">1</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>让我们快速浏览一下预测模型。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CovidPredictor(
+  (c1): Conv1d(1, 1, kernel_size=(2,), stride=(1,))
+  (lstm): LSTM(1, 4)
+  (linear): Linear(in_features=4, out_features=1, bias=True)
+)
+</pre></div>
+</div>
+</div>
+</div>
+<p>现在让我们继续模型训练。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="p">,</span> <span class="n">train_hist</span><span class="p">,</span> <span class="n">val_hist</span> <span class="o">=</span> <span class="n">train_model</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">X_train</span><span class="p">,</span>
+    <span class="n">y_train</span><span class="p">,</span>
+    <span class="n">X_val</span><span class="p">,</span>
+    <span class="n">y_val</span><span class="p">,</span>
+    <span class="n">num_epochs</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+    <span class="n">patience</span><span class="o">=</span><span class="mi">50</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch 0 train loss: 0.08868540743530025 val loss: 0.04381682723760605
+Epoch 10 train loss: 0.03551809817384857 val loss: 0.033296383917331696
+Epoch 20 train loss: 0.033714159246412786 val loss: 0.033151865005493164
+Epoch 30 train loss: 0.03314930358741047 val loss: 0.03351602330803871
+Epoch 40 train loss: 0.03311298256454511 val loss: 0.03455767780542374
+Epoch 50 train loss: 0.033384358255242594 val loss: 0.03596664220094681
+Epoch 60 train loss: 0.03306851693218524 val loss: 0.035104189068078995
+Epoch 70 train loss: 0.03264325369823853 val loss: 0.03546909987926483
+Epoch 80 train loss: 0.03269847107237612 val loss: 0.035008616745471954
+Epoch 90 train loss: 0.033151885962927306 val loss: 0.034998856484889984
+</pre></div>
+</div>
+</div>
+</div>
+<p>我们通过可视化来看看训练损失和测试损失</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_hist</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Training loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">val_hist</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Val loss&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f77c2ac9fd0&gt;
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/ce2ff2cb93ae1a5c018d7bc5eae1f8fa4096675555103e1d8ed27bfa5171e966.png"><img alt="../../_images/ce2ff2cb93ae1a5c018d7bc5eae1f8fa4096675555103e1d8ed27bfa5171e966.png" src="../../_images/ce2ff2cb93ae1a5c018d7bc5eae1f8fa4096675555103e1d8ed27bfa5171e966.png" style="width: 834px; height: 580px;" /></a>
+</div>
+</div>
+<p>可以看到两个损失值收敛了。</p>
+</section>
+<section id="id5">
+<h2>5.5预测确诊病例数<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>现在我们已经完成了模型的训练，让我们尝试预测确诊病例数。即使在进行预测时，每次输入新序列时，hidden_state都必须进行初始化，以便hidden_state不反映先前的序列。torch.unsqueeze使用函数增加输入数据的维度，使其具有模型预期的三维形状。然后，仅提取预测数据中存在的标量值并将preds其添加到列表中。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pred_dataset</span> <span class="o">=</span> <span class="n">X_test</span>
+
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">preds</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pred_dataset</span><span class="p">)):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">reset_hidden_state</span><span class="p">()</span>
+        <span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="n">pred_dataset</span><span class="p">[</span><span class="n">_</span><span class="p">],</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">pred</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">y_test_pred</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span><span class="o">*</span><span class="n">MAX</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;True&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span><span class="o">*</span><span class="n">MAX</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;Pred&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.legend.Legend at 0x7f77c29aafd0&gt;
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/b5e566b4d86330fc65064d3b1af926d071b435181e7c02dfcd55e40e9043c23c.png"><img alt="../../_images/b5e566b4d86330fc65064d3b1af926d071b435181e7c02dfcd55e40e9043c23c.png" src="../../_images/b5e566b4d86330fc65064d3b1af926d071b435181e7c02dfcd55e40e9043c23c.png" style="width: 838px; height: 580px;" /></a>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">MAE</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">true</span><span class="o">-</span><span class="n">pred</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">MAE</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span><span class="o">*</span><span class="n">MAX</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span><span class="o">*</span><span class="n">MAX</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>247.63305325632362
+</pre></div>
+</div>
+</div>
+</div>
+<p>仅使用 LSTM 的模型的 MAE 也约为 250。您可以看到，新冠确诊患者数据的性能没有显着差异。这可以看作是因为 LSTM 和 CNN-LSTM 的损失都收敛到了特定值，也可以看作是因为输入数据与模型结构相比过于简单。</p>
+<p>上面，我们练习使用韩国数据集和 CNN-LSTM 模型来预测确诊的 COVID-19 病例数量。通过本教程，我们从数据集探索和数据集预处理开始，学习了 LSTM 模型，进行了预测，甚至使用了 CNN-LSTM 模型。</p>
+<p>确实，如果数据不多，时间序列预测的准确性就会降低。在本教程中，我们将仅使用确诊病例数数据来学习深度学习模型。此外，我们鼓励您使用各种数据集学习深度学习模型。</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\chpt4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Ch4-LSTM.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">4. LSTM</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chpt5/Ch1-Introduction.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.1 数据集下载和预处理</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.2 CNN-LSTM模型定义¶</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-cnn-conv1d">5.2.1 1D CNN（一维卷积神经网络）/Conv1D ¶</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cnn">5.2.2 一维 CNN 测试</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.3 CNN-LSTM 模型创建</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.4 模型训练</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">5.5预测确诊病例数</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://fangli-ying.github.io/">Dr. Fangli Ying</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

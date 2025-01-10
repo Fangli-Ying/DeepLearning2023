@@ -1,0 +1,830 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. 数据探索 &#8212; 深度学习</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt2/Ch2-EDA';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="1. 生成对抗网络（GAN）简介" href="../chpt3/Ch1-Introduction.html" />
+    <link rel="prev" title="1. 目标检测简介" href="Ch1-Object-Detection.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dp.gif" class="logo__image only-light" alt="深度学习 - Home"/>
+    <img src="../../_static/dp.gif" class="logo__image only-dark pst-js-only" alt="深度学习 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    欢迎来到《深度学习原理及其应用》
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Ch1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. 数据探索</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch1-Time-Series.html">1. Time Series 时间序列简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch3-preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch4-LSTM.html">4. LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch5-CNN-LSTM.html">5. CNN-LSTM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">自然语言处理</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt5/Ch1-Introduction.html">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Fangli-Ying/DeepLearning2023/master?urlpath=tree/chapters/chpt2/Ch2-EDA.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://jupyter.org/hub/hub/user-redirect/git-pull?repo=https%3A//github.com/Fangli-Ying/DeepLearning2023&urlpath=tree/DeepLearning2023/chapters/chpt2/Ch2-EDA.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/master/chapters/chpt2/Ch2-EDA.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chpt2/Ch2-EDA.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2. 数据探索</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.1. 下载数据集</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2. 检查数据集</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.3. 边界框图示化</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="id1">
+<h1>2. 数据探索<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p>在上一章中，我们简要地看了一下目标检测作为一个整体。从这一章开始，我们将认真地开始目标检测方面的工作。提高深度学习模型性能最重要的部分是模型本身，但也是数据集。据说数据科学家在学习深度学习模型时，将超过90%的时间花在数据管理上。数据细化对于避免有偏见、不正确或扭曲的学习结果至关重要。为了使数据细化更容易，使用正确的数据集很重要。
+在本章中，我们将探索学习目标检测模型的数据，并对基本边界框进行示意图化。第2.1节将指导您如何下载数据，第2.2节将检查存储在数据集中的信息。而在第2.3节中，我们将继续进行边界框可视化。我们将使用Kaggle中共享的<a class="reference external" href="https://www.kaggle.com/andrewmvd/face-mask-detection">Face Mask Detection</a>数据集。出于教程目的，我们选择了大小合适的数据集，而不是需要大量学习时间的海量数据集。</p>
+<section id="id2">
+<h2>2.1. 下载数据集<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>首先，让我们下载用于学习的数据集。您可以使用假实验室提供的数据加载器功能轻松下载数据。我们将使用 ‘git clone’ 命令将 Tutory-Book-Utils 存储库下载到 Colab 环境中。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Pseudo-Lab/Tutorial-Book-Utils
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;git&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>python<span class="w"> </span>Tutorial-Book-Utils/PL_data_loader.py<span class="w"> </span>--data<span class="w"> </span>FaceMaskDetection
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>python: can&#39;t open file &#39;D:\3000-code\deeplearning\DeepLearning2023\Deeplearning\chapters\chpt2\Tutorial-Book-Utils\PL_data_loader.py&#39;: [Errno 2] No such file or directory
+</pre></div>
+</div>
+</div>
+</div>
+<p>如上图所示，可以看到已经下载了Face MaskDetection.zip文件。接下来，让我们使用Linux命令unzip解压缩压缩文件。您可以使用-q选项控制不必要的输出。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>unzip<span class="w"> </span>-q<span class="w"> </span>Face<span class="se">\ </span>Mask<span class="se">\ </span>Detection.zip
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;unzip&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+</div>
+</div>
+<p>如果查看 Colab 路径，可以确认如图片 2-1 所示，创建了“annotations”文件夹和“images”文件夹。“annotations”文件夹中存储着每张图像的医用口罩位置坐标，“images”文件夹中存储着图像。</p>
+<p><img alt="dataset example" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch2img02.PNG?raw=true" /></p>
+<ul class="simple">
+<li><p>图 2-1 实验的文件夹路径</p></li>
+</ul>
+</section>
+<section id="id3">
+<h2>2.2. 检查数据集<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>如果您查看面罩检测数据集，有两个文件夹：“图像”和“注释”。“图像”文件夹包含从0到852的图像文件，“注释”文件夹包含从0到852的xml文件。
+“注释”文件夹中的xml文件包含有关每个图像文件的信息。例如，让我们看一下maksssksksss307. xml文件。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">annotation</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">folder</span><span class="o">&gt;</span><span class="n">images</span><span class="o">&lt;/</span><span class="n">folder</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">filename</span><span class="o">&gt;</span><span class="n">maksssksksss307</span><span class="o">.</span><span class="n">png</span><span class="o">&lt;/</span><span class="n">filename</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">size</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">width</span><span class="o">&gt;</span><span class="mi">400</span><span class="o">&lt;/</span><span class="n">width</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">height</span><span class="o">&gt;</span><span class="mi">226</span><span class="o">&lt;/</span><span class="n">height</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">depth</span><span class="o">&gt;</span><span class="mi">3</span><span class="o">&lt;/</span><span class="n">depth</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">size</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">segmented</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">segmented</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">object</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">mask_weared_incorrect</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">pose</span><span class="o">&gt;</span><span class="n">Unspecified</span><span class="o">&lt;/</span><span class="n">pose</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">truncated</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">truncated</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">occluded</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">occluded</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">difficult</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">difficult</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">bndbox</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">xmin</span><span class="o">&gt;</span><span class="mi">3</span><span class="o">&lt;/</span><span class="n">xmin</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">ymin</span><span class="o">&gt;</span><span class="mi">65</span><span class="o">&lt;/</span><span class="n">ymin</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">xmax</span><span class="o">&gt;</span><span class="mi">96</span><span class="o">&lt;/</span><span class="n">xmax</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">ymax</span><span class="o">&gt;</span><span class="mi">163</span><span class="o">&lt;/</span><span class="n">ymax</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">bndbox</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="nb">object</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">object</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">with_mask</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">pose</span><span class="o">&gt;</span><span class="n">Unspecified</span><span class="o">&lt;/</span><span class="n">pose</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">truncated</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">truncated</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">occluded</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">occluded</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">difficult</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">difficult</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">bndbox</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">xmin</span><span class="o">&gt;</span><span class="mi">146</span><span class="o">&lt;/</span><span class="n">xmin</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">ymin</span><span class="o">&gt;</span><span class="mi">28</span><span class="o">&lt;/</span><span class="n">ymin</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">xmax</span><span class="o">&gt;</span><span class="mi">249</span><span class="o">&lt;/</span><span class="n">xmax</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">ymax</span><span class="o">&gt;</span><span class="mi">140</span><span class="o">&lt;/</span><span class="n">ymax</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">bndbox</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="nb">object</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nb">object</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">name</span><span class="o">&gt;</span><span class="n">without_mask</span><span class="o">&lt;/</span><span class="n">name</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">pose</span><span class="o">&gt;</span><span class="n">Unspecified</span><span class="o">&lt;/</span><span class="n">pose</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">truncated</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">truncated</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">occluded</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">occluded</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">difficult</span><span class="o">&gt;</span><span class="mi">0</span><span class="o">&lt;/</span><span class="n">difficult</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">bndbox</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">xmin</span><span class="o">&gt;</span><span class="mi">287</span><span class="o">&lt;/</span><span class="n">xmin</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">ymin</span><span class="o">&gt;</span><span class="mi">180</span><span class="o">&lt;/</span><span class="n">ymin</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">xmax</span><span class="o">&gt;</span><span class="mi">343</span><span class="o">&lt;/</span><span class="n">xmax</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">ymax</span><span class="o">&gt;</span><span class="mi">225</span><span class="o">&lt;/</span><span class="n">ymax</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">bndbox</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="nb">object</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">annotation</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>  <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+    <span class="o">&lt;</span><span class="n">annotation</span><span class="o">&gt;</span>
+    <span class="o">^</span>
+<span class="ne">SyntaxError</span>: invalid syntax
+</pre></div>
+</div>
+</div>
+</div>
+<p>如果您查看文件内容，您可以看到最初显示了文件夹名称和文件名，并且包含了图像大小信息。现在，如果您查看 “object” 中的代码，您可以看到它分为三类：“mask_weared_incorrect”、“with_mask” 和 “without_mask”。在 “mask_weared_incorrect” 的情况下，有关未正确蒙版的对象的信息，“with_mask” 包含有关戴蒙版的对象的位置的信息，“without_mask” 包含有关未蒙版的对象的信息。如果一个图像文件中有两个戴蒙版的对象，您将看到有两个 “object” 包含 “with_mask” 的信息。在 “bndbox” 中，您可以看到 “xmin”、“ymin”、“xmax” 和 “ymax” 按该顺序出现。这是指定边界框区域的信息。</p>
+<p><img alt="dataset example" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch2img01.png?raw=true" /></p>
+<ul class="simple">
+<li><p>图 2-2 maksssksksss307. png 文件的可视化</p></li>
+</ul>
+<p>图 2-2 是 maksssksksss307. xml 文件描述的 maksssksksss307.png 图像文件。 <code class="docutils literal notranslate"><span class="pre">object</span></code>从 X 坐标最左边开始依次为  <code class="docutils literal notranslate"><span class="pre">mask_weared_incorrect</span></code>, <code class="docutils literal notranslate"><span class="pre">with_mask</span></code>, <code class="docutils literal notranslate"><span class="pre">without_mask</span></code>就像出现的那样，在该图像文件中也可以确认未正确佩戴口罩的对象、佩戴口罩的对象以及未佩戴口罩的对象从 X 坐标左边开始依次出现。</p>
+</section>
+<section id="id4">
+<h2>2.3. 边界框图示化<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>数据集验证对于提高深度学习模型准确性很重要在监督学习中，模型从标记的数据中学习，因此确保数据被正确标记很重要。在本节中，我们将可视化给定图像上的边界框，以检查数据是否被正确标记</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="nn">mpimg</span>
+<span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">patches</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>为了测试边界框可视化代码，导入上述包。matplotlib 是可视化的典型包，glob 包是在处理文件时广泛使用的包。BeautifulSoup 是用于解析 HTML 和 XML 文档文件的包，在网络爬虫中很有用。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">))</span>
+<span class="n">annot_list</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">&#39;annotations/*&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>使用Globb包加载数据集。必须在数据集所在的位置指定文件夹路径。此外，使用’sorted’函数确保’img_list’中文件的id顺序与’annot_list’中文件的id顺序相同。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">img_list</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">annot_list</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>853
+853
+</pre></div>
+</div>
+</div>
+</div>
+<p>让我们使用 Python 的 ‘len’ 函数来确定每个文件夹中的文件数。每个文件夹总共加载了 853 条数据。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">img_list</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">annot_list</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;images/maksssksksss0.png&#39;, &#39;images/maksssksksss1.png&#39;, &#39;images/maksssksksss10.png&#39;, &#39;images/maksssksksss100.png&#39;, &#39;images/maksssksksss101.png&#39;, &#39;images/maksssksksss102.png&#39;, &#39;images/maksssksksss103.png&#39;, &#39;images/maksssksksss104.png&#39;, &#39;images/maksssksksss105.png&#39;, &#39;images/maksssksksss106.png&#39;]
+[&#39;annotations/maksssksksss0.xml&#39;, &#39;annotations/maksssksksss1.xml&#39;, &#39;annotations/maksssksksss10.xml&#39;, &#39;annotations/maksssksksss100.xml&#39;, &#39;annotations/maksssksksss101.xml&#39;, &#39;annotations/maksssksksss102.xml&#39;, &#39;annotations/maksssksksss103.xml&#39;, &#39;annotations/maksssksksss104.xml&#39;, &#39;annotations/maksssksksss105.xml&#39;, &#39;annotations/maksssksksss106.xml&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>现在让我们检查每个文件夹中的文件是否正确。[： 10]从一开始总共打印10个文件名。这里需要注意的一点是，您需要确保输出文件按顺序出现。如果输出不按顺序，则图像文件和边界框文件的顺序交织在一起，导致边界框无法正确显示。由于上面使用’sorted’函数加载了’img_list’和’annot_list’，您可以看到文件的id顺序是相同的。</p>
+<p>现在让我们定义一个用于边界框可视化的函数。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">generate_box</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    
+    <span class="n">xmin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;xmin&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">ymin</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ymin&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">xmax</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;xmax&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">ymax</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;ymax&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="p">[</span><span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">generate_label</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;with_mask&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;mask_weared_incorrect&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+<span class="k">def</span> <span class="nf">generate_target</span><span class="p">(</span><span class="n">file</span><span class="p">):</span> 
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;html.parser&quot;</span><span class="p">)</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+
+        <span class="n">num_objs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span>
+
+        <span class="n">boxes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+            <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generate_box</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">generate_label</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        
+        <span class="n">target</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">target</span><span class="p">[</span><span class="s2">&quot;boxes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">boxes</span>
+        <span class="n">target</span><span class="p">[</span><span class="s2">&quot;labels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">labels</span>
+        
+        <span class="k">return</span> <span class="n">target</span>
+
+<span class="k">def</span> <span class="nf">plot_image</span><span class="p">(</span><span class="n">img_path</span><span class="p">,</span> <span class="n">annotation</span><span class="p">):</span>
+    
+    <span class="n">img</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+    
+    <span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">annotation</span><span class="p">[</span><span class="s2">&quot;boxes&quot;</span><span class="p">])):</span>
+        <span class="n">xmin</span><span class="p">,</span> <span class="n">ymin</span><span class="p">,</span> <span class="n">xmax</span><span class="p">,</span> <span class="n">ymax</span> <span class="o">=</span> <span class="n">annotation</span><span class="p">[</span><span class="s2">&quot;boxes&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">annotation</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span> <span class="p">:</span>
+            <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymin</span><span class="p">),(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">),(</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">),</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+        
+        <span class="k">elif</span> <span class="n">annotation</span><span class="p">[</span><span class="s1">&#39;labels&#39;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span> <span class="p">:</span>
+            
+            <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymin</span><span class="p">),(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">),(</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">),</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+            
+        <span class="k">else</span> <span class="p">:</span>
+        
+            <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="n">xmin</span><span class="p">,</span><span class="n">ymin</span><span class="p">),(</span><span class="n">xmax</span><span class="o">-</span><span class="n">xmin</span><span class="p">),(</span><span class="n">ymax</span><span class="o">-</span><span class="n">ymin</span><span class="p">),</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span><span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>上述代码共定义了 4 个函数。首先，通过generate_box函数来指定返回xmin、ymin、xmax、ymax这些值。generate_label函数将是否佩戴口罩的情况分为三个阶段，并返回 0、1、2 这几个值。对于with_mask（佩戴口罩）的情况返回 1，对于mask_weared_incorrect（口罩佩戴不正确）的情况返回 2，其余情况也就是without_mask（未佩戴口罩）时返回 0。
+generate_target函数是分别调用generate_box和generate_label函数，将返回的值存储在字典中再返回的函数。它利用html.parser来加载注释文件中的内容，并提取目标的边界框和标签。plot_image函数是将图像和边界框一起进行可视化展示的函数。佩戴口罩时绘制绿色边界框，口罩佩戴不正确时绘制橙色边界框，未佩戴口罩时绘制红色边界框。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s1">&#39;images/maksssksksss307.png&#39;</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>232
+</pre></div>
+</div>
+</div>
+</div>
+<p>上面的代码是查找maksssksksss307. png文件的索引值。您可以使用’index’函数检查maksssksksss307.png文件位置的索引值。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bbox</span> <span class="o">=</span> <span class="n">generate_target</span><span class="p">(</span><span class="n">annot_list</span><span class="p">[</span><span class="mi">232</span><span class="p">])</span>
+<span class="n">plot_image</span><span class="p">(</span><span class="n">img_list</span><span class="p">[</span><span class="mi">232</span><span class="p">],</span> <span class="n">bbox</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/87e8c2b6dd053b92fd67bfb4f2bc01f7ce04ff710d599cc8e4f509f0a522f232.png" src="../../_images/87e8c2b6dd053b92fd67bfb4f2bc01f7ce04ff710d599cc8e4f509f0a522f232.png" />
+</div>
+</div>
+<p>通过plot_image函数将边界框在图像上进行可视化展示。利用generate_target函数把与maksssksksss307.png文件相对应的边界框信息存储在bbox中。然后将边界框信息连同该图像文件信息一并传递给plot_image函数，从而进行可视化操作。img_list[]和annot_list[]中的数字表示的是maksssksksss307.png文件的位置，所以会填入相同的数字。
+在本章节中，我们进行了通过对数据集进行探索来确认边界框的实践操作。在下一章节中，我们将对用于使数据集能够进行学习的数据预处理过程展开探讨。</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\chpt2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Ch1-Object-Detection.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1. 目标检测简介</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../chpt3/Ch1-Introduction.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">1. 生成对抗网络（GAN）简介</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.1. 下载数据集</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.2. 检查数据集</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">2.3. 边界框图示化</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://fangli-ying.github.io/">Dr. Fangli Ying</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
