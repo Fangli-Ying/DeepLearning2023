@@ -1,9 +1,2 @@
-# Deep Learning Tutorials using PyTorch (PseudoLab)
-
-[![gitlocalized ](https://gitlocalize.com/repo/5678/en/badge.svg)](https://gitlocalize.com/repo/5678/) [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
-
-English version of [Deep learning tutorials using Pytorch](https://pseudo-lab.github.io/Tutorial-Book/) (maintained by [PseudoLab](https://pseudo-lab.com/))
-
-Currently being translated using [Gitlocalize](https://gitlocalize.com/repo/5678)
-
-Will be launched as a website around March 2021
+## LICENSE
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="知识共享许可协议" style="border-width:0" src="https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey" /></a><br />本作品采用<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>进行许可。

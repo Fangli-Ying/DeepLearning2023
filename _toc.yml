@@ -1,0 +1,41 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+parts:
+- caption: 深度学习基础
+  chapters:
+  - file: chapters/chpt1/DeepLearning
+- caption: 视觉基本任务
+  chapters:
+  - file: chapters/chpt2/Ch1-Object-Detection
+  - file: chapters/chpt2/Ch2-EDA
+  - file: chapters/chpt2/Ch2_preprocessing
+  - file: chapters/chpt2/Ch4-RetinaNet
+  - file: chapters/chpt2/Ch5-Faster-R-CNN
+- caption: 深度生成模型
+  chapters:
+  - file: chapters/chpt3/Ch1-Introduction
+  - file: chapters/chpt3/Ch2-EDA
+  - file: chapters/chpt3/Ch3-GAN
+  - file: chapters/chpt3/Ch4-pix2pix
+  - file: chapters/chpt3/Ch5-VAE
+- caption: 序列模型
+  chapters:
+  - file: chapters/chpt4/Ch1-Time-Series
+  - file: chapters/chpt4/Ch2-EDA
+  - file: chapters/chpt4/Ch3-preprocessing
+  - file: chapters/chpt4/Ch4-LSTM
+  - file: chapters/chpt4/Ch5-CNN-LSTM
+- caption: 自然语言处理
+  chapters:
+  - file: chapters/chpt5/Ch1-Introduction
+- caption: 图表示学习
+  chapters:
+  - file: chapters/chpt6/graph
+
+
+
+
+
