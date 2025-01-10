@@ -177,6 +177,8 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Ch1-Object-Detection.html">1. 目标检测简介</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Ch2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
 <ul class="nav bd-sidenav">
@@ -184,7 +186,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder（未完成）</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
 <ul class="nav bd-sidenav">
@@ -473,77 +475,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR: Exception:
-Traceback (most recent call last):
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\cli\base_command.py&quot;, line 173, in _main
-    status = self.run(options, args)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\cli\req_command.py&quot;, line 203, in wrapper
-    return func(self, options, args)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\commands\install.py&quot;, line 315, in run
-    requirement_set = resolver.resolve(
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\resolution\resolvelib\resolver.py&quot;, line 94, in resolve
-    result = self._result = resolver.resolve(
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\resolvelib\resolvers.py&quot;, line 472, in resolve
-    state = resolution.resolve(requirements, max_rounds=max_rounds)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\resolvelib\resolvers.py&quot;, line 341, in resolve
-    self._add_to_criteria(self.state.criteria, r, parent=None)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\resolvelib\resolvers.py&quot;, line 172, in _add_to_criteria
-    if not criterion.candidates:
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\resolvelib\structs.py&quot;, line 151, in __bool__
-    return bool(self._sequence)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\resolution\resolvelib\found_candidates.py&quot;, line 140, in __bool__
-    return any(self)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\resolution\resolvelib\found_candidates.py&quot;, line 128, in &lt;genexpr&gt;
-    return (c for c in iterator if id(c) not in self._incompatible_ids)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\resolution\resolvelib\found_candidates.py&quot;, line 29, in _iter_built
-    for version, func in infos:
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\resolution\resolvelib\factory.py&quot;, line 272, in iter_index_candidate_infos
-    result = self._finder.find_best_candidate(
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\index\package_finder.py&quot;, line 851, in find_best_candidate
-    candidates = self.find_all_candidates(project_name)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\index\package_finder.py&quot;, line 798, in find_all_candidates
-    page_candidates = list(page_candidates_it)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\index\sources.py&quot;, line 134, in page_candidates
-    yield from self._candidates_from_page(self._link)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\index\package_finder.py&quot;, line 758, in process_project_url
-    html_page = self._link_collector.fetch_page(project_url)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\index\collector.py&quot;, line 490, in fetch_page
-    return _get_html_page(location, session=self.session)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\index\collector.py&quot;, line 400, in _get_html_page
-    resp = _get_html_response(url, session=session)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\index\collector.py&quot;, line 115, in _get_html_response
-    resp = session.get(
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\requests\sessions.py&quot;, line 555, in get
-    return self.request(&#39;GET&#39;, url, **kwargs)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_internal\network\session.py&quot;, line 454, in request
-    return super().request(method, url, *args, **kwargs)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\requests\sessions.py&quot;, line 542, in request
-    resp = self.send(prep, **send_kwargs)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\requests\sessions.py&quot;, line 655, in send
-    r = adapter.send(request, **kwargs)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\cachecontrol\adapter.py&quot;, line 53, in send
-    resp = super(CacheControlAdapter, self).send(request, **kw)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\requests\adapters.py&quot;, line 439, in send
-    resp = conn.urlopen(
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\urllib3\connectionpool.py&quot;, line 696, in urlopen
-    self._prepare_proxy(conn)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\urllib3\connectionpool.py&quot;, line 964, in _prepare_proxy
-    conn.connect()
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\urllib3\connection.py&quot;, line 359, in connect
-    conn = self._connect_tls_proxy(hostname, conn)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\urllib3\connection.py&quot;, line 500, in _connect_tls_proxy
-    return ssl_wrap_socket(
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\urllib3\util\ssl_.py&quot;, line 453, in ssl_wrap_socket
-    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls)
-  File &quot;D:\Program Files\Python39\lib\site-packages\pip\_vendor\urllib3\util\ssl_.py&quot;, line 495, in _ssl_wrap_socket_impl
-    return ssl_context.wrap_socket(sock)
-  File &quot;D:\Program Files\Python39\lib\ssl.py&quot;, line 500, in wrap_socket
-    return self.sslsocket_class._create(
-  File &quot;D:\Program Files\Python39\lib\ssl.py&quot;, line 997, in _create
-    raise ValueError(&quot;check_hostname requires server_hostname&quot;)
-ValueError: check_hostname requires server_hostname
-WARNING: You are using pip version 21.2.4; however, version 24.3.1 is available.
-You should consider upgrading via the &#39;D:\Program Files\Python39\python.exe -m pip install --upgrade pip&#39; command.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>^C
 </pre></div>
 </div>
 </div>
@@ -680,20 +612,6 @@ You should consider upgrading via the &#39;D:\Program Files\Python39\python.exe 
         <span class="n">total_time</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_t</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">img</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">total_time</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">line</span> <span class="mi">9</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span>
-<span class="ne">----&gt; </span><span class="mi">9</span> <span class="kn">import</span> <span class="nn">albumentations</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">import</span> <span class="nn">albumentations.pytorch</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;albumentations&#39;
 </pre></div>
 </div>
 </div>
