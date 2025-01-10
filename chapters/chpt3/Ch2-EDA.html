@@ -1,0 +1,1332 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. EDA &#8212; 深度学习</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt3/Ch2-EDA';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="3. GAN" href="Ch3-GAN.html" />
+    <link rel="prev" title="1. 生成对抗网络（GAN）简介" href="Ch1-Introduction.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dp.gif" class="logo__image only-light" alt="深度学习 - Home"/>
+    <img src="../../_static/dp.gif" class="logo__image only-dark pst-js-only" alt="深度学习 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    欢迎来到《深度学习原理及其应用》
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch5-VAE.html">Variational Autoencoder（未完成）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch1-Time-Series.html">1. Time Series 时间序列简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch3-preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch4-LSTM.html">4. LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch5-CNN-LSTM.html">5. CNN-LSTM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">自然语言处理</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt5/Ch1-Introduction.html">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Fangli-Ying/DeepLearning2023/master?urlpath=tree/chapters/chpt3/Ch2-EDA.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://jupyter.org/hub/hub/user-redirect/git-pull?repo=https%3A//github.com/Fangli-Ying/DeepLearning2023&urlpath=tree/DeepLearning2023/chapters/chpt3/Ch2-EDA.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/master/chapters/chpt3/Ch2-EDA.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chpt3/Ch2-EDA.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2. EDA</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2.1 数据集下载</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2 检查数据集¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plt-subplots">2.3 使用 plt.subplots() 可视化</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.4 图像预处理</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="eda">
+<h1>2. EDA<a class="headerlink" href="#eda" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://fangli-ying.github.io/"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>上一章我们了解了GAN的概念、模型以及评价指标。在本章中，我们将检查实践中使用的数据集。</p>
+<p>在 GAN 教程中，我们将构建一个模型将黑白图像转换为彩色图像。用于构建模型的数据集称为Victorian400 <a class="reference external" href="https://www.kaggle.com/elibooklover/Victorian400">Victorian400</a>，它是由 19 世纪绘画的黑白/彩色对组成的数据。我们将使用这些数据构建彩色图像生成模型，并输入新的黑白图像来检查着色性能。</p>
+<p>Victorian400数据由400张黑白和彩色图片组成。由于数据集数量合适，训练模型不需要较长的时间，适合体验GAN学习过程的数据。在练习了使用数据训练 GAN 模型的整个过程后，我们建议您将 GAN 应用于适合您需求的其他数据。</p>
+<p>在 2.1 节中，我们将了解如何下载数据。在第 2.2 节中，我们将可视化数据，在第 2.3 节中，我们将学习如何使用matplotlib.pyplot提供的函数在一个输出窗口中可视化多个图像。subplots最后，在2.4节中，我们将通过图像预处理对像素值进行归一化。</p>
+<section id="id1">
+<h2>2.1 数据集下载<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Pseudo-Lab/Tutorial-Book-Utils
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;git&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+</div>
+</div>
+<p>首先使用命令复制公共Github仓库并保存到Colab环境中。执行上述代码后，会创建一个如图2-1所示的文件夹。git cloneTutorial-Book-Utils</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/GAN-ch2img01.PNG?raw=true" /></p>
+<ul class="simple">
+<li><p>图2-1 使用git clone命令后的文件夹结构</p></li>
+</ul>
+<p>我们PL_data_loader.py将使用该文件夹中的文件下载用于构建模型的数据集。将使用以下命令执行下载。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>python<span class="w"> </span>Tutorial-Book-Utils/PL_data_loader.py<span class="w"> </span>--data<span class="w"> </span>GAN-Colorization
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>python: can&#39;t open file &#39;D:\3000-code\deeplearning\DeepLearning2023\Deeplearning\chapters\chpt3\Tutorial-Book-Utils\PL_data_loader.py&#39;: [Errno 2] No such file or directory
+</pre></div>
+</div>
+</div>
+</div>
+<p>下载完成后，Victorian400-GAN-colorization-data.zip将创建一个文件，如图2-2所示。unzip我们将使用该命令来解压缩压缩文件。</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/GAN-ch2img02.PNG?raw=true" /></p>
+<ul class="simple">
+<li><p>图2-2 运行PL_data_loader.py后的文件夹结构</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>unzip<span class="w"> </span>-q<span class="w"> </span>Victorian400-GAN-colorization-data.zip
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;unzip&#39; 不是内部或外部命令，也不是可运行的程序
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>或批处理文件。
+</pre></div>
+</div>
+</div>
+</div>
+<p>解压后会生成文件夹gray、original、resized，如图2-3所示。该文件夹中保存尺寸为256×256的黑白图像，该文件夹中保存尺寸为256×256的彩色图像。彩色图像以其原始尺寸存储在文件夹中。该文件夹包含六对黑白和彩色图像，用于评估模型性能。为了构建模型，我们将仅使用和文件夹中的图像。testgrayresizedoriginaltestgrayresized</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/GAN-ch2img03.PNG?raw=true" /></p>
+<ul class="simple">
+<li><p>图2-3 执行unzip后的文件夹结构</p></li>
+</ul>
+</section>
+<section id="id2">
+<h2>2.2 检查数据集¶<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>2.1让我们可视化第 2.1 节中下载的数据并检查存储了哪些图像。首先，让我们加载必要的库。os和globlibrary在处理文件夹路径时使用，matplotliblibrary是用于可视化的代表性库。cv2是处理图像文件时使用的库。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>接下来，os.listdir()让我们使用该函数来检查original、resized、 和文件gray夹中存储了多少张图像。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">origin_dir</span> <span class="o">=</span> <span class="s1">&#39;original/&#39;</span>
+<span class="n">resized_dir</span> <span class="o">=</span> <span class="s1">&#39;resized/&#39;</span>
+<span class="n">gray_dir</span> <span class="o">=</span> <span class="s1">&#39;gray/&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of files in &quot;original&quot; folder:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">origin_dir</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of files in &quot;resized&quot; folder:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">resized_dir</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of files in &quot;gray&quot; folder:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">gray_dir</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">resized_dir</span> <span class="o">=</span> <span class="s1">&#39;resized/&#39;</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">gray_dir</span> <span class="o">=</span> <span class="s1">&#39;gray/&#39;</span>
+<span class="nn">----&gt; 5 print(&#39;number of files</span> in <span class="ni">&quot;original&quot; folder:&#39;, len(os.listdir</span><span class="nt">(origin_dir)))</span>
+<span class="nn">      6 print(&#39;number of files</span> in <span class="ni">&quot;resized&quot; folder:&#39;, len(os.listdir</span><span class="nt">(resized_dir)))</span>
+<span class="nn">      7 print(&#39;number of files</span> in <span class="ni">&quot;gray&quot; folder:&#39;, len(os.listdir</span><span class="nt">(gray_dir)))</span>
+
+<span class="ne">FileNotFoundError</span>: [WinError 3] 系统找不到指定的路径。: &#39;original/&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<p>您可以看到每个保存了 400 张图像。接下来，test让我们检查文件夹结构以及该文件夹中存储的图像数量。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_dir</span> <span class="o">=</span> <span class="s1">&#39;test/&#39;</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">test_dir</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of files in &quot;test/gray&quot; folder:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">test_dir</span> <span class="o">+</span> <span class="s1">&#39;gray&#39;</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;number of files in &quot;test/resized&quot; folder:&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">test_dir</span> <span class="o">+</span> <span class="s1">&#39;resized&#39;</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;resized&#39;, &#39;gray&#39;]
+number of files in &quot;test/gray&quot; folder: 6
+number of files in &quot;test/resized&quot; folder: 6
+</pre></div>
+</div>
+</div>
+</div>
+<p>test里面有gray文件夹和resized文件夹。可以看到每个文件夹中保存了6张图片。</p>
+<p>现在我们已经确认了每个文件夹中存储的图像数量，让我们可视化并检查每个图像。test让我们首先可视化除该文件夹之外的所有文件夹中存在的图像。为了形象化，我们将每个文件的路径保存在一个变量中。origin文件夹内的图像路径将存储origin_files在变量中，resized文件夹内的图像路径将存储resized_files在变量中，gray文件夹内的图像路径gray_files将存储在变量中。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">origin_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">origin_dir</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span><span class="p">))</span>
+<span class="n">resized_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">resized_dir</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span><span class="p">))</span>
+<span class="n">gray_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">gray_dir</span> <span class="o">+</span> <span class="s1">&#39;*&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>让我们检查一下为每个变量存储的两个值。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">origin_files</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">resized_files</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">gray_files</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;original/Victorian1.png&#39;, &#39;original/Victorian10.png&#39;]
+[&#39;resized/Victorian1.png&#39;, &#39;resized/Victorian10.png&#39;]
+[&#39;gray/Victorian1.png&#39;, &#39;gray/Victorian10.png&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>[폴더명]_files您可以看到位于该文件夹中的图像文件的路径保存在变量中。Victorian1.png原始图像original保存在该文件夹中，调整大小为 256 x 256 的图像resized保存在 中，黑白图像gray保存在该文件夹中。</p>
+<p>接下来， 我们将使用cv2.imread()函数和plt.imshow()函数将每个文件夹中存储的图像一一可视化。首先，read_img()我们定义一个读取图像的函数。该函数cv2.imread()使用函数BGR以数组的形式读取图像的值。存储cv2.imread()读入的数组img_arr后cv2.cvtColor，使用该函数将BGR值更改为某个值。RGB让我们plt.imshow()使用函数将该值表达为图像。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 使用cv2模块定义读取图像的函数</span>
+<span class="k">def</span> <span class="nf">read_img</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="n">img_arr</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_arr</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img_arr</span> <span class="o">=</span> <span class="n">read_img</span><span class="p">(</span><span class="n">origin_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 输出文件路径</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">origin_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 输出图像大小</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">img_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># 图像可视化</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_arr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>original/Victorian1.png
+(714, 750, 3)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f1d7768ce10&gt;
+</pre></div>
+</div>
+<img alt="../../_images/705d450988cb7aa6cfcb02542e8a0c411b619bdbdb023a66116086df1d46aa0e.png" src="../../_images/705d450988cb7aa6cfcb02542e8a0c411b619bdbdb023a66116086df1d46aa0e.png" />
+</div>
+</div>
+<p>original Victorian1.png您可以看到该文件夹​​中保存了一张尺寸为 714 x 750 的图像。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img_arr</span> <span class="o">=</span> <span class="n">read_img</span><span class="p">(</span><span class="n">resized_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 输出文件路径</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">resized_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 输出图像大小</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">img_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># 图像可视化</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_arr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>resized/Victorian1.png
+(256, 256, 3)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f1d7588f0b8&gt;
+</pre></div>
+</div>
+<img alt="../../_images/80caa6f3117c422e46096b854813408b1d643d11d4eef9f63216ee6f52212523.png" src="../../_images/80caa6f3117c422e46096b854813408b1d643d11d4eef9f63216ee6f52212523.png" />
+</div>
+</div>
+<p>resized Victorian1.png您可以看到该文件夹​​中保存了一张尺寸为 256 x 256 的图像。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img_arr</span> <span class="o">=</span> <span class="n">read_img</span><span class="p">(</span><span class="n">gray_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 输出文件路径</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gray_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 输出图像大小</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">img_arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># 图像可视化</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_arr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>gray/Victorian1.png
+(256, 256, 3)
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7f1d75870710&gt;
+</pre></div>
+</div>
+<img alt="../../_images/f69a1401a47b44490ddc2fa143b4b92aedac409415a0801264b789f6bb77542a.png" src="../../_images/f69a1401a47b44490ddc2fa143b4b92aedac409415a0801264b789f6bb77542a.png" />
+</div>
+</div>
+<p>gray 的 Victorian1.png您可以看到该文件夹​​中保存了一张尺寸为 256 x 256 的黑白图像。</p>
+<p>我们比较了每个文件夹中存储的图像。然而，由于一幅图像在一个输出单元中可视化，因此比较多幅图像是有限的。因此，在下一节中，plt.subplots()我们将使用该函数将多个图像输出到一个输出窗口并进行比较。</p>
+</section>
+<section id="plt-subplots">
+<h2>2.3 使用 plt.subplots() 可视化<a class="headerlink" href="#plt-subplots" title="Link to this heading">#</a></h2>
+<p>我们将从每个文件夹中img_num读取图像数量img_arrs并将它们保存在 .使用下面的代码original，我们将从resized、 和文件夹中各读取五张图像。gray</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img_arrs</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">img_num</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">img_num</span><span class="p">):</span>
+    
+    <span class="n">img_arrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">read_img</span><span class="p">(</span><span class="n">origin_files</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+    <span class="n">img_arrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">read_img</span><span class="p">(</span><span class="n">resized_files</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+    <span class="n">img_arrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">read_img</span><span class="p">(</span><span class="n">gray_files</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">img_arrs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>15
+</pre></div>
+</div>
+</div>
+</div>
+<p>由于从 3 个文件夹中各读取了 5 张图像，因此总共 15 张图像img_arrs保存在 .</p>
+<p>接下来，plt.subplots()我们使用该函数将 15 张图像输出到一个输出窗口。该函数接收以下三个参数作为输入。</p>
+<p>nrows：显示图像板的行数</p>
+<p>ncols：显示图像板中的列数</p>
+<p>figsize：（水平、垂直）每张图像的尺寸</p>
+<p>由于我们有15 个图像img_arrs存储在变量中，因此让我们在 5 行 3 列的图像板上将它们可视化</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">rows</span> <span class="o">=</span> <span class="n">img_num</span>
+<span class="n">columns</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<span class="c1"># 设置画布</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="n">rows</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="n">columns</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">columns</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">rows</span><span class="o">*</span><span class="mi">3</span><span class="p">))</span>
+
+<span class="c1"># 在每个子图中显示图像</span>
+<span class="k">for</span> <span class="n">num</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">rows</span><span class="o">*</span><span class="n">columns</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span> <span class="c1"># 从1号到15号</span>
+    
+    <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">,</span> <span class="n">num</span><span class="p">)</span> <span class="c1"># 输入想要的位置编号(num)</span>
+    
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">num</span> <span class="o">-</span> <span class="mi">1</span>
+    
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_arrs</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">img_arrs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span> <span class="c1"># 调整图像之间的间距</span>
+
+<span class="k">for</span> <span class="n">file_idx</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]):</span> <span class="c1"># 对第一列的图像进行循环</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">origin_dir</span><span class="p">))[</span><span class="n">file_idx</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>  <span class="c1"># 使用文件名作为y轴标签</span>
+                <span class="n">rotation</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+                <span class="n">labelpad</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span> <span class="c1"># 调整y轴与标签之间的间距</span>
+
+<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;origin&#39;</span><span class="p">,</span> <span class="s1">&#39;resized&#39;</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">]</span>
+
+<span class="c1"># 设置标题</span>
+<span class="k">for</span> <span class="n">folder_idx</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">cols</span><span class="p">[</span><span class="n">folder_idx</span><span class="p">])</span>
+
+<span class="c1"># 移除xtick和ytick</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">flat</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/8cb38ba99c0aa9399182a1b1d8bd4f8fb26c023e928d938a2c156ccdb36e9b47.png" src="../../_images/8cb38ba99c0aa9399182a1b1d8bd4f8fb26c023e928d938a2c156ccdb36e9b47.png" />
+</div>
+</div>
+<p>我们来一一看代码。plt.subplots()该函数创建一个大小为nrowsx的网格。ncols上面的代码创建了一个 5 行 3 列的画笔。每个网格中的每个单元格都会分配一个唯一的编号。数字从 1 到 15 ( nrowsx )。ncols编号是从左到右、从上到下分配的。如图2-4所示，数字1、2、3从第一行左侧单元格开始分配，数字4、5、6从第二行左侧单元格开始分配。</p>
+<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/GAN-ch2img04.PNG?raw=true" /></p>
+<ul class="simple">
+<li><p>图 2.4 分配给每个网格单元的数字</p></li>
+</ul>
+<p>要将图像添加到每个单元格，add_subplot()请使用函数选择单元格。然后plt.show()使用该函数可视化所选单元格上的图像。此时，设置aspect参数auto即可自动调整图像的长宽比。另外，plt.xlabel()我们使用一个函数在x轴上显示每个图像的大小。</p>
+<p>接下来，fig.tight_layout()使用该功能调整图像之间的间距。</p>
+<p>打印的网格涂料的每一行包含每个图像，每一列代表保存图像的文件夹。我们会将文件名和文件夹名称与图像一起打印，以便您直观地看到内容。</p>
+<p>axes包含15个细胞的图像信息。set_ylabel()使用该功能仅选择第一列中保存的图像，并将图像的文件名记录为 y 轴名称。另外，仅选择第一行中保存的图像，并按顺序输入original、resized、 和作为图像标题。gray</p>
+<p>最后，xticks去除每张图像中的yticks, 并输出最终结果。根据上述结果，您可以在一个输出窗口中比较 15 个图像。original可以看到文件夹中以各种尺寸保存了彩色图像，resized而gray在 和 文件夹中可以看到尺寸为256 x 256的图像分别以彩色和黑白格式保存。</p>
+</section>
+<section id="id3">
+<h2>2.4 图像预处理<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>在本节中，我们将执行图像预处理。在获得400张resized图像和gray图像的每个通道的平均值和标准差值后，我们将通过减去每个图像像素的平均值然后除以标准差来进行归一化。理论上，归一化图像可以帮助神经网络模型更快地收敛。我们将定义一个函数来计算所有图像的平均值和标准偏差，get_mean_and_std()如下所示。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">get_mean_and_std</span><span class="p">(</span><span class="n">files</span><span class="p">):</span>
+    <span class="c1"># global mean 구하기</span>
+    <span class="n">global_mean</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">global_var</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">img_arr</span> <span class="o">=</span> <span class="n">read_img</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+        <span class="n">global_mean</span> <span class="o">+=</span> <span class="n">img_arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">global_mean</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+
+    <span class="c1"># global std 구하기</span>
+    <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">img_arr</span> <span class="o">=</span> <span class="n">read_img</span><span class="p">(</span><span class="n">img</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+        <span class="n">global_var</span> <span class="o">+=</span> <span class="p">((</span><span class="n">img_arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-</span> <span class="n">global_mean</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">global_var</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+    <span class="n">global_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">global_var</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">global_mean</span><span class="p">,</span> <span class="n">global_std</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>在计算平均值和标准差值之前，我们将像素值除以255，将像素值的范围转换为0到1之间，然后计算值。这样做的原因是，在第3章和第4章中，transforms.ToTensor()我们计划使用函数将图像转换为张量形式，而此时，transforms.ToTensor()由于函数的性质，像素值在0和1之间转换。因此，我们会得到像素值在0到1范围内时的平均值和标准差值，以便用于后面的归一化。</p>
+<p>将每幅图像的平均值累加并相加，然后len(files)除以包含图像总数的数字以计算所有图像的平均值。求整个图像的标准差，就是用像素值减去之前计算的平均值得到偏差，然后计算偏差平方值的平均值，首先计算整个图像像素值的方差。然后，我们取方差的根来找到标准差。</p>
+<p>您可以使用如下所示的方式定义的函数get_mean_and_std()来查找彩色图像和黑白图像的平均值和标准差。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 调用 get_mean_and_std 函数计算调整大小后的图像的均值和标准差</span>
+<span class="n">color_mean</span><span class="p">,</span> <span class="n">color_std</span> <span class="o">=</span> <span class="n">get_mean_and_std</span><span class="p">(</span><span class="n">resized_files</span><span class="p">)</span>
+<span class="c1"># 输出计算得到的均值和标准差</span>
+<span class="n">color_mean</span><span class="p">,</span> <span class="n">color_std</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.58090717, 0.52688643, 0.45678478]),
+ array([0.25644188, 0.25482641, 0.24456465]))
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 调用 get_mean_and_std 函数计算灰度图像的均值和标准差</span>
+<span class="n">gray_mean</span><span class="p">,</span> <span class="n">gray_std</span> <span class="o">=</span> <span class="n">get_mean_and_std</span><span class="p">(</span><span class="n">gray_files</span><span class="p">)</span>
+<span class="c1"># 输出计算得到的均值和标准差</span>
+<span class="n">gray_mean</span><span class="p">,</span> <span class="n">gray_std</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(array([0.5350533, 0.5350533, 0.5350533]),
+ array([0.25051587, 0.25051587, 0.25051587]))
+</pre></div>
+</div>
+</div>
+</div>
+<p>我们来比较一下标准化前后的差异。首先，读取新图像并将其除以255，将像素值转换为0和1之间</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">color_img</span> <span class="o">=</span> <span class="n">read_img</span><span class="p">(</span><span class="n">resized_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">255</span>
+<span class="n">gray_img</span> <span class="o">=</span> <span class="n">read_img</span><span class="p">(</span><span class="n">gray_files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">255</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>RGBget_statistics我们将定义一个函数，以便我们可以检查每个通道的统计数据。该函数RGB返回每个通道的平均值、标准差、最小值和最大值等统计值。您可以使用pandas库提供的pd.DataFrame.describe()函数轻松计算统计值。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="k">def</span> <span class="nf">get_statistics</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>color_img我们来看看 的统计值。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_statistics</span><span class="p">(</span><span class="n">color_img</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>R</th>
+      <th>G</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>65536.000000</td>
+      <td>65536.000000</td>
+      <td>65536.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.564941</td>
+      <td>0.537205</td>
+      <td>0.493146</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.208751</td>
+      <td>0.203116</td>
+      <td>0.198431</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.027451</td>
+      <td>0.039216</td>
+      <td>0.058824</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.411765</td>
+      <td>0.380392</td>
+      <td>0.333333</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.584314</td>
+      <td>0.533333</td>
+      <td>0.478431</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.745098</td>
+      <td>0.709804</td>
+      <td>0.650980</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.929412</td>
+      <td>0.913725</td>
+      <td>0.909804</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>可以看到最小值和最大值分布在0和1之间。接下来gray_img我们来看看 的统计值。.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_statistics</span><span class="p">(</span><span class="n">gray_img</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>R</th>
+      <th>G</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>65536.000000</td>
+      <td>65536.000000</td>
+      <td>65536.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.540488</td>
+      <td>0.540488</td>
+      <td>0.540488</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.201794</td>
+      <td>0.201794</td>
+      <td>0.201794</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.047059</td>
+      <td>0.047059</td>
+      <td>0.047059</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.388235</td>
+      <td>0.388235</td>
+      <td>0.388235</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.541176</td>
+      <td>0.541176</td>
+      <td>0.541176</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.713725</td>
+      <td>0.713725</td>
+      <td>0.713725</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>0.917647</td>
+      <td>0.917647</td>
+      <td>0.917647</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>由于是黑白图像，所以所有通道的值都是相同的，所以可以看到每个通道的统计值也是相同的。接下来，让我们检查一下get_mean_and_std()通过函数 计算出的color_mean、color_std、gray_mean、gray_std归一化后的统计值。分别将标准化值存储在normalized_color_img中。normalized_gray_img</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">normalized_color_img</span> <span class="o">=</span> <span class="p">(</span><span class="n">color_img</span> <span class="o">-</span> <span class="n">color_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">color_std</span>
+<span class="n">normalized_gray_img</span> <span class="o">=</span> <span class="p">(</span><span class="n">gray_img</span> <span class="o">-</span> <span class="n">gray_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">gray_std</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>get_statistics()让我们使用该函数来计算每个通道的统计数据normalized_color_img。RGB</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_statistics</span><span class="p">(</span><span class="n">normalized_color_img</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>R</th>
+      <th>G</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>65536.000000</td>
+      <td>65536.000000</td>
+      <td>65536.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-0.062259</td>
+      <td>0.040491</td>
+      <td>0.148678</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.814030</td>
+      <td>0.797075</td>
+      <td>0.811364</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-2.158213</td>
+      <td>-1.913737</td>
+      <td>-1.627223</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.659574</td>
+      <td>-0.574879</td>
+      <td>-0.504780</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.013284</td>
+      <td>0.025299</td>
+      <td>0.088511</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.640265</td>
+      <td>0.717812</td>
+      <td>0.794046</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.359000</td>
+      <td>1.518049</td>
+      <td>1.852349</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>标准化后，您可以看到均值已转换为接近 0，标准差已转换为接近 1。之所以不完全是0和1，是因为归一化时使用的均值和标准差不是从单个图像获得的值，而是使用整个数据集获得的值。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">get_statistics</span><span class="p">(</span><span class="n">normalized_gray_img</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>R</th>
+      <th>G</th>
+      <th>B</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>65536.000000</td>
+      <td>65536.000000</td>
+      <td>65536.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.021694</td>
+      <td>0.021694</td>
+      <td>0.021694</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.805516</td>
+      <td>0.805516</td>
+      <td>0.805516</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-1.947958</td>
+      <td>-1.947958</td>
+      <td>-1.947958</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.586063</td>
+      <td>-0.586063</td>
+      <td>-0.586063</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.024442</td>
+      <td>0.024442</td>
+      <td>0.024442</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.713217</td>
+      <td>0.713217</td>
+      <td>0.713217</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.527224</td>
+      <td>1.527224</td>
+      <td>1.527224</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<p>同样，normalized_gray_img平均值转换为 0，标准差转换为接近 1。</p>
+<p>到目前为止，我们已经可视化了 Victorian400 数据集中存储的图像。在第 3 章中，我们将构建一个 GAN 模型，使用 Victorian400 数据集将黑白图像转换为彩色图像。</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\chpt3"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Ch1-Introduction.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">1. 生成对抗网络（GAN）简介</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Ch3-GAN.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">3. GAN</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">2.1 数据集下载</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">2.2 检查数据集¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#plt-subplots">2.3 使用 plt.subplots() 可视化</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">2.4 图像预处理</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://fangli-ying.github.io/">Dr. Fangli Ying</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

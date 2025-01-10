@@ -1,0 +1,911 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Time Series 时间序列简介 &#8212; 深度学习</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt4/Ch1-Time-Series';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2. EDA" href="Ch2-EDA.html" />
+    <link rel="prev" title="Variational Autoencoder（未完成）" href="../chpt3/Ch5-VAE.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dp.gif" class="logo__image only-light" alt="深度学习 - Home"/>
+    <img src="../../_static/dp.gif" class="logo__image only-dark pst-js-only" alt="深度学习 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    欢迎来到《深度学习原理及其应用》
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder（未完成）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Time Series 时间序列简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch3-preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch4-LSTM.html">4. LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch5-CNN-LSTM.html">5. CNN-LSTM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">自然语言处理</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt5/Ch1-Introduction.html">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Fangli-Ying/DeepLearning2023/master?urlpath=tree/chapters/chpt4/Ch1-Time-Series.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://jupyter.org/hub/hub/user-redirect/git-pull?repo=https%3A//github.com/Fangli-Ying/DeepLearning2023&urlpath=tree/DeepLearning2023/chapters/chpt4/Ch1-Time-Series.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/master/chapters/chpt4/Ch1-Time-Series.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chpt4/Ch1-Time-Series.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1. Time Series 时间序列简介</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.1可用的深度学习结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cnn">1.1.1 CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rnn">1.1.2 RNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-mechanism">1.1.3 Attention Mechanism</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2 评价指标</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mae-mean-absolute-error">1.2.1 MAE (Mean Absolute Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mse-mean-squared-error">1.2.2 MSE (Mean Squared Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mape-mean-absolute-percentage-error">1.2.3 MAPE (Mean Absolute Percentage Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smape-symmetric-mean-absolute-percentage-error">1.2.4 SMAPE (Symmetric Mean Absolute Percentage Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsse-root-mean-squared-scaled-error">1.2.5 RMSSE (Root Mean Squared Scaled Error)</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="time-series">
+<h1>1. Time Series 时间序列简介<a class="headerlink" href="#time-series" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://fangli-ying.github.io/"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>时间序列预测是根据过去的观测值预测未来值的问题。它可以被定义为监督学习问题，因为它需要发现过去观察到的数据和未来值之间的模式。因此，在本章中，我们将构建一个基于神经网络结构通过监督学习来预测未来值的模型。</p>
+<p>时间序列预测是许多领域都需要的技术。最有代表性的例子就是能源领域。发电厂需要预测未来的电力需求，以确保有效的备用电力，城市燃气公司需要未来城市燃气用量预测模型，以针对抄表器故障和抄表作弊采取先发制人的措施。事实上，这些问题也以数据竞赛（电力、城市燃气）(<a class="reference external" href="https://dacon.io/competitions/official/235606/overview/">电力</a>, <a class="reference external" href="https://icim.nims.re.kr/platform/question/16">城市燃气</a>)的形式举办，以发现新的模型。此外，流通领域也对按商品预测销量以实现高效的产品管理感兴趣，还举办了数据竞赛(<a class="reference external" href="https://www.kaggle.com/c/m5-forecasting-accuracy/overview">流通</a>)。</p>
+<p>在本教程中，我们将使用约翰·霍普金斯大学系统科学与工程中心提供的冠状病毒确诊病例数据，构建一个模型，根据过去的确诊病例数据来预测未来的确诊病例。在第一章中，我们将了解构建时间序列预测模型时可以使用的神经网络结构，并检查评估模型性能时可以使用的评估指标。在第2章中，我们将通过探索性数据分析加深对确诊的冠状病毒数据的理解，在第3章中，我们将学习如何将时间序列数据转换为监督学习的数据格式。在第 4 章和第 5 章中，我们将使用深度学习模型来预测未来的确诊病例。</p>
+<section id="id1">
+<h2>1.1可用的深度学习结构<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="cnn">
+<h3>1.1.1 CNN<a class="headerlink" href="#cnn" title="Link to this heading">#</a></h3>
+<p align="center">
+<img align="center" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/TS-ch1img01.PNG?raw=true">
+</p>
+<ul class="simple">
+<li><p>图 1-1 CNN 应用示例（来源：Lim et al. 2020. Time Series Forecasting With Deep Learning: A Survey）</p></li>
+</ul>
+<p>总的来说，CNN是一种在计算机视觉问题上表现出优异性能的网络结构。然而，CNN也可以应用于时间序列预测。使用一维卷积滤波器，可以通过计算输入序列数据之间的加权和来计算作为预测目标的未来值。然而，CNN 结构没有考虑过去和未来数据之间的时间依赖性。</p>
+</section>
+<section id="rnn">
+<h3>1.1.2 RNN<a class="headerlink" href="#rnn" title="Link to this heading">#</a></h3>
+<p align="center">
+<img align="center" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/TS-ch1img02.PNG?raw=true">
+</p>
+<ul class="simple">
+<li><p>图 1-2 RNN 应用示例（来源：Lim et al. 2020.Time Series Forecasting With Deep Learning: A Survey）</p></li>
+</ul>
+<p>RNN 是自然语言处理问题中经常使用的结构，它使用从先前状态积累的隐藏状态信息来预测未来。因此，您可以使用过去的信息来计算未来的预测。然而，如果给定的输入序列太大，可能会出现梯度消失问题，对模型学习产生负面影响。因此，我们主要使用解决问题的LSTM结构，在本教程中我们也将使用LSTM结构。</p>
+</section>
+<section id="attention-mechanism">
+<h3>1.1.3 Attention Mechanism<a class="headerlink" href="#attention-mechanism" title="Link to this heading">#</a></h3>
+<p align="center">
+<img align="center" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/TS-ch1img03.PNG?raw=true">
+</p>
+<ul class="simple">
+<li><p>图1-3 注意力机制应用示例（来源：Lim et al. 2020. Time Series Forecasting With Deep Learning: A Survey）</p></li>
+</ul>
+<p>当根据过去的信息预测未来时，会有有用和无用的信息。例如，当经销商想要预测周末销售额时，考虑一周前同一天的周末销售额而不是前一天的工作日销售额可能会有所帮助。如果利用注意力机制，这样的预测就成为可能。计算过去每个点对要预测的时间点的影响并在预测未来值时使用。通过给予与您想要预测的时间和过去的值直接相关的值更多的权重，可以实现更准确的预测。</p>
+</section>
+</section>
+<section id="id2">
+<h2>1.2 评价指标<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>在本教程中，我们将为确诊的冠状病毒病例建立一个预测模型。由于确诊病例具有连续值，因此可以通过预测值与实际值之间的差异来衡量模型的性能。在本节中，我们将研究计算预测值和实际值之间差异的不同方法。在解释评价指标之前，我们先定义一下各个符号。</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(y_i\)</span>: 要预测的实际值 <br />
+<span class="math notranslate nohighlight">\(\hat{y}_i\)</span>: 模型的预测值 <br />
+<span class="math notranslate nohighlight">\(n\)</span>: 测试数据集的大小</p>
+</div></blockquote>
+<p>从1.2.1节到1.2.4节，使用了上述符号，在1.2.5节中，符号的定义发生了变化，所以请注意。</p>
+<section id="mae-mean-absolute-error">
+<h3>1.2.1 MAE (Mean Absolute Error)<a class="headerlink" href="#mae-mean-absolute-error" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(MAE=\frac{1}{n}\displaystyle\sum_{i=1}^{n} |y_i-\hat{y}_i|\)</span></p>
+</div></blockquote>
+<p>MAE，也称为L1 Loss，可以通过取预测值与实际值之间的差值的绝对值相加，然后除以计算出的样本数（n）来获得。由于相加和除以样本数都是求平均值，所以后面的评价指标就采用求平均值的表达式。由于MAE的尺度与被预测的目标变量的尺度相同，有利于直观地理解值的含义。如果用代码实现的话，如下。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+
+<span class="k">def</span> <span class="nf">MAE</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    true: np.array </span>
+<span class="sd">    pred: np.array</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">true</span><span class="o">-</span><span class="n">pred</span><span class="p">))</span>
+
+<span class="n">TRUE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="n">PRED</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">])</span>
+
+<span class="n">MAE</span><span class="p">(</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">PRED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>20.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mse-mean-squared-error">
+<h3>1.2.2 MSE (Mean Squared Error)<a class="headerlink" href="#mse-mean-squared-error" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(MSE=\frac{1}{n}\displaystyle\sum_{i=1}^{n} (y_i-\hat{y}_i)^2\)</span></p>
+</div></blockquote>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(RMSE=\sqrt{\frac{1}{n}\displaystyle\sum_{i=1}^{n} (y_i-\hat{y}_i)^2}\)</span></p>
+</div></blockquote>
+<p>MSE，也称为L2 Loss，通过对预测值和实际值之间的差值进行平方，然后求平均值来计算。预测值与实际值的偏差越大，MSE 值呈指数增长就越大。由于计算值是平方的，因此该值的标度与目标变量的标度不同。为了匹配目标变量和尺度，可以将根应用于MSE值，这个值称为RMSE。如果用代码实现的话，如下。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">MSE</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    true: np.array </span>
+<span class="sd">    pred: np.array</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">true</span><span class="o">-</span><span class="n">pred</span><span class="p">))</span>
+
+<span class="n">TRUE</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="n">PRED</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">])</span>
+
+<span class="n">MSE</span><span class="p">(</span><span class="n">TRUE</span><span class="p">,</span> <span class="n">PRED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>400.0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="mape-mean-absolute-percentage-error">
+<h3>1.2.3 MAPE (Mean Absolute Percentage Error)<a class="headerlink" href="#mape-mean-absolute-percentage-error" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(MAPE=\frac{1}{n}\displaystyle\sum_{i=1}^{n} |\frac{y_i-\hat{y}_i}{y_i}|\)</span></p>
+</div></blockquote>
+<p>(来源: <a class="reference external" href="https://en.wikipedia.org/wiki/Mean_absolute_percentage_error">https://en.wikipedia.org/wiki/Mean_absolute_percentage_error</a>)</p>
+<p>MAPE通过将实际值与预测值之间的差值除以实际值来计算误差与实际值的相对比例。然后，取绝对值，然后计算平均值。由于误差程度以百分比值表示，因此很容易直观地了解模型的性能，并且当目标变量有多个时，很容易评估模型对每个变量的性能。</p>
+<p>然而，如果实际值中存在0，则存在未定义MAPE的问题。此外，即使绝对值误差相同，也存在根据实际值与预测值之间的大小关系对高估预测值施加惩罚的问题（Makridakis，1993）。让我们用下面的代码来检查一下。(<a class="reference external" href="https://doi.org/10.1016/0169-2070(93)90079-3">Makridakis, 1993</a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">MAPE</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    true: np.array </span>
+<span class="sd">    pred: np.array</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">((</span><span class="n">true</span><span class="o">-</span><span class="n">pred</span><span class="p">)</span><span class="o">/</span><span class="n">true</span><span class="p">))</span>
+
+<span class="n">TRUE_UNDER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+<span class="n">PRED_OVER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">])</span>
+<span class="n">TRUE_OVER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">])</span>
+<span class="n">PRED_UNDER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;平均误差为20时实际值和预测值的大小关系对应的MAE、MAPE比较 </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;实际值小于预测值时（预测值高估）&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAE:&#39;</span><span class="p">,</span> <span class="n">MAE</span><span class="p">(</span><span class="n">TRUE_UNDER</span><span class="p">,</span> <span class="n">PRED_OVER</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAPE:&#39;</span><span class="p">,</span> <span class="n">MAPE</span><span class="p">(</span><span class="n">TRUE_UNDER</span><span class="p">,</span> <span class="n">PRED_OVER</span><span class="p">))</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">实际值大于预测值时（预测值低估）&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAE:&#39;</span><span class="p">,</span> <span class="n">MAE</span><span class="p">(</span><span class="n">TRUE_OVER</span><span class="p">,</span> <span class="n">PRED_UNDER</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAPE:&#39;</span><span class="p">,</span> <span class="n">MAPE</span><span class="p">(</span><span class="n">TRUE_OVER</span><span class="p">,</span> <span class="n">PRED_UNDER</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>平均误差为20时实际值和预测值的大小关系对应的MAE、MAPE比较 
+
+实际值小于预测值时（预测值高估）
+MAE: 20.0
+MAPE: 0.9133333333333333
+
+实际值大于预测值时（预测值低估）
+MAE: 20.0
+MAPE: 0.4371428571428571
+</pre></div>
+</div>
+</div>
+</div>
+<p>由于公式的性质，MAPE 是一个实际值，以便将其转换为百分比。y
+我们采取分享的方式。因此，导出的值为y
+它具有依赖性特征。即使分子相同，如果分母变小，误差也会增大。</p>
+<p>在上面的代码中，我们通过显示( TRUE_UNDER, ) 表明实际值比预测值小 20，而 ( , )PRED_OVER表明实际值比预测值大 20，从而证实了这一点。 、 、 和 的MAE值均等于 20。然而，当实际值为 时， MAPE计算出0.913，当实际值为 时，MAPE 计算出 0.437。TRUE_OVERPRED_UNDERTRUE_UNDERPRED_OVERTRUE_OVERPRED_UNDERTRUE_UNDERTRUE_OVER</p>
+</section>
+<section id="smape-symmetric-mean-absolute-percentage-error">
+<h3>1.2.4 SMAPE (Symmetric Mean Absolute Percentage Error)<a class="headerlink" href="#smape-symmetric-mean-absolute-percentage-error" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(SMAPE=\frac{100}{n}\displaystyle\sum_{i=1}^{n} \frac{|y_i-\hat{y}_i|}{|y_i| + |\hat{y}_i|}\)</span></p>
+</div></blockquote>
+<p>(来源: <a class="reference external" href="https://en.wikipedia.org/wiki/Symmetric_mean_absolute_percentage_error">https://en.wikipedia.org/wiki/Symmetric_mean_absolute_percentage_error</a>)</p>
+<p>SMAPE 的开发是为了弥补上述示例中 MAPE 的局限性（Makridakis，1993）。我们用下面的代码来检查一下。(<a class="reference external" href="https://doi.org/10.1016/0169-2070(93)90079-3">Makridakis, 1993</a>).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">SMAPE</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    计算对称平均绝对百分比误差（SMAPE）。</span>
+
+<span class="sd">    参数:</span>
+<span class="sd">    true (numpy.ndarray): 真实值数组。</span>
+<span class="sd">    pred (numpy.ndarray): 预测值数组。</span>
+
+<span class="sd">    返回:</span>
+<span class="sd">    float: SMAPE值。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 计算SMAPE公式的分子</span>
+    <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">true</span> <span class="o">-</span> <span class="n">pred</span><span class="p">)</span>
+    <span class="c1"># 计算SMAPE公式的分母</span>
+    <span class="n">denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">true</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+    <span class="c1"># 计算SMAPE值</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">numerator</span> <span class="o">/</span> <span class="n">denominator</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;平均误差为20时实际值和预测值的大小关系对应的MAE、SMAPE比较 </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;实际值小于预测值时（预测值高估）&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAE:&#39;</span><span class="p">,</span> <span class="n">MAE</span><span class="p">(</span><span class="n">TRUE_UNDER</span><span class="p">,</span> <span class="n">PRED_OVER</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SMAPE:&#39;</span><span class="p">,</span> <span class="n">SMAPE</span><span class="p">(</span><span class="n">TRUE_UNDER</span><span class="p">,</span> <span class="n">PRED_OVER</span><span class="p">))</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">实际值大于预测值时（预测值低估）&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAE:&#39;</span><span class="p">,</span> <span class="n">MAE</span><span class="p">(</span><span class="n">TRUE_OVER</span><span class="p">,</span> <span class="n">PRED_UNDER</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SMAPE:&#39;</span><span class="p">,</span> <span class="n">SMAPE</span><span class="p">(</span><span class="n">TRUE_OVER</span><span class="p">,</span> <span class="n">PRED_UNDER</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>平均误差为20时实际值和预测值的大小关系对应的MAE、SMAPE比较 
+
+实际值小于预测值时（预测值高估）
+MAE: 20.0
+SMAPE: 0.29
+
+实际值大于预测值时（预测值低估）
+MAE: 20.0
+SMAPE: 0.29
+</pre></div>
+</div>
+</div>
+</div>
+<p>您可以看到 MAPE 产生了不同的值 0.91 和 0.43，但 SMAPE 产生了相同的值 0.29。然而，SMAPE 的分母中有预测值。y^i
+进去然后y^i
+它具有依赖性特征。当预测值被低估时，分母会变小，从而增加计算误差。我们用下面的代码来检查一下。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 定义真实值数组</span>
+<span class="n">TRUE2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">])</span>
+<span class="c1"># 定义预测值数组（低估）</span>
+<span class="n">PRED2_UNDER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">60</span><span class="p">])</span>
+<span class="c1"># 定义预测值数组（高估）</span>
+<span class="n">PRED2_OVER</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">100</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;平均误差为20时，高估和低估情况下的MAE、SMAPE比较 </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;高估时&#39;</span><span class="p">)</span>
+<span class="c1"># 计算并打印MAE</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAE:&#39;</span><span class="p">,</span> <span class="n">MAE</span><span class="p">(</span><span class="n">TRUE2</span><span class="p">,</span> <span class="n">PRED2_OVER</span><span class="p">))</span>
+<span class="c1"># 计算并打印SMAPE</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SMAPE:&#39;</span><span class="p">,</span> <span class="n">SMAPE</span><span class="p">(</span><span class="n">TRUE2</span><span class="p">,</span> <span class="n">PRED2_OVER</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">低估时&#39;</span><span class="p">)</span>
+<span class="c1"># 计算并打印MAE</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;MAE:&#39;</span><span class="p">,</span> <span class="n">MAE</span><span class="p">(</span><span class="n">TRUE2</span><span class="p">,</span> <span class="n">PRED2_UNDER</span><span class="p">))</span>
+<span class="c1"># 计算并打印SMAPE</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SMAPE:&#39;</span><span class="p">,</span> <span class="n">SMAPE</span><span class="p">(</span><span class="n">TRUE2</span><span class="p">,</span> <span class="n">PRED2_UNDER</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>平均误差为20时，高估和低估情况下的MAE、SMAPE比较 
+
+高估时
+MAE: 20.0
+SMAPE: 0.14912698412698414
+
+低估时
+MAE: 20.0
+SMAPE: 0.21857142857142856
+</pre></div>
+</div>
+</div>
+</div>
+<p>PRED2_UNDERPRED2_OVER尽管和 的TRUE2平均误差均为 20，但 SMAPE 计算出的 被低估的值为 0.218，而PRED2_UNDER被高估PRED2_OVER的 的值为 0.149 。</p>
+</section>
+<section id="rmsse-root-mean-squared-scaled-error">
+<h3>1.2.5 RMSSE (Root Mean Squared Scaled Error)<a class="headerlink" href="#rmsse-root-mean-squared-scaled-error" title="Link to this heading">#</a></h3>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(RMSSE=\sqrt{\displaystyle\frac{\frac{1}{h}\sum_{i=n+1}^{n+h} (y_i-\hat{y}_i)^2}{\frac{1}{n-1}\sum_{i=2}^{n} (y_i-y_{i-1})^2}}\)</span></p>
+</div></blockquote>
+<p>让我们从定义 RMSSE 公式的符号开始。每个符号具有以下含义。</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(y_i\)</span>: 要预测的实际值</p>
+<p><span class="math notranslate nohighlight">\(\hat{y}_i\)</span>: 模型的预测值</p>
+<p><span class="math notranslate nohighlight">\(n\)</span>: 训练数据集的大小</p>
+<p><span class="math notranslate nohighlight">\(h\)</span>: 测试数据集的大小</p>
+</div></blockquote>
+<p>RMSSE 是平均绝对标度误差(<a class="reference external" href="https://doi.org/10.1016/j.ijforecast.2006.03.001">Hyndman, 2006</a>)的修改形式，解决了上述 MAPE 和 SMAPE 的问题。由于MAPE和SMAPE使用测试数据的实际值和预测值来缩放MAE，即使误差的绝对值相同，根据是否低估或高估，给出的惩罚也不均匀。</p>
+<p>RMSSE 避免了这些问题，因为它在扩展 MSE 时利用了训练数据。由于在对训练数据进行朴素预测时将其除以 MSE 值，因此误差值不会受到模型预测值低估或高估的影响。朴素预测方法是一种使用最近观测值进行预测的方法，其定义如下。</p>
+<blockquote>
+<div><p><span class="math notranslate nohighlight">\(\hat{y}_i = y_{i-1}\)</span></p>
+</div></blockquote>
+<p><span class="math notranslate nohighlight">\(i\)</span> 当时的预测值 <span class="math notranslate nohighlight">\(i-1\)</span> 这是一种根据当时的实际值进行预测的方法。由于它是除以朴素预测方法的 MSE 值，因此如果 RMSSE 值大于 1，则意味着它的预测能力比朴素预测方法差，如果它小于 1，则意味着它比朴素预测方法更差。比朴素预测方法更擅长预测。让我们使用下面的代码来实现 RMSSE。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">RMSSE</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">train</span><span class="p">):</span> 
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    true: np.array </span>
+<span class="sd">    pred: np.array</span>
+<span class="sd">    train: np.array</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+
+    <span class="n">numerator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">true</span> <span class="o">-</span> <span class="n">pred</span><span class="p">)))</span>
+    
+    <span class="n">denominator</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">((</span><span class="n">train</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">train</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span>
+    
+    <span class="n">msse</span> <span class="o">=</span> <span class="n">numerator</span><span class="o">/</span><span class="n">denominator</span>
+    
+    <span class="k">return</span> <span class="n">msse</span> <span class="o">**</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TRAIN</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">RMSSE</span><span class="p">(</span><span class="n">TRUE_UNDER</span><span class="p">,</span> <span class="n">PRED_OVER</span><span class="p">,</span> <span class="n">TRAIN</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">RMSSE</span><span class="p">(</span><span class="n">TRUE_OVER</span><span class="p">,</span> <span class="n">PRED_UNDER</span><span class="p">,</span> <span class="n">TRAIN</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">RMSSE</span><span class="p">(</span><span class="n">TRUE2</span><span class="p">,</span> <span class="n">PRED2_OVER</span><span class="p">,</span> <span class="n">TRAIN</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">RMSSE</span><span class="p">(</span><span class="n">TRUE2</span><span class="p">,</span> <span class="n">PRED2_UNDER</span><span class="p">,</span> <span class="n">TRAIN</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4.47213595499958
+4.47213595499958
+4.47213595499958
+4.47213595499958
+</pre></div>
+</div>
+</div>
+</div>
+<p>尽管误差的绝对值相同，但您可以看到，MAPE 和 SMAPE 惩罚不均匀的四个示例受到了同等的惩罚，并且也进行了缩放。</p>
+<p>到目前为止，我们已经了解了预测时间序列时可以使用的深度学习结构和评估指标。在下一章中，我们将探索用于构建模型的新冠确诊患者数据集。</p>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\chpt4"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../chpt3/Ch5-VAE.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Variational Autoencoder（未完成）</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Ch2-EDA.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">2. EDA</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">1.1可用的深度学习结构</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cnn">1.1.1 CNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rnn">1.1.2 RNN</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#attention-mechanism">1.1.3 Attention Mechanism</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">1.2 评价指标</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mae-mean-absolute-error">1.2.1 MAE (Mean Absolute Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mse-mean-squared-error">1.2.2 MSE (Mean Squared Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mape-mean-absolute-percentage-error">1.2.3 MAPE (Mean Absolute Percentage Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#smape-symmetric-mean-absolute-percentage-error">1.2.4 SMAPE (Symmetric Mean Absolute Percentage Error)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rmsse-root-mean-squared-scaled-error">1.2.5 RMSSE (Root Mean Squared Scaled Error)</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://fangli-ying.github.io/">Dr. Fangli Ying</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
