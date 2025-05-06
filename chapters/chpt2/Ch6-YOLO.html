@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>YOLOv8 追踪计数 &#8212; 深度学习</title>
+    <title>6. YOLOv8 追踪计数 &#8212; 深度学习</title>
   
   
   
@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt2/Ch6-YOLO';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="6. References" href="Ch7-References.html" />
+    <link rel="next" title="7. References" href="Ch7-References.html" />
     <link rel="prev" title="5. Faster R-CNN" href="Ch5-Faster-R-CNN.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -179,8 +179,8 @@
 <li class="toctree-l1"><a class="reference internal" href="Ch2-EDA.html">2. 数据探索</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Ch4-RetinaNet.html">4. RetinaNet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">YOLOv8 追踪计数</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Ch7-References.html">6. References</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. YOLOv8 追踪计数</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch7-References.html">7. References</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
 <ul class="nav bd-sidenav">
@@ -402,7 +402,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>YOLOv8 追踪计数</h1>
+    <h1>6. YOLOv8 追踪计数</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -422,13 +422,7 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">跟踪工具</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-trained-yolov8">加载 pre-trained YOLOv8 模型</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">预测单帧图像</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predict-and-annotate-whole-video">Predict and annotate whole video</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#congratulations">🏆 Congratulations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-resources">Learning Resources</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-data-formats">Convert data formats</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connect-computer-vision-to-your-project-logic">Connect computer vision to your project logic</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">预测标注整个视频</a></li>
 </ul>
             </nav>
         </div>
@@ -441,7 +435,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="yolov8">
-<h1>YOLOv8 追踪计数<a class="headerlink" href="#yolov8" title="Link to this heading">#</a></h1>
+<h1>6. YOLOv8 追踪计数<a class="headerlink" href="#yolov8" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/main/chapters/chpt2/Ch6-YOLO.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <p>YOLOv8 是 Ultralytics 开发的 YOLO（You Only Look Once）目标检测和图像分割模型的最新版本。YOLOv8 模型设计为快速、准确且易于使用，使其成为广泛目标检测和图像分割任务的绝佳选择。它可以在大型数据集上进行训练，并且能够在从 CPU 到 GPU 的各种硬件平台上运行。</p>
 <p>在本教程中，我们将介绍如何使用 YOLOv8 进行目标检测和图像分割，并展示如何使用 ByteTrack 进行目标追踪和计数。我们将使用 Roboflow 提供的预训练模型和数据集，以便您可以立即开始使用。</p>
@@ -784,8 +778,8 @@ Speed: 14.1ms preprocess, 66.5ms inference, 22.4ms postprocess per image at shap
 </div>
 </div>
 </section>
-<section id="predict-and-annotate-whole-video">
-<h2>Predict and annotate whole video<a class="headerlink" href="#predict-and-annotate-whole-video" title="Link to this heading">#</a></h2>
+<section id="id7">
+<h2>预测标注整个视频<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings</span>
@@ -868,27 +862,6 @@ Speed: 14.1ms preprocess, 66.5ms inference, 22.4ms postprocess per image at shap
 </div>
 </div>
 </section>
-<section id="congratulations">
-<h2>🏆 Congratulations<a class="headerlink" href="#congratulations" title="Link to this heading">#</a></h2>
-<section id="learning-resources">
-<h3>Learning Resources<a class="headerlink" href="#learning-resources" title="Link to this heading">#</a></h3>
-<p>Roboflow has produced many resources that you may find interesting as you advance your knowledge of computer vision:</p>
-<ul class="simple">
-<li><p><a class="reference external" href="https://github.com/roboflow/notebooks">Roboflow Notebooks</a>: A repository of over 20 notebooks that walk through how to train custom models with a range of model types, from YOLOv7 to SegFormer.</p></li>
-<li><p><a class="reference external" href="https://www.youtube.com/c/Roboflow">Roboflow YouTube</a>: Our library of videos featuring deep dives into the latest in computer vision, detailed tutorials that accompany our notebooks, and more.</p></li>
-<li><p><a class="reference external" href="https://discuss.roboflow.com/">Roboflow Discuss</a>: Have a question about how to do something on Roboflow? Ask your question on our discussion forum.</p></li>
-<li><p><a class="reference external" href="https://roboflow.com">Roboflow Models</a>: Learn about state-of-the-art models and their performance. Find links and tutorials to guide your learning.</p></li>
-</ul>
-</section>
-<section id="convert-data-formats">
-<h3>Convert data formats<a class="headerlink" href="#convert-data-formats" title="Link to this heading">#</a></h3>
-<p>Roboflow provides free utilities to convert data between dozens of popular computer vision formats. Check out <a class="reference external" href="https://roboflow.com/formats">Roboflow Formats</a> to find tutorials on how to convert data between formats in a few clicks.</p>
-</section>
-<section id="connect-computer-vision-to-your-project-logic">
-<h3>Connect computer vision to your project logic<a class="headerlink" href="#connect-computer-vision-to-your-project-logic" title="Link to this heading">#</a></h3>
-<p><a class="reference external" href="https://roboflow.com/templates">Roboflow Templates</a> is a public gallery of code snippets that you can use to connect computer vision to your project logic. Code snippets range from sending emails after inference to measuring object distance between detections.</p>
-</section>
-</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -935,7 +908,7 @@ Speed: 14.1ms preprocess, 66.5ms inference, 22.4ms postprocess per image at shap
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">6. References</p>
+        <p class="prev-next-title">7. References</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -966,13 +939,7 @@ Speed: 14.1ms preprocess, 66.5ms inference, 22.4ms postprocess per image at shap
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">跟踪工具</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-trained-yolov8">加载 pre-trained YOLOv8 模型</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">预测单帧图像</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#predict-and-annotate-whole-video">Predict and annotate whole video</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#congratulations">🏆 Congratulations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#learning-resources">Learning Resources</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#convert-data-formats">Convert data formats</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connect-computer-vision-to-your-project-logic">Connect computer vision to your project logic</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">预测标注整个视频</a></li>
 </ul>
   </nav></div>
 
