@@ -6,16 +6,16 @@ root: intro
 parts:
 - caption: 深度学习基础
   chapters:
-  - file: chapters/chpt1/DeepLearning
+  - file: chapters/chpt1/Ch1.1-DeepLearning
 - caption: 视觉基本任务
   chapters:
-  - file: chapters/chpt2/Ch1-Object-Detection
-  - file: chapters/chpt2/Ch2-EDA
-  - file: chapters/chpt2/Ch2_preprocessing
-  - file: chapters/chpt2/Ch4-RetinaNet
-  - file: chapters/chpt2/Ch5-Faster-R-CNN
-  - file: chapters/chpt2/Ch6-YOLO
-  - file: chapters/chpt2/Ch7-References
+  - file: chapters/chpt2/Ch2.1-Object-Detection
+  - file: chapters/chpt2/Ch2.2-EDA
+  - file: chapters/chpt2/Ch2.3_preprocessing
+  - file: chapters/chpt2/Ch2.4-RetinaNet
+  - file: chapters/chpt2/Ch2.5-Faster-R-CNN
+  - file: chapters/chpt2/Ch2.6-YOLO
+  - file: chapters/chpt2/Ch2.7-References
 - caption: 深度生成模型
   chapters:
   - file: chapters/chpt3/Ch1-Introduction
