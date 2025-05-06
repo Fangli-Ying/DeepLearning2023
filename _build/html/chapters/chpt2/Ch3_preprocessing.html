@@ -432,6 +432,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>3. 数据预处理<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/main/chapters/chpt2/Ch3_preprocessing.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <p>同样地，在第2章中，我们对人脸口罩检测数据集进行了数据探索。在本章中，我们将进行数据预处理。</p>
 <p>热门的数据集可能包含数千甚至数万张图像，但并非所有数据集都是如此。那么，为了利用有限的数据集进行学习，我们该如何解决这一问题呢？</p>
 <p>即便数据集不足，也没必要去寻找新的图像，这是因为利用数据增强技术可以获取处于各种不同状态的图像。</p>
@@ -729,7 +730,7 @@ ValueError: check_hostname requires server_hostname
 <span class="p">)</span>
 
 <span class="n">img</span><span class="p">,</span> <span class="n">annot</span><span class="p">,</span> <span class="n">transform_time</span> <span class="o">=</span> <span class="n">torchvision_dataset_no_transform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;transforms 적용 전&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;transforms &#39;</span><span class="p">)</span>
 <span class="n">plot_image_from_output</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">annot</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -837,8 +838,7 @@ ValueError: check_hostname requires server_hostname
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 변경 전</span>
-<span class="n">img</span><span class="p">,</span> <span class="n">annot</span><span class="p">,</span> <span class="n">transform_time</span> <span class="o">=</span> <span class="n">torchvision_dataset_no_transform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">img</span><span class="p">,</span> <span class="n">annot</span><span class="p">,</span> <span class="n">transform_time</span> <span class="o">=</span> <span class="n">torchvision_dataset_no_transform</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">plot_image_from_output</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">annot</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -849,8 +849,7 @@ ValueError: check_hostname requires server_hostname
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># 변경 후</span>
-<span class="n">albumentation_dataset</span> <span class="o">=</span> <span class="n">AlbumentationsDataset</span><span class="p">(</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">albumentation_dataset</span> <span class="o">=</span> <span class="n">AlbumentationsDataset</span><span class="p">(</span>
     <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;images/&#39;</span><span class="p">,</span>
     <span class="n">transform</span> <span class="o">=</span> <span class="n">albumentations_transform</span>
 <span class="p">)</span>

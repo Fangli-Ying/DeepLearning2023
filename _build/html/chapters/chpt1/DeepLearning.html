@@ -181,7 +181,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2-EDA.html">2. 数据探索</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch4-RetinaNet.html">4. RetinaNet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-References.html">6. 참고 문헌</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch6-YOLO.html">6. YOLOv8 追踪计数</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch7-References.html">7. References</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
 <ul class="nav bd-sidenav">
@@ -674,15 +675,15 @@ $<span class="math notranslate nohighlight">\(
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: torch in d:\program files\python39\lib\site-packages (2.5.1)
 Requirement already satisfied: torchvision in d:\program files\python39\lib\site-packages (0.20.1)
-Requirement already satisfied: jinja2 in d:\program files\python39\lib\site-packages (from torch) (3.1.4)
-Requirement already satisfied: sympy==1.13.1 in d:\program files\python39\lib\site-packages (from torch) (1.13.1)
-Requirement already satisfied: typing-extensions&gt;=4.8.0 in d:\program files\python39\lib\site-packages (from torch) (4.12.2)
 Requirement already satisfied: filelock in d:\program files\python39\lib\site-packages (from torch) (3.16.1)
+Requirement already satisfied: typing-extensions&gt;=4.8.0 in d:\program files\python39\lib\site-packages (from torch) (4.12.2)
 Requirement already satisfied: networkx in d:\program files\python39\lib\site-packages (from torch) (3.2.1)
+Requirement already satisfied: sympy==1.13.1 in d:\program files\python39\lib\site-packages (from torch) (1.13.1)
 Requirement already satisfied: fsspec in d:\program files\python39\lib\site-packages (from torch) (2024.10.0)
+Requirement already satisfied: jinja2 in d:\program files\python39\lib\site-packages (from torch) (3.1.4)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in d:\program files\python39\lib\site-packages (from sympy==1.13.1-&gt;torch) (1.3.0)
-Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in d:\program files\python39\lib\site-packages (from torchvision) (9.5.0)
 Requirement already satisfied: numpy in d:\program files\python39\lib\site-packages (from torchvision) (1.26.4)
+Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in d:\program files\python39\lib\site-packages (from torchvision) (9.5.0)
 Requirement already satisfied: MarkupSafe&gt;=2.0 in d:\program files\python39\lib\site-packages (from jinja2-&gt;torch) (3.0.2)
 </pre></div>
 </div>
@@ -790,10 +791,10 @@ Requirement already satisfied: MarkupSafe&gt;=2.0 in d:\program files\python39\l
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [1/10], Loss: 0.3468
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [1/10], Loss: 0.3412
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [2/10], Loss: 0.1559
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [2/10], Loss: 0.1553
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>

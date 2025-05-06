@@ -1,0 +1,1000 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>6. YOLOv8 追踪计数 &#8212; 深度学习</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt2/Ch6-YOLO';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="7. References" href="Ch7-References.html" />
+    <link rel="prev" title="5. Faster R-CNN" href="Ch5-Faster-R-CNN.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dp.gif" class="logo__image only-light" alt="深度学习 - Home"/>
+    <img src="../../_static/dp.gif" class="logo__image only-dark pst-js-only" alt="深度学习 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    欢迎来到《深度学习原理及其应用》
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Ch1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">6. YOLOv8 追踪计数</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch7-References.html">7. References</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder（未完成）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch1-Time-Series.html">1. Time Series 时间序列简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch3-preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch4-LSTM.html">4. LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch5-CNN-LSTM.html">5. CNN-LSTM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">自然语言处理</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt5/Ch1-Introduction.html">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Fangli-Ying/DeepLearning2023/master?urlpath=tree/chapters/chpt2/Ch6-YOLO.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://jupyter.org/hub/hub/user-redirect/git-pull?repo=https%3A//github.com/Fangli-Ying/DeepLearning2023&urlpath=tree/DeepLearning2023/chapters/chpt2/Ch6-YOLO.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/master/chapters/chpt2/Ch6-YOLO.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chpt2/Ch6-YOLO.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>6. YOLOv8 追踪计数</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu">专业建议：使用 GPU 加速</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">本教程的步骤</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开始之前</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">下载视频</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">安装 YOLOv8</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bytetrack">安装 ByteTrack</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roboflow-supervision">安装 Roboflow Supervision</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">跟踪工具</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-trained-yolov8">加载 pre-trained YOLOv8 模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">预测单帧图像</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">预测标注整个视频</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="yolov8">
+<h1>6. YOLOv8 追踪计数<a class="headerlink" href="#yolov8" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/main/chapters/chpt2/Ch6-YOLO.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>YOLOv8 是 Ultralytics 开发的 YOLO（You Only Look Once）目标检测和图像分割模型的最新版本。YOLOv8 模型设计为快速、准确且易于使用，使其成为广泛目标检测和图像分割任务的绝佳选择。它可以在大型数据集上进行训练，并且能够在从 CPU 到 GPU 的各种硬件平台上运行。</p>
+<p>在本教程中，我们将介绍如何使用 YOLOv8 进行目标检测和图像分割，并展示如何使用 ByteTrack 进行目标追踪和计数。我们将使用 Roboflow 提供的预训练模型和数据集，以便您可以立即开始使用。</p>
+<section id="gpu">
+<h2>专业建议：使用 GPU 加速<a class="headerlink" href="#gpu" title="Link to this heading">#</a></h2>
+<p>如果您在 Google Colab 中运行此笔记本，请导航到 <code class="docutils literal notranslate"><span class="pre">编辑</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">笔记本设置</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">硬件加速器</span></code>，将其设置为 <code class="docutils literal notranslate"><span class="pre">GPU</span></code>，然后单击 <code class="docutils literal notranslate"><span class="pre">保存</span></code>。这将确保您的笔记本使用 GPU，从而显著加快模型训练速度。</p>
+</section>
+<section id="id1">
+<h2>本教程的步骤<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>在本教程中，我们将涵盖以下内容：</p>
+<ul class="simple">
+<li><p>开始之前</p></li>
+<li><p>下载视频</p></li>
+<li><p>安装 YOLOv8</p></li>
+<li><p>安装 ByteTrack</p></li>
+<li><p>安装 Roboflow Supervision</p></li>
+<li><p>跟踪工具</p></li>
+<li><p>加载预训练的 YOLOv8 模型</p></li>
+<li><p>预测并标注单帧图像</p></li>
+<li><p>预测并标注整个视频</p></li>
+</ul>
+<p><strong>让我们开始吧！</strong></p>
+</section>
+<section id="id2">
+<h2>开始之前<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>让我们确保我们可以访问 GPU。我们可以使用 <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> 命令来检查。如果遇到任何问题，请导航到 <code class="docutils literal notranslate"><span class="pre">编辑</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">笔记本设置</span></code> -&gt; <code class="docutils literal notranslate"><span class="pre">硬件加速器</span></code>，将其设置为 <code class="docutils literal notranslate"><span class="pre">GPU</span></code>，然后单击 <code class="docutils literal notranslate"><span class="pre">保存</span></code>。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>nvidia-smi
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;nvidia-smi&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="n">HOME</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">HOME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\3000-code\deeplearning\DeepLearning2023\Deeplearning\chapters\chpt2
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h2>下载视频<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cd</span> {HOME}
+<span class="o">!</span>wget<span class="w"> </span>--load-cookies<span class="w"> </span>/tmp/cookies.txt<span class="w"> </span><span class="s2">&quot;https://docs.google.com/uc?export=download&amp;confirm=</span><span class="k">$(</span>wget<span class="w"> </span>--quiet<span class="w"> </span>--save-cookies<span class="w"> </span>/tmp/cookies.txt<span class="w"> </span>--keep-session-cookies<span class="w"> </span>--no-check-certificate<span class="w"> </span><span class="s1">&#39;https://docs.google.com/uc?export=download&amp;id=1pz68D1Gsx80MoPg-_q-IbEdESEmyVLm-&#39;</span><span class="w"> </span>-O-<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-rn<span class="w"> </span><span class="s1">&#39;s/.*confirm=([0-9A-Za-z_]+).*/\1\n/p&#39;</span><span class="k">)</span><span class="s2">&amp;id=1pz68D1Gsx80MoPg-_q-IbEdESEmyVLm-&quot;</span><span class="w"> </span>-O<span class="w"> </span>vehicle-counting.mp4<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>rm<span class="w"> </span>-rf<span class="w"> </span>/tmp/cookies.txt
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\3000-code\deeplearning\DeepLearning2023\Deeplearning\chapters\chpt2
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>D:\Program Files\Python39\lib\site-packages\IPython\core\magics\osm.py:417: UserWarning: using dhist requires you to install the `pickleshare` library.
+  self.shell.db[&#39;dhist&#39;] = compress_dhist(dhist)[-100:]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;wget&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">SOURCE_VIDEO_PATH</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">HOME</span><span class="si">}</span><span class="s2">/vehicle-counting.mp4&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>安装 YOLOv8<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>⚠️ YOLOv8 仍在积极开发中。几乎每周都会引入重大更改。我们努力使我们的 YOLOv8 笔记本与库的最新版本兼容。最后一次测试于 <strong>2023年1月23日</strong> 进行，使用的版本为 <strong>YOLOv8.0.17</strong>。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pip install method (recommended)</span>
+
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;ultralytics&lt;=8.3.40&quot;</span>
+
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="n">display</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+
+<span class="kn">import</span> <span class="nn">ultralytics</span>
+<span class="n">ultralytics</span><span class="o">.</span><span class="n">checks</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">8</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">display</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="kn">import</span> <span class="nn">ultralytics</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">ultralytics</span><span class="o">.</span><span class="n">checks</span><span class="p">()</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;ultralytics&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="bytetrack">
+<h2>安装 ByteTrack<a class="headerlink" href="#bytetrack" title="Link to this heading">#</a></h2>
+<p><a class="reference external" href="https://github.com/ifzhang/ByteTrack">ByteTrack</a> 是一个优秀的追踪器，但它的打包方式有些问题。我们需要克服一些困难才能使其与 <a class="reference external" href="https://github.com/ultralytics/ultralytics">YOLOv8</a> 协同工作。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">cd</span> {HOME}
+<span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ifzhang/ByteTrack.git
+<span class="o">%</span><span class="k">cd</span> {HOME}/ByteTrack
+
+<span class="c1"># workaround related to https://github.com/roboflow/notebooks/issues/80</span>
+<span class="o">!</span>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/onnx==1.8.1/onnx==1.9.0/g&#39;</span><span class="w"> </span>requirements.txt
+
+<span class="o">!</span>pip3<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<span class="o">!</span>python3<span class="w"> </span>setup.py<span class="w"> </span>-q<span class="w"> </span>develop
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>cython_bbox
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>onemetric
+<span class="c1"># workaround related to https://github.com/roboflow/notebooks/issues/112 and https://github.com/roboflow/notebooks/issues/106</span>
+<span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span>-q<span class="w"> </span>loguru<span class="w"> </span>lap<span class="w"> </span>thop
+
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="n">display</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">HOME</span><span class="si">}</span><span class="s2">/ByteTrack&quot;</span><span class="p">)</span>
+
+
+<span class="kn">import</span> <span class="nn">yolox</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;yolox.__version__:&quot;</span><span class="p">,</span> <span class="n">yolox</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>yolox.__version__: 0.1.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">yolox.tracker.byte_tracker</span> <span class="kn">import</span> <span class="n">BYTETracker</span><span class="p">,</span> <span class="n">STrack</span>
+<span class="kn">from</span> <span class="nn">onemetric.cv.utils.iou</span> <span class="kn">import</span> <span class="n">box_iou_batch</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">BYTETrackerArgs</span><span class="p">:</span>
+    <span class="n">track_thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.25</span>
+    <span class="n">track_buffer</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">match_thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.8</span>
+    <span class="n">aspect_ratio_thresh</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.0</span>
+    <span class="n">min_box_area</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">mot20</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="roboflow-supervision">
+<h2>安装 Roboflow Supervision<a class="headerlink" href="#roboflow-supervision" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">supervision</span><span class="o">==</span><span class="m">0</span>.1.0
+
+
+<span class="kn">from</span> <span class="nn">IPython</span> <span class="kn">import</span> <span class="n">display</span>
+<span class="n">display</span><span class="o">.</span><span class="n">clear_output</span><span class="p">()</span>
+
+
+<span class="kn">import</span> <span class="nn">supervision</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;supervision.__version__:&quot;</span><span class="p">,</span> <span class="n">supervision</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>supervision.__version__: 0.1.0
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">supervision.draw.color</span> <span class="kn">import</span> <span class="n">ColorPalette</span>
+<span class="kn">from</span> <span class="nn">supervision.geometry.dataclasses</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">supervision.video.dataclasses</span> <span class="kn">import</span> <span class="n">VideoInfo</span>
+<span class="kn">from</span> <span class="nn">supervision.video.source</span> <span class="kn">import</span> <span class="n">get_video_frames_generator</span>
+<span class="kn">from</span> <span class="nn">supervision.video.sink</span> <span class="kn">import</span> <span class="n">VideoSink</span>
+<span class="kn">from</span> <span class="nn">supervision.notebook.utils</span> <span class="kn">import</span> <span class="n">show_frame_in_notebook</span>
+<span class="kn">from</span> <span class="nn">supervision.tools.detections</span> <span class="kn">import</span> <span class="n">Detections</span><span class="p">,</span> <span class="n">BoxAnnotator</span>
+<span class="kn">from</span> <span class="nn">supervision.tools.line_counter</span> <span class="kn">import</span> <span class="n">LineCounter</span><span class="p">,</span> <span class="n">LineCounterAnnotator</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id5">
+<h2>跟踪工具<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>不幸的是，我们必须手动将模型生成的边界框与追踪器创建的边界框进行匹配。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="c1"># converts Detections into format that can be consumed by match_detections_with_tracks function</span>
+<span class="k">def</span> <span class="nf">detections2boxes</span><span class="p">(</span><span class="n">detections</span><span class="p">:</span> <span class="n">Detections</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span>
+        <span class="n">detections</span><span class="o">.</span><span class="n">xyxy</span><span class="p">,</span>
+        <span class="n">detections</span><span class="o">.</span><span class="n">confidence</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span>
+    <span class="p">))</span>
+
+
+<span class="c1"># converts List[STrack] into format that can be consumed by match_detections_with_tracks function</span>
+<span class="k">def</span> <span class="nf">tracks2boxes</span><span class="p">(</span><span class="n">tracks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">STrack</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="n">track</span><span class="o">.</span><span class="n">tlbr</span>
+        <span class="k">for</span> <span class="n">track</span>
+        <span class="ow">in</span> <span class="n">tracks</span>
+    <span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+
+<span class="c1"># matches our bounding boxes with predictions</span>
+<span class="k">def</span> <span class="nf">match_detections_with_tracks</span><span class="p">(</span>
+    <span class="n">detections</span><span class="p">:</span> <span class="n">Detections</span><span class="p">,</span>
+    <span class="n">tracks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">STrack</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Detections</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">detections</span><span class="o">.</span><span class="n">xyxy</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">tracks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="mi">0</span><span class="p">,))</span>
+
+    <span class="n">tracks_boxes</span> <span class="o">=</span> <span class="n">tracks2boxes</span><span class="p">(</span><span class="n">tracks</span><span class="o">=</span><span class="n">tracks</span><span class="p">)</span>
+    <span class="n">iou</span> <span class="o">=</span> <span class="n">box_iou_batch</span><span class="p">(</span><span class="n">tracks_boxes</span><span class="p">,</span> <span class="n">detections</span><span class="o">.</span><span class="n">xyxy</span><span class="p">)</span>
+    <span class="n">track2detection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">iou</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">tracker_ids</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">tracker_index</span><span class="p">,</span> <span class="n">detection_index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">track2detection</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">iou</span><span class="p">[</span><span class="n">tracker_index</span><span class="p">,</span> <span class="n">detection_index</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">tracker_ids</span><span class="p">[</span><span class="n">detection_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">tracks</span><span class="p">[</span><span class="n">tracker_index</span><span class="p">]</span><span class="o">.</span><span class="n">track_id</span>
+
+    <span class="k">return</span> <span class="n">tracker_ids</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="pre-trained-yolov8">
+<h2>加载 pre-trained YOLOv8 模型<a class="headerlink" href="#pre-trained-yolov8" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings</span>
+<span class="n">MODEL</span> <span class="o">=</span> <span class="s2">&quot;yolov8x.pt&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ultralytics</span> <span class="kn">import</span> <span class="n">YOLO</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">YOLO</span><span class="p">(</span><span class="n">MODEL</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fuse</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Downloading https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov8x.pt to yolov8x.pt...
+100%|██████████| 131M/131M [00:00&lt;00:00, 234MB/s]
+YOLOv8x summary (fused): 268 layers, 68200608 parameters, 0 gradients
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id6">
+<h2>预测单帧图像<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># dict maping class_id to class_name</span>
+<span class="n">CLASS_NAMES_DICT</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">names</span>
+<span class="c1"># class_ids of interest - car, motorcycle, bus and truck</span>
+<span class="n">CLASS_ID</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># create frame generator</span>
+<span class="n">generator</span> <span class="o">=</span> <span class="n">get_video_frames_generator</span><span class="p">(</span><span class="n">SOURCE_VIDEO_PATH</span><span class="p">)</span>
+<span class="c1"># create instance of BoxAnnotator</span>
+<span class="n">box_annotator</span> <span class="o">=</span> <span class="n">BoxAnnotator</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorPalette</span><span class="p">(),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">text_thickness</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">text_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># acquire first video frame</span>
+<span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">generator</span><span class="p">)</span>
+<span class="n">frame</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+<span class="c1"># model prediction on single frame and conversion to supervision Detections</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+<span class="n">detections</span> <span class="o">=</span> <span class="n">Detections</span><span class="p">(</span>
+    <span class="n">xyxy</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">boxes</span><span class="o">.</span><span class="n">xyxy</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="n">confidence</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">boxes</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+    <span class="n">class_id</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">boxes</span><span class="o">.</span><span class="n">cls</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="c1"># format custom labels</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">CLASS_NAMES_DICT</span><span class="p">[</span><span class="n">class_id</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">confidence</span><span class="si">:</span><span class="s2">0.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">confidence</span><span class="p">,</span> <span class="n">class_id</span><span class="p">,</span> <span class="n">tracker_id</span>
+    <span class="ow">in</span> <span class="n">detections</span>
+<span class="p">]</span>
+<span class="c1"># annotate and display frame</span>
+<span class="n">frame</span> <span class="o">=</span> <span class="n">box_annotator</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">detections</span><span class="o">=</span><span class="n">detections</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="n">show_frame_in_notebook</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0: 384x640 3 cars, 1 truck, 66.5ms
+Speed: 14.1ms preprocess, 66.5ms inference, 22.4ms postprocess per image at shape (1, 3, 640, 640)
+</pre></div>
+</div>
+<img alt="../../_images/0bcf3e15509bded5be49074da3aeb8e9c0b1ec5fded07ea94ed1421a840fc07b.png" src="../../_images/0bcf3e15509bded5be49074da3aeb8e9c0b1ec5fded07ea94ed1421a840fc07b.png" />
+</div>
+</div>
+</section>
+<section id="id7">
+<h2>预测标注整个视频<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># settings</span>
+<span class="n">LINE_START</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span>
+<span class="n">LINE_END</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="mi">3840</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">1500</span><span class="p">)</span>
+
+<span class="n">TARGET_VIDEO_PATH</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">HOME</span><span class="si">}</span><span class="s2">/vehicle-counting-result.mp4&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">VideoInfo</span><span class="o">.</span><span class="n">from_video_path</span><span class="p">(</span><span class="n">SOURCE_VIDEO_PATH</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VideoInfo(width=3840, height=2160, fps=25, total_frames=538)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tqdm.notebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+
+<span class="c1"># create BYTETracker instance</span>
+<span class="n">byte_tracker</span> <span class="o">=</span> <span class="n">BYTETracker</span><span class="p">(</span><span class="n">BYTETrackerArgs</span><span class="p">())</span>
+<span class="c1"># create VideoInfo instance</span>
+<span class="n">video_info</span> <span class="o">=</span> <span class="n">VideoInfo</span><span class="o">.</span><span class="n">from_video_path</span><span class="p">(</span><span class="n">SOURCE_VIDEO_PATH</span><span class="p">)</span>
+<span class="c1"># create frame generator</span>
+<span class="n">generator</span> <span class="o">=</span> <span class="n">get_video_frames_generator</span><span class="p">(</span><span class="n">SOURCE_VIDEO_PATH</span><span class="p">)</span>
+<span class="c1"># create LineCounter instance</span>
+<span class="n">line_counter</span> <span class="o">=</span> <span class="n">LineCounter</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">LINE_START</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="n">LINE_END</span><span class="p">)</span>
+<span class="c1"># create instance of BoxAnnotator and LineCounterAnnotator</span>
+<span class="n">box_annotator</span> <span class="o">=</span> <span class="n">BoxAnnotator</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">ColorPalette</span><span class="p">(),</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">text_thickness</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">text_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">line_annotator</span> <span class="o">=</span> <span class="n">LineCounterAnnotator</span><span class="p">(</span><span class="n">thickness</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">text_thickness</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">text_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># open target video file</span>
+<span class="k">with</span> <span class="n">VideoSink</span><span class="p">(</span><span class="n">TARGET_VIDEO_PATH</span><span class="p">,</span> <span class="n">video_info</span><span class="p">)</span> <span class="k">as</span> <span class="n">sink</span><span class="p">:</span>
+    <span class="c1"># loop over video frames</span>
+    <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">generator</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">video_info</span><span class="o">.</span><span class="n">total_frames</span><span class="p">):</span>
+        <span class="c1"># model prediction on single frame and conversion to supervision Detections</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+        <span class="n">detections</span> <span class="o">=</span> <span class="n">Detections</span><span class="p">(</span>
+            <span class="n">xyxy</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">boxes</span><span class="o">.</span><span class="n">xyxy</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+            <span class="n">confidence</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">boxes</span><span class="o">.</span><span class="n">conf</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span>
+            <span class="n">class_id</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">boxes</span><span class="o">.</span><span class="n">cls</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="c1"># filtering out detections with unwanted classes</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">class_id</span> <span class="ow">in</span> <span class="n">CLASS_ID</span> <span class="k">for</span> <span class="n">class_id</span> <span class="ow">in</span> <span class="n">detections</span><span class="o">.</span><span class="n">class_id</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">detections</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># tracking detections</span>
+        <span class="n">tracks</span> <span class="o">=</span> <span class="n">byte_tracker</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+            <span class="n">output_results</span><span class="o">=</span><span class="n">detections2boxes</span><span class="p">(</span><span class="n">detections</span><span class="o">=</span><span class="n">detections</span><span class="p">),</span>
+            <span class="n">img_info</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="n">img_size</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">shape</span>
+        <span class="p">)</span>
+        <span class="n">tracker_id</span> <span class="o">=</span> <span class="n">match_detections_with_tracks</span><span class="p">(</span><span class="n">detections</span><span class="o">=</span><span class="n">detections</span><span class="p">,</span> <span class="n">tracks</span><span class="o">=</span><span class="n">tracks</span><span class="p">)</span>
+        <span class="n">detections</span><span class="o">.</span><span class="n">tracker_id</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">tracker_id</span><span class="p">)</span>
+        <span class="c1"># filtering out detections without trackers</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tracker_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">tracker_id</span> <span class="ow">in</span> <span class="n">detections</span><span class="o">.</span><span class="n">tracker_id</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="n">detections</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="c1"># format custom labels</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="sa">f</span><span class="s2">&quot;#</span><span class="si">{</span><span class="n">tracker_id</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">CLASS_NAMES_DICT</span><span class="p">[</span><span class="n">class_id</span><span class="p">]</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">confidence</span><span class="si">:</span><span class="s2">0.2f</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">confidence</span><span class="p">,</span> <span class="n">class_id</span><span class="p">,</span> <span class="n">tracker_id</span>
+            <span class="ow">in</span> <span class="n">detections</span>
+        <span class="p">]</span>
+        <span class="c1"># updating line counter</span>
+        <span class="n">line_counter</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">detections</span><span class="o">=</span><span class="n">detections</span><span class="p">)</span>
+        <span class="c1"># annotate and display frame</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">box_annotator</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">detections</span><span class="o">=</span><span class="n">detections</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+        <span class="n">line_annotator</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">,</span> <span class="n">line_counter</span><span class="o">=</span><span class="n">line_counter</span><span class="p">)</span>
+        <span class="n">sink</span><span class="o">.</span><span class="n">write_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\chpt2"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Ch5-Faster-R-CNN.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">5. Faster R-CNN</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Ch7-References.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">7. References</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu">专业建议：使用 GPU 加速</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">本教程的步骤</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">开始之前</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">下载视频</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">安装 YOLOv8</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bytetrack">安装 ByteTrack</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#roboflow-supervision">安装 Roboflow Supervision</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">跟踪工具</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-trained-yolov8">加载 pre-trained YOLOv8 模型</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">预测单帧图像</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">预测标注整个视频</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://fangli-ying.github.io/">Dr. Fangli Ying</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

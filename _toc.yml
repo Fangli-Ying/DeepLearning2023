@@ -14,7 +14,8 @@ parts:
   - file: chapters/chpt2/Ch2_preprocessing
   - file: chapters/chpt2/Ch4-RetinaNet
   - file: chapters/chpt2/Ch5-Faster-R-CNN
-  - file: chapters/chpt2/Ch5-References
+  - file: chapters/chpt2/Ch6-YOLO
+  - file: chapters/chpt2/Ch7-References
 - caption: 深度生成模型
   chapters:
   - file: chapters/chpt3/Ch1-Introduction
