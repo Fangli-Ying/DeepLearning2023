@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt2/Ch2-EDA';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1. 生成对抗网络（GAN）简介" href="../chpt3/Ch1-Introduction.html" />
+    <link rel="next" title="4. RetinaNet" href="Ch4-RetinaNet.html" />
     <link rel="prev" title="1. 目标检测简介" href="Ch1-Object-Detection.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -177,6 +177,9 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Ch1-Object-Detection.html">1. 目标检测简介</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch5-References.html">6. 참고 문헌</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
 <ul class="nav bd-sidenav">
@@ -184,7 +187,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder（未完成）</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
 <ul class="nav bd-sidenav">
@@ -469,7 +472,7 @@
 </div>
 </div>
 <p>如果查看 Colab 路径，可以确认如图片 2-1 所示，创建了“annotations”文件夹和“images”文件夹。“annotations”文件夹中存储着每张图像的医用口罩位置坐标，“images”文件夹中存储着图像。</p>
-<p><img alt="dataset example" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch2img02.PNG?raw=true" /></p>
+<p><img alt="dataset example" src="../../_images/OD-ch2img02.PNG" /></p>
 <ul class="simple">
 <li><p>图 2-1 实验的文件夹路径</p></li>
 </ul>
@@ -542,7 +545,7 @@
 </div>
 </div>
 <p>如果您查看文件内容，您可以看到最初显示了文件夹名称和文件名，并且包含了图像大小信息。现在，如果您查看 “object” 中的代码，您可以看到它分为三类：“mask_weared_incorrect”、“with_mask” 和 “without_mask”。在 “mask_weared_incorrect” 的情况下，有关未正确蒙版的对象的信息，“with_mask” 包含有关戴蒙版的对象的位置的信息，“without_mask” 包含有关未蒙版的对象的信息。如果一个图像文件中有两个戴蒙版的对象，您将看到有两个 “object” 包含 “with_mask” 的信息。在 “bndbox” 中，您可以看到 “xmin”、“ymin”、“xmax” 和 “ymax” 按该顺序出现。这是指定边界框区域的信息。</p>
-<p><img alt="dataset example" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/OD-ch2img01.png?raw=true" /></p>
+<p><img alt="dataset example" src="../../_images/OD-ch2img01.PNG" /></p>
 <ul class="simple">
 <li><p>图 2-2 maksssksksss307. png 文件的可视化</p></li>
 </ul>
@@ -742,11 +745,11 @@ generate_target函数是分别调用generate_box和generate_label函数，将返
       </div>
     </a>
     <a class="right-next"
-       href="../chpt3/Ch1-Introduction.html"
+       href="Ch4-RetinaNet.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">1. 生成对抗网络（GAN）简介</p>
+        <p class="prev-next-title">4. RetinaNet</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

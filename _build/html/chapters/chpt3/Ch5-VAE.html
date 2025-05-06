@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Variational Autoencoder &#8212; 深度学习</title>
+    <title>Variational Autoencoder（未完成） &#8212; 深度学习</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
     <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -179,6 +179,9 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch1-Object-Detection.html">1. 目标检测简介</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-References.html">6. 참고 문헌</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
 <ul class="current nav bd-sidenav">
@@ -186,7 +189,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Ch2-EDA.html">2. EDA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Ch3-GAN.html">3. GAN</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Ch4-pix2pix.html">4. pix2pix</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Variational Autoencoder</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Variational Autoencoder（未完成）</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
 <ul class="nav bd-sidenav">
@@ -400,7 +403,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Variational Autoencoder</h1>
+    <h1>Variational Autoencoder（未完成）</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -462,7 +465,7 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="variational-autoencoder">
-<h1>Variational Autoencoder<a class="headerlink" href="#variational-autoencoder" title="Link to this heading">#</a></h1>
+<h1>Variational Autoencoder（未完成）<a class="headerlink" href="#variational-autoencoder" title="Link to this heading">#</a></h1>
 <p>A variational autoencoder (VAE) is a kind of <strong>generative</strong> deep learning model that is capable of <strong>unsupervised learning</strong> . Unsupervised learning is the process of fitting models to unlabeled data. A generative model is a specific kind of unsupervised learning model that is capable of <em>generating</em> new data points that were not seen in training. Generative models can be viewed as a trained probability distribution over that data: <span class="math notranslate nohighlight">\(\hat{\textrm{P}}(x)\)</span>. You can then draw samples from this distribution. It is generally too difficult to construct <span class="math notranslate nohighlight">\(\hat{\textrm{P}}(x)\)</span> directly, and so most generative models make some changes to the structure.</p>
 <div class="admonition-audience-objectives admonition">
 <p class="admonition-title">Audience &amp; Objectives</p>

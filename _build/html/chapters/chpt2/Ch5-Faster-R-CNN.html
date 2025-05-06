@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt2/Ch5-Faster-R-CNN';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1. 生成对抗网络（GAN）简介" href="../chpt3/Ch1-Introduction.html" />
+    <link rel="next" title="6. 참고 문헌" href="Ch5-References.html" />
     <link rel="prev" title="4. RetinaNet" href="Ch4-RetinaNet.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -179,6 +179,7 @@
 <li class="toctree-l1"><a class="reference internal" href="Ch2-EDA.html">2. 数据探索</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Ch4-RetinaNet.html">4. RetinaNet</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Faster R-CNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch5-References.html">6. 참고 문헌</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
 <ul class="nav bd-sidenav">
@@ -186,7 +187,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder（未完成）</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
 <ul class="nav bd-sidenav">
@@ -410,7 +411,7 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.1 데이터 불러오기</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.1 加载数据</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.2 数据分离</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.3 数据集类定义</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.4 加载模型</a></li>
@@ -456,7 +457,7 @@
 </div>
 </div>
 <section id="id1">
-<h2>5.1 데이터 불러오기<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<h2>5.1 加载数据<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>为了进行建模实验，我们将使用2.1节中的代码来加载数据。以下是从假研究室GitHub的Tutorial-Book-Utils中的PL_data_loader.py文件下载FascMaskDetection数据集并解压缩文件的顺</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -634,7 +635,7 @@
 <span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        path: path to train folder or test folder</span>
 <span class="sd">        &#39;&#39;&#39;</span>
-        <span class="c1"># transform module과 img path 경로를 정의</span>
+        
         <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span> <span class="o">=</span> <span class="n">transforms</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">path</span> <span class="o">=</span> <span class="n">path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">imgs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)))</span>
@@ -1044,7 +1045,7 @@ epoch : 10, Loss : 23.59230613708496, time : 266.9004054069519
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span> 
-    <span class="c1"># 테스트셋 배치사이즈= 2</span>
+
     <span class="k">for</span> <span class="n">imgs</span><span class="p">,</span> <span class="n">annotations</span> <span class="ow">in</span> <span class="n">test_data_loader</span><span class="p">:</span>
         <span class="n">imgs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">imgs</span><span class="p">)</span>
 
@@ -1203,11 +1204,11 @@ AP : tensor([0.8694, 0.9189, 0.3664], dtype=torch.float64)
       </div>
     </a>
     <a class="right-next"
-       href="../chpt3/Ch1-Introduction.html"
+       href="Ch5-References.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">1. 生成对抗网络（GAN）简介</p>
+        <p class="prev-next-title">6. 참고 문헌</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1228,7 +1229,7 @@ AP : tensor([0.8694, 0.9189, 0.3664], dtype=torch.float64)
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.1 데이터 불러오기</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">5.1 加载数据</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">5.2 数据分离</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">5.3 数据集类定义</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">5.4 加载模型</a></li>
