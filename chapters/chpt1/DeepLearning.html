@@ -181,6 +181,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2-EDA.html">2. 数据探索</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch4-RetinaNet.html">4. RetinaNet</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-References.html">6. 참고 문헌</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
 <ul class="nav bd-sidenav">
@@ -673,20 +674,16 @@ $<span class="math notranslate nohighlight">\(
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: torch in d:\program files\python39\lib\site-packages (2.5.1)
 Requirement already satisfied: torchvision in d:\program files\python39\lib\site-packages (0.20.1)
-Requirement already satisfied: fsspec in d:\program files\python39\lib\site-packages (from torch) (2024.10.0)
-Requirement already satisfied: filelock in d:\program files\python39\lib\site-packages (from torch) (3.16.1)
-Requirement already satisfied: sympy==1.13.1 in d:\program files\python39\lib\site-packages (from torch) (1.13.1)
-Requirement already satisfied: networkx in d:\program files\python39\lib\site-packages (from torch) (3.2.1)
-Requirement already satisfied: typing-extensions&gt;=4.8.0 in d:\program files\python39\lib\site-packages (from torch) (4.12.2)
 Requirement already satisfied: jinja2 in d:\program files\python39\lib\site-packages (from torch) (3.1.4)
+Requirement already satisfied: sympy==1.13.1 in d:\program files\python39\lib\site-packages (from torch) (1.13.1)
+Requirement already satisfied: typing-extensions&gt;=4.8.0 in d:\program files\python39\lib\site-packages (from torch) (4.12.2)
+Requirement already satisfied: filelock in d:\program files\python39\lib\site-packages (from torch) (3.16.1)
+Requirement already satisfied: networkx in d:\program files\python39\lib\site-packages (from torch) (3.2.1)
+Requirement already satisfied: fsspec in d:\program files\python39\lib\site-packages (from torch) (2024.10.0)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in d:\program files\python39\lib\site-packages (from sympy==1.13.1-&gt;torch) (1.3.0)
-Requirement already satisfied: numpy in d:\program files\python39\lib\site-packages (from torchvision) (1.26.4)
 Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in d:\program files\python39\lib\site-packages (from torchvision) (9.5.0)
+Requirement already satisfied: numpy in d:\program files\python39\lib\site-packages (from torchvision) (1.26.4)
 Requirement already satisfied: MarkupSafe&gt;=2.0 in d:\program files\python39\lib\site-packages (from jinja2-&gt;torch) (3.0.2)
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WARNING: You are using pip version 21.2.4; however, version 24.3.1 is available.
-You should consider upgrading via the &#39;D:\Program Files\Python39\python.exe -m pip install --upgrade pip&#39; command.
 </pre></div>
 </div>
 </div>
@@ -793,7 +790,10 @@ You should consider upgrading via the &#39;D:\Program Files\Python39\python.exe 
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [1/10], Loss: 0.3460
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [1/10], Loss: 0.3468
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [2/10], Loss: 0.1559
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
@@ -824,52 +824,49 @@ You should consider upgrading via the &#39;D:\Program Files\Python39\python.exe 
 <span class="g g-Whitespace">    </span><span class="mi">758</span>     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pin_memory</span><span class="p">:</span>
 <span class="g g-Whitespace">    </span><span class="mi">759</span>         <span class="n">data</span> <span class="o">=</span> <span class="n">_utils</span><span class="o">.</span><span class="n">pin_memory</span><span class="o">.</span><span class="n">pin_memory</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pin_memory_device</span><span class="p">)</span>
 
-<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\_utils\fetch.py:55,</span> in <span class="ni">_MapDatasetFetcher.fetch</span><span class="nt">(self, possibly_batched_index)</span>
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\_utils\fetch.py:52,</span> in <span class="ni">_MapDatasetFetcher.fetch</span><span class="nt">(self, possibly_batched_index)</span>
+<span class="g g-Whitespace">     </span><span class="mi">50</span>         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">__getitems__</span><span class="p">(</span><span class="n">possibly_batched_index</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">51</span>     <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">52</span>         <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">possibly_batched_index</span><span class="p">]</span>
 <span class="g g-Whitespace">     </span><span class="mi">53</span> <span class="k">else</span><span class="p">:</span>
 <span class="g g-Whitespace">     </span><span class="mi">54</span>     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">possibly_batched_index</span><span class="p">]</span>
-<span class="ne">---&gt; </span><span class="mi">55</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">collate_fn</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\_utils\collate.py:398,</span> in <span class="ni">default_collate</span><span class="nt">(batch)</span>
-<span class="g g-Whitespace">    </span><span class="mi">337</span> <span class="k">def</span> <span class="nf">default_collate</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">338</span><span class="w">     </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">339</span><span class="sd">     Take in a batch of data and put the elements within the batch into a tensor with an additional outer dimension - batch size.</span>
-<span class="g g-Whitespace">    </span><span class="mi">340</span><span class="sd"> </span>
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\_utils\fetch.py:52,</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
+<span class="g g-Whitespace">     </span><span class="mi">50</span>         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">__getitems__</span><span class="p">(</span><span class="n">possibly_batched_index</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">51</span>     <span class="k">else</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">52</span>         <span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">possibly_batched_index</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">53</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">     </span><span class="mi">54</span>     <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">possibly_batched_index</span><span class="p">]</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torchvision\datasets\mnist.py:146,</span> in <span class="ni">MNIST.__getitem__</span><span class="nt">(self, index)</span>
+<span class="g g-Whitespace">    </span><span class="mi">143</span> <span class="n">img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">145</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">146</span>     <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">148</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_transform</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">149</span>     <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_transform</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torchvision\transforms\transforms.py:95,</span> in <span class="ni">Compose.__call__</span><span class="nt">(self, img)</span>
+<span class="g g-Whitespace">     </span><span class="mi">93</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">94</span>     <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">transforms</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">95</span>         <span class="n">img</span> <span class="o">=</span> <span class="n">t</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">96</span>     <span class="k">return</span> <span class="n">img</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torchvision\transforms\transforms.py:137,</span> in <span class="ni">ToTensor.__call__</span><span class="nt">(self, pic)</span>
+<span class="g g-Whitespace">    </span><span class="mi">129</span> <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pic</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">130</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">131</span><span class="sd">     Args:</span>
+<span class="g g-Whitespace">    </span><span class="mi">132</span><span class="sd">         pic (PIL Image or numpy.ndarray): Image to be converted to tensor.</span>
 <span class="sd">   (...)</span>
-<span class="g g-Whitespace">    </span><span class="mi">396</span><span class="sd">         &gt;&gt;&gt; default_collate(batch)  # Handle `CustomType` automatically</span>
-<span class="g g-Whitespace">    </span><span class="mi">397</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">398</span>     <span class="k">return</span> <span class="n">collate</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="n">collate_fn_map</span><span class="o">=</span><span class="n">default_collate_fn_map</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">135</span><span class="sd">         Tensor: Converted image.</span>
+<span class="g g-Whitespace">    </span><span class="mi">136</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">137</span>     <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">(</span><span class="n">pic</span><span class="p">)</span>
 
-<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\_utils\collate.py:211,</span> in <span class="ni">collate</span><span class="nt">(batch, collate_fn_map)</span>
-<span class="g g-Whitespace">    </span><span class="mi">208</span> <span class="n">transposed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">))</span>  <span class="c1"># It may be accessed twice, so we use a list.</span>
-<span class="g g-Whitespace">    </span><span class="mi">210</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">211</span>     <span class="k">return</span> <span class="p">[</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span>         <span class="n">collate</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">collate_fn_map</span><span class="o">=</span><span class="n">collate_fn_map</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">213</span>         <span class="k">for</span> <span class="n">samples</span> <span class="ow">in</span> <span class="n">transposed</span>
-<span class="g g-Whitespace">    </span><span class="mi">214</span>     <span class="p">]</span>  <span class="c1"># Backwards compatibility.</span>
-<span class="g g-Whitespace">    </span><span class="mi">215</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">216</span>     <span class="k">try</span><span class="p">:</span>
-
-<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\_utils\collate.py:212,</span> in <span class="ni">&lt;listcomp&gt;</span><span class="nt">(.0)</span>
-<span class="g g-Whitespace">    </span><span class="mi">208</span> <span class="n">transposed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">batch</span><span class="p">))</span>  <span class="c1"># It may be accessed twice, so we use a list.</span>
-<span class="g g-Whitespace">    </span><span class="mi">210</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">211</span>     <span class="k">return</span> <span class="p">[</span>
-<span class="ne">--&gt; </span><span class="mi">212</span>         <span class="n">collate</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">collate_fn_map</span><span class="o">=</span><span class="n">collate_fn_map</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">213</span>         <span class="k">for</span> <span class="n">samples</span> <span class="ow">in</span> <span class="n">transposed</span>
-<span class="g g-Whitespace">    </span><span class="mi">214</span>     <span class="p">]</span>  <span class="c1"># Backwards compatibility.</span>
-<span class="g g-Whitespace">    </span><span class="mi">215</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">216</span>     <span class="k">try</span><span class="p">:</span>
-
-<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\_utils\collate.py:155,</span> in <span class="ni">collate</span><span class="nt">(batch, collate_fn_map)</span>
-<span class="g g-Whitespace">    </span><span class="mi">153</span> <span class="k">if</span> <span class="n">collate_fn_map</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">154</span>     <span class="k">if</span> <span class="n">elem_type</span> <span class="ow">in</span> <span class="n">collate_fn_map</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">155</span>         <span class="k">return</span> <span class="n">collate_fn_map</span><span class="p">[</span><span class="n">elem_type</span><span class="p">](</span><span class="n">batch</span><span class="p">,</span> <span class="n">collate_fn_map</span><span class="o">=</span><span class="n">collate_fn_map</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">157</span>     <span class="k">for</span> <span class="n">collate_type</span> <span class="ow">in</span> <span class="n">collate_fn_map</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">158</span>         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">collate_type</span><span class="p">):</span>
-
-<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\_utils\collate.py:272,</span> in <span class="ni">collate_tensor_fn</span><span class="nt">(batch, collate_fn_map)</span>
-<span class="g g-Whitespace">    </span><span class="mi">270</span>     <span class="n">storage</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">_typed_storage</span><span class="p">()</span><span class="o">.</span><span class="n">_new_shared</span><span class="p">(</span><span class="n">numel</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">elem</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">271</span>     <span class="n">out</span> <span class="o">=</span> <span class="n">elem</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">storage</span><span class="p">)</span><span class="o">.</span><span class="n">resize_</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">),</span> <span class="o">*</span><span class="nb">list</span><span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">size</span><span class="p">()))</span>
-<span class="ne">--&gt; </span><span class="mi">272</span> <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">batch</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">out</span><span class="p">)</span>
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torchvision\transforms\functional.py:172,</span> in <span class="ni">to_tensor</span><span class="nt">(pic)</span>
+<span class="g g-Whitespace">    </span><span class="mi">170</span> <span class="k">if</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">171</span>     <span class="n">img</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">img</span>
+<span class="ne">--&gt; </span><span class="mi">172</span> <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pic</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pic</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">F_pil</span><span class="o">.</span><span class="n">get_image_num_channels</span><span class="p">(</span><span class="n">pic</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="c1"># put it from HWC to CHW format</span>
+<span class="g g-Whitespace">    </span><span class="mi">174</span> <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">permute</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
