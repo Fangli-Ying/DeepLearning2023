@@ -1,0 +1,1255 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>3. GAN &#8212; 深度学习</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'chapters/chpt3/Ch3.3-GAN';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="4. pix2pix" href="Ch3.4-pix2pix.html" />
+    <link rel="prev" title="2. 数据探索" href="Ch3.2-EDA.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/dp.gif" class="logo__image only-light" alt="深度学习 - Home"/>
+    <img src="../../_static/dp.gif" class="logo__image only-dark pst-js-only" alt="深度学习 - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../intro.html">
+                    欢迎来到《深度学习原理及其应用》
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/Ch1.1-DeepLearning.html">1.深度学习基础</a></li>
+
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.3_preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.6-YOLO.html">6. YOLOv8 追踪计数</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.7-References.html">7. References</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="Ch3.1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch3.2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch3.4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch3.5-VAE.html">Variational Autoencoder（未完成）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Ch3.6-Reference.html">5. References</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch1-Time-Series.html">1. Time Series 时间序列简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch2-EDA.html">2. EDA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch3-preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch4-LSTM.html">4. LSTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt4/Ch5-CNN-LSTM.html">5. CNN-LSTM</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">自然语言处理</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt5/Ch1-Introduction.html">1. NLP模型简介 (Introduction to NLP Model)（未完待续）</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-launch-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
+    <i class="fas fa-rocket"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://mybinder.org/v2/gh/Fangli-Ying/DeepLearning2023/master?urlpath=tree/chapters/chpt3/Ch3.3-GAN.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Binder"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Binder logo" src="../../_static/images/logo_binder.svg">
+  </span>
+<span class="btn__text-container">Binder</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://jupyter.org/hub/hub/user-redirect/git-pull?repo=https%3A//github.com/Fangli-Ying/DeepLearning2023&urlpath=tree/DeepLearning2023/chapters/chpt3/Ch3.3-GAN.ipynb&branch=master" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on JupyterHub"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="JupyterHub logo" src="../../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="btn__text-container">JupyterHub</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/master/chapters/chpt3/Ch3.3-GAN.ipynb" target="_blank"
+   class="btn btn-sm dropdown-item"
+   title="Launch on Colab"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  
+    <img alt="Colab logo" src="../../_static/images/logo_colab.png">
+  </span>
+<span class="btn__text-container">Colab</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/chapters/chpt3/Ch3.3-GAN.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>3. GAN</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.1 数据集下载</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.2 数据集类定义¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.3 模型构建¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.4 模型训练¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.5 预测和性能评估</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="gan">
+<h1>3. GAN<a class="headerlink" href="#gan" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/main/chapters/chpt3/Ch3.3-GAN.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<p>在第 2 章中，我们按文件夹可视化了 Victorain400 数据集中的图像。在第 3 章中，我们将构建一个使用 GAN 将黑白图像转换为彩色图像的模型。</p>
+<p>在第 3.1 节中，我们将加载用于建模的数据，在第 3.2 节中，我们将定义一个数据集类，甚至一个数据加载器。在 3.3 节中，我们将通过定义 Generator 类和 Discriminator 类来构建模型。在3.4节中，我们将设置超参数并训练构建的模型，然后在3.5节中对测试数据进行预测和性能评估。</p>
+<section id="id1">
+<h2>3.1 数据集下载<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>我们将使用 2.1 节中的代码下载要在模型中使用的数据集。流程是使用Fake Research Institute GitHub上的Tutorial-Book-Utils，clone使用PL_data_loader.py文件下载Victorian400数据集，并解压。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/Pseudo-Lab/Tutorial-Book-Utils
+<span class="o">!</span>python<span class="w"> </span>Tutorial-Book-Utils/PL_data_loader.py<span class="w"> </span>--data<span class="w"> </span>GAN-Colorization
+<span class="o">!</span>unzip<span class="w"> </span>-q<span class="w"> </span>Victorian400-GAN-colorization-data.zip
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;git&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>python: can&#39;t open file &#39;D:\3000-code\deeplearning\DeepLearning2023\Deeplearning\chapters\chpt3\Tutorial-Book-Utils\PL_data_loader.py&#39;: [Errno 2] No such file or directory
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;unzip&#39; 不是内部或外部命令，也不是可运行的程序
+或批处理文件。
+</pre></div>
+</div>
+</div>
+</div>
+<p>这次，我们将导入第 3 章中将使用的包。os和glob是可以指定文件路径的包，datetime是可以计算日期和时间的包。和numpy是用于数值运算的线性代数包， 和matplotlib是PIL用于Image可视化图像文件的包。 Othertorch和torchvision包是基于 Torch 的包，用于定义数据集和构建模型。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="k">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torchvision</span>
+<span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
+<span class="kn">from</span> <span class="nn">torch.autograd</span> <span class="kn">import</span> <span class="n">Variable</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">DataLoader</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id2">
+<h2>3.2 数据集类定义¶<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>让我们定义一个数据集类来学习 PyTorch 模型中的数据。它接收文件夹路径以及黑白和彩色图像的图像转换作为参数Image.open，并使用函数来加载图像。.convert(“L”)使用 单个通道接收黑白图像，.convert(“RGB”)使用 3 个通道接收彩色图像。图像转换后，黑白图像和彩色图像分别以字典的形式返回到“A”和“B”。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">VictorianDataset</span><span class="p">(</span><span class="n">Dataset</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">,</span> <span class="n">color_transforms_</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gray_transforms_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        初始化数据集。</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        root (str): 数据集的根目录。</span>
+<span class="sd">        color_transforms_ (callable, optional): 彩色图像的转换函数。默认为 None。</span>
+<span class="sd">        gray_transforms_ (callable, optional): 灰度图像的转换函数。默认为 None。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 将传入的颜色变换列表组合成一个变换函数</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span><span class="n">color_transforms_</span><span class="p">)</span>
+        <span class="c1"># 将传入的灰度变换列表组合成一个变换函数</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gray_transforms</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">(</span><span class="n">gray_transforms_</span><span class="p">)</span>
+        <span class="c1"># 对根目录下的灰度图像文件进行排序</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gray_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;gray&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/*.*&quot;</span><span class="p">))</span>
+        <span class="c1"># 对根目录下的彩色图像文件进行排序</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">color_files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s1">&#39;resized&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/*.*&quot;</span><span class="p">))</span>
+    
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        获取数据集中的一个样本。</span>
+
+<span class="sd">        参数:</span>
+<span class="sd">        index (int): 样本的索引。</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        dict: 包含灰度图像和彩色图像的字典。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 打开灰度图像文件并转换为灰度模式</span>
+        <span class="n">gray_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gray_files</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gray_files</span><span class="p">)])</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;L&quot;</span><span class="p">)</span>
+        <span class="c1"># 打开彩色图像文件并转换为RGB模式</span>
+        <span class="n">color_img</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_files</span><span class="p">[</span><span class="n">index</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">color_files</span><span class="p">)])</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span>
+    
+        <span class="c1"># 对灰度图像应用变换</span>
+        <span class="n">gray_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gray_transforms</span><span class="p">(</span><span class="n">gray_img</span><span class="p">)</span>
+        <span class="c1"># 对彩色图像应用变换</span>
+        <span class="n">color_img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">color_transforms</span><span class="p">(</span><span class="n">color_img</span><span class="p">)</span>
+
+        <span class="c1"># 返回包含灰度图像和彩色图像的字典</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">gray_img</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">color_img</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        返回数据集中的样本数量。</span>
+
+<span class="sd">        返回:</span>
+<span class="sd">        int: 数据集的长度。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 返回灰度图像文件的数量</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gray_files</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>指定每个数据集的图像路径、大小和批量大小。您可以根据您的环境（最大内存使用量）设置图像大小和批量大小。不过，稍后发布的模型结构固定为256，因此如果想要不同的图像尺寸，模型结构也需要进行一些修改。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">root</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">test_root</span> <span class="o">=</span> <span class="n">root</span> <span class="o">+</span> <span class="s1">&#39;test/&#39;</span>
+
+<span class="n">img_height</span> <span class="o">=</span> <span class="mi">256</span>
+<span class="n">img_width</span> <span class="o">=</span> <span class="mi">256</span>
+
+<span class="n">batch_size</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">test_batch_size</span> <span class="o">=</span> <span class="mi">6</span>
+
+<span class="n">gpu</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>指定要作为参数输入到数据集类的图像变换。在本教程中，我们将其更改为张量类型，将其插入到 PyTorch 模型中，并使用 2.4 节中获得的平均值和标准差normalize。除此之外，您还可以根据模型结构Resize或根据域执行各种图像变换，例如RandomCrop（随机裁剪）或（随机水平翻转）。RandomVerticalFlip</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">color_mean</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.58090717</span><span class="p">,</span> <span class="mf">0.52688643</span><span class="p">,</span> <span class="mf">0.45678478</span><span class="p">]</span>
+<span class="n">color_std</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25644188</span><span class="p">,</span> <span class="mf">0.25482641</span><span class="p">,</span> <span class="mf">0.24456465</span><span class="p">]</span>
+<span class="n">gray_mean</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5350533</span><span class="p">]</span>
+<span class="n">gray_std</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25051587</span><span class="p">]</span>
+
+<span class="n">color_transforms_</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">)),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">color_mean</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">color_std</span><span class="p">),</span>
+<span class="p">]</span>
+
+<span class="n">gray_transforms_</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Resize</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">)),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span>
+    <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">mean</span><span class="o">=</span><span class="n">gray_mean</span><span class="p">,</span> <span class="n">std</span><span class="o">=</span><span class="n">gray_std</span><span class="p">),</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>将上面定义的数据集类和图像变换DataLoader插入到函数中。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">VictorianDataset</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">color_transforms_</span><span class="o">=</span><span class="n">color_transforms_</span><span class="p">,</span> <span class="n">gray_transforms_</span><span class="o">=</span><span class="n">gray_transforms_</span><span class="p">),</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">train_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">VictorianDataset</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">color_transforms_</span><span class="o">=</span><span class="n">color_transforms_</span><span class="p">,</span> <span class="n">gray_transforms_</span><span class="o">=</span><span class="n">gray_transforms_</span><span class="p">),</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="p">)</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\dataloader.py:376,</span> in <span class="ni">DataLoader.__init__</span><span class="nt">(self, dataset, batch_size, shuffle, sampler, batch_sampler, num_workers, collate_fn, pin_memory, drop_last, timeout, worker_init_fn, multiprocessing_context, generator, prefetch_factor, persistent_workers, pin_memory_device)</span>
+<span class="g g-Whitespace">    </span><span class="mi">374</span> <span class="k">else</span><span class="p">:</span>  <span class="c1"># map-style</span>
+<span class="g g-Whitespace">    </span><span class="mi">375</span>     <span class="k">if</span> <span class="n">shuffle</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">376</span>         <span class="n">sampler</span> <span class="o">=</span> <span class="n">RandomSampler</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">generator</span><span class="o">=</span><span class="n">generator</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+<span class="g g-Whitespace">    </span><span class="mi">377</span>     <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">378</span>         <span class="n">sampler</span> <span class="o">=</span> <span class="n">SequentialSampler</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torch\utils\data\sampler.py:164,</span> in <span class="ni">RandomSampler.__init__</span><span class="nt">(self, data_source, replacement, num_samples, generator)</span>
+<span class="g g-Whitespace">    </span><span class="mi">159</span>     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">160</span>         <span class="sa">f</span><span class="s2">&quot;replacement should be a boolean value, but got replacement=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">replacement</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">161</span>     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">163</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">164</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">165</span>         <span class="sa">f</span><span class="s2">&quot;num_samples should be a positive integer value, but got num_samples=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_samples</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="g g-Whitespace">    </span><span class="mi">166</span>     <span class="p">)</span>
+
+<span class="ne">ValueError</span>: num_samples should be a positive integer value, but got num_samples=0
+</pre></div>
+</div>
+</div>
+</div>
+<p>让我们可视化我们的数据加载器，看看它是否配置正确。由于标准化图像存储在数据加载器中，因此必须恢复标准化并可视化。因此，reNormalize我们创建一个函数来再次乘以标准差并加上平均值。此时.transpose()，改变轴的顺序，将小于min的值改为min，如果大于max则将其改为max。另外，由于“A”对应的黑白图像是单通道的，因此必须将其转换为 2D并设置才能正确显示图像。.clip(min, max).reshape()cmap=gray</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">reNormalize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">):</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span> <span class="o">*</span> <span class="n">std</span> <span class="o">+</span> <span class="n">mean</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span>  
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="mi">1</span> 
+<span class="n">cols</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">for</span> <span class="n">X</span> <span class="ow">in</span> <span class="n">train_loader</span><span class="p">:</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reNormalize</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">gray_mean</span><span class="p">,</span> <span class="n">gray_std</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span> 
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;gray img&#39;</span><span class="p">)</span>
+
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reNormalize</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">color_mean</span><span class="p">,</span> <span class="n">color_std</span><span class="p">))</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;color img&#39;</span><span class="p">)</span>    
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([12, 1, 256, 256]) torch.Size([12, 3, 256, 256])
+</pre></div>
+</div>
+<img alt="../../_images/0962af871af00de0706998121545ce950fe6b459b07754ef783fc3b67fbdf3c8.svg" src="../../_images/0962af871af00de0706998121545ce950fe6b459b07754ef783fc3b67fbdf3c8.svg" />
+</div>
+</div>
+<p>数据加载器配置正确，黑白和彩色图像输出良好。同样，让我们​​定义并可视化测试数据加载器。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">VictorianDataset</span><span class="p">(</span><span class="n">test_root</span><span class="p">,</span> <span class="n">color_transforms_</span><span class="o">=</span><span class="n">color_transforms_</span><span class="p">,</span> <span class="n">gray_transforms_</span><span class="o">=</span><span class="n">gray_transforms_</span><span class="p">),</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="n">test_batch_size</span><span class="p">,</span>
+    <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="mi">1</span> 
+<span class="n">cols</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">for</span> <span class="n">X</span> <span class="ow">in</span> <span class="n">test_loader</span><span class="p">:</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">X</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reNormalize</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">gray_mean</span><span class="p">,</span> <span class="n">gray_std</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;gray img&#39;</span><span class="p">)</span>
+
+    <span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reNormalize</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="s2">&quot;B&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">color_mean</span><span class="p">,</span> <span class="n">color_std</span><span class="p">))</span>
+    <span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;color img&#39;</span><span class="p">)</span>    
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="k">break</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>torch.Size([6, 1, 256, 256]) torch.Size([6, 3, 256, 256])
+</pre></div>
+</div>
+<img alt="../../_images/5bb1db58d1a071790efb6de8feaa5dec793505d53a9013d2ac33daef3957958d.svg" src="../../_images/5bb1db58d1a071790efb6de8feaa5dec793505d53a9013d2ac33daef3957958d.svg" />
+</div>
+</div>
+<p>您可以看到测试数据加载器也配置良好。</p>
+</section>
+<section id="id3">
+<h2>3.3 模型构建¶<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>这次，我们将构建一个模型来学习数据集。在3.3节中，我们将使用GAN模型将黑白图像转换为彩色图像。 GAN 模型由生成器和判别器组成。每个Conv2d由ConvTranspose2d、MaxPool2d、标准化和激活函数组成。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Generator</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Generator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;noise image + gray image&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">maxpool</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span> <span class="o">*</span> <span class="mi">2</span> <span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">upsample</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ConvTranspose2d</span><span class="p">(</span><span class="mi">64</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span>
+        <span class="p">)</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv1by1</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">64</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+        <span class="p">)</span>
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Tanh</span><span class="p">()</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
+        <span class="n">output1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="n">pool1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">maxpool</span><span class="p">(</span><span class="n">output1</span><span class="p">)</span>
+        <span class="n">output2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv2</span><span class="p">(</span><span class="n">pool1</span><span class="p">)</span>
+        <span class="n">output3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">upsample</span><span class="p">(</span><span class="n">output2</span><span class="p">)</span> <span class="o">+</span> <span class="n">output1</span>
+        <span class="n">output4</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv1by1</span><span class="p">(</span><span class="n">output3</span><span class="p">)</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">output4</span><span class="p">)</span>        
+        <span class="k">return</span> <span class="n">out</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Discriminator</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Discriminator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="n">kernel_size</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">padding</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+            
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">128</span><span class="p">,</span><span class="n">kernel_size</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">padding</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">128</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+            
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="n">kernel_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">padding</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">128</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+            
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="n">kernel_size</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">padding</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">256</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+            
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">512</span><span class="p">,</span> <span class="n">kernel_size</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">padding</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">512</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+            
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="n">kernel_size</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="n">stride</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">padding</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">bias</span> <span class="o">=</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">BatchNorm2d</span><span class="p">(</span><span class="mi">1024</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">),</span>
+            
+            <span class="p">)</span>
+        
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">8</span> <span class="o">*</span> <span class="mi">8</span> <span class="p">,</span> <span class="mi">1024</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">LeakyReLU</span><span class="p">(</span><span class="mf">0.2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">()</span>
+        <span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">b_size</span><span class="p">):</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">main</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">b_size</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>学习时，必须初始化每个批次的权重。因此weights_init，创建一个函数并将其附加到生成器和判别器模型。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">weights_init</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+    <span class="n">classname</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="k">if</span> <span class="n">classname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Conv&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>        
+        <span class="n">m</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">classname</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;BatchNorm&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> 
+        <span class="n">m</span><span class="o">.</span><span class="n">weight</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">normal_</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">)</span>
+        <span class="n">m</span><span class="o">.</span><span class="n">bias</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">fill_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>.cuda(gpu)然后，将模型传递到GPU 上训练生成器和判别器。此时，gpu上面指定的设备就被输入了。您可以通过输出内容检查模型结构。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Gener</span> <span class="o">=</span> <span class="n">Generator</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="n">gpu</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">Generator</span><span class="p">()</span>
+<span class="n">Gener</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">weights_init</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generator(
+  (conv1): Sequential(
+    (0): Conv2d(2, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): LeakyReLU(negative_slope=0.1)
+  )
+  (maxpool): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+  (conv2): Sequential(
+    (0): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): LeakyReLU(negative_slope=0.1)
+  )
+  (upsample): Sequential(
+    (0): ConvTranspose2d(128, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): LeakyReLU(negative_slope=0.2)
+  )
+  (conv1by1): Sequential(
+    (0): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1))
+    (1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (2): LeakyReLU(negative_slope=0.1)
+  )
+  (conv): Sequential(
+    (0): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (1): Tanh()
+  )
+)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Discri</span> <span class="o">=</span> <span class="n">Discriminator</span><span class="p">()</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="n">gpu</span><span class="p">)</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="n">Discriminator</span><span class="p">()</span>
+<span class="n">Discri</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">weights_init</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Discriminator(
+  (main): Sequential(
+    (0): Conv2d(3, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (1): LeakyReLU(negative_slope=0.2, inplace=True)
+    (2): Conv2d(64, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (3): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (4): LeakyReLU(negative_slope=0.2, inplace=True)
+    (5): Conv2d(128, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+    (6): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (7): LeakyReLU(negative_slope=0.2, inplace=True)
+    (8): Conv2d(128, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (9): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (10): LeakyReLU(negative_slope=0.2, inplace=True)
+    (11): Conv2d(256, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (12): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (13): LeakyReLU(negative_slope=0.2, inplace=True)
+    (14): Conv2d(512, 1024, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1), bias=False)
+    (15): BatchNorm2d(1024, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (16): LeakyReLU(negative_slope=0.2, inplace=True)
+  )
+  (fc): Sequential(
+    (0): Linear(in_features=65536, out_features=1024, bias=True)
+    (1): LeakyReLU(negative_slope=0.2)
+    (2): Linear(in_features=1024, out_features=256, bias=True)
+    (3): LeakyReLU(negative_slope=0.2)
+    (4): Linear(in_features=256, out_features=12, bias=True)
+    (5): Sigmoid()
+  )
+)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="id4">
+<h2>3.4 模型训练¶<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>现在让我们训练构建的模型。让我们将学习计数设置为 50，并对生成模型和判别模型都使用 Adam 优化方法。可以调整每个超参数来执行各种实验。</p>
+<p>学习按以下顺序进行：生成模型和判别模型。生成模型学习创建可以欺骗判别模型的彩色图像。辨别模型学会将彩色图像识别为真实图像，将黑白图像识别为假图像。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">max_epoch</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">optimizerD</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">Discri</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span> <span class="o">=</span> <span class="mf">0.0002</span><span class="p">,</span><span class="n">betas</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">))</span>
+<span class="n">optimizerG</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">Gener</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span> <span class="o">=</span> <span class="mf">0.0002</span><span class="p">,</span> <span class="n">betas</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.999</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_epoch</span><span class="p">):</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">loss_D</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_loader</span><span class="p">):</span>
+        <span class="n">grays</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span>
+        <span class="n">b_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])</span>
+        
+
+        
+        <span class="c1">######## Train Generator ########</span>
+        <span class="c1"># 生成随机噪声</span>
+        <span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">b_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">)</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># 将灰度图像和噪声拼接作为生成器的输入</span>
+        <span class="n">gray_noise</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">grays</span><span class="p">,</span><span class="n">noise</span><span class="p">],</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="n">gpu</span><span class="p">))</span>
+        <span class="c1"># 使用生成器生成假图像</span>
+        <span class="n">fake_img</span> <span class="o">=</span> <span class="n">Gener</span><span class="p">(</span><span class="n">gray_noise</span><span class="p">)</span>
+        <span class="c1"># 将假图像输入判别器得到输出</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">Discri</span><span class="p">(</span><span class="n">fake_img</span><span class="p">,</span><span class="n">b_size</span><span class="p">)</span>
+        <span class="c1"># 计算生成器的损失，这里使用均方误差</span>
+        <span class="n">g_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">output</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        
+
+        
+        <span class="c1">######## Backpropagation &amp; Optimize G ########</span>
+        <span class="c1"># 清空判别器和生成器的梯度</span>
+        <span class="n">Discri</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">Gener</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="c1"># 反向传播计算生成器的梯度</span>
+        <span class="n">g_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="c1"># 更新生成器的参数</span>
+        <span class="n">optimizerG</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+
+       
+        <span class="c1">######## Train Discriminator ########</span>
+        <span class="c1"># 将彩色图像转换为Variable并移动到GPU上</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">color</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="n">gpu</span><span class="p">))</span>
+        <span class="c1"># 生成随机噪声</span>
+        <span class="n">noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">b_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">)</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>   
+        <span class="c1"># 将灰度图像和噪声拼接作为生成器的输入</span>
+        <span class="n">gray_noise</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">grays</span><span class="p">,</span><span class="n">noise</span><span class="p">],</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="n">gpu</span><span class="p">))</span>   
+
+
+        
+        <span class="c1">######## Train d to recognize color image as real ########</span>
+        <span class="c1"># 将彩色图像输入判别器得到输出</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">Discri</span><span class="p">(</span><span class="n">color</span><span class="p">,</span><span class="n">b_size</span><span class="p">)</span>
+        <span class="c1"># 计算判别器对真实图像的损失，这里使用均方误差</span>
+        <span class="n">real_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">output</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        
+
+        
+        <span class="c1">######## Train d to recognize fake image as fake ########        </span>
+        <span class="c1"># 使用生成器生成假图像</span>
+        <span class="n">fake_img</span> <span class="o">=</span> <span class="n">Gener</span><span class="p">(</span><span class="n">gray_noise</span><span class="p">)</span>   
+        <span class="c1"># 将假图像输入判别器得到输出</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">Discri</span><span class="p">(</span><span class="n">fake_img</span><span class="p">,</span><span class="n">b_size</span><span class="p">)</span>
+        <span class="c1"># 计算判别器对假图像的损失，这里使用均方误差</span>
+        <span class="n">fake_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">output</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        
+
+       
+        <span class="c1">######## Backpropagation &amp; Optimize D ########</span>
+        <span class="c1"># 计算判别器的总损失</span>
+        <span class="n">d_loss</span> <span class="o">=</span> <span class="n">real_loss</span> <span class="o">+</span> <span class="n">fake_loss</span>
+        <span class="c1"># 清空判别器和生成器的梯度</span>
+        <span class="n">Discri</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">Gener</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="c1"># 反向传播计算判别器的梯度</span>
+        <span class="n">d_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="c1"># 更新判别器的参数</span>
+        <span class="n">optimizerD</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>        
+
+
+        <span class="n">fake_img</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">fake_img</span><span class="o">.</span><span class="n">data</span><span class="p">)</span> 
+
+    <span class="n">epoch_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">Gener</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s2">&quot;generator_</span><span class="si">%d</span><span class="s2">.pth&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">Discri</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="s2">&quot;discriminator_</span><span class="si">%d</span><span class="s2">.pth&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[Epoch </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] [Batch </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2">] [D loss: </span><span class="si">%f</span><span class="s2">] [G loss: </span><span class="si">%f</span><span class="s2">] ETA: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_epoch</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_loader</span><span class="p">),</span> <span class="n">d_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">g_loss</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">epoch_time</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reNormalize</span><span class="p">(</span><span class="n">fake_img</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">color_mean</span><span class="p">,</span> <span class="n">color_std</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>      
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 5/50] [Batch 34/34] [D loss: 0.335707] [G loss: 0.952135] ETA: 0:00:15.254198
+</pre></div>
+</div>
+<img alt="../../_images/04115169cdddfd905045b66e4971a64c5f53a137cb5aec77ec3efdac2d6ef1a3.svg" src="../../_images/04115169cdddfd905045b66e4971a64c5f53a137cb5aec77ec3efdac2d6ef1a3.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 10/50] [Batch 34/34] [D loss: 0.232681] [G loss: 0.925357] ETA: 0:00:16.087967
+</pre></div>
+</div>
+<img alt="../../_images/70e6d58554fbad2cc3edfce5b9f9150343f3f1aa9338f935afa5fc14b33678e0.svg" src="../../_images/70e6d58554fbad2cc3edfce5b9f9150343f3f1aa9338f935afa5fc14b33678e0.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 15/50] [Batch 34/34] [D loss: 0.222960] [G loss: 0.742795] ETA: 0:00:14.794427
+</pre></div>
+</div>
+<img alt="../../_images/b40002b1c0e810d9777467ddd7a2d1febdfb83b816432e6ac49652cf82d9f7d5.svg" src="../../_images/b40002b1c0e810d9777467ddd7a2d1febdfb83b816432e6ac49652cf82d9f7d5.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 20/50] [Batch 34/34] [D loss: 0.002736] [G loss: 0.968330] ETA: 0:00:15.417760
+</pre></div>
+</div>
+<img alt="../../_images/0e2cc19cfcf3b0a788c85e371af0ee131600f35256a37ca9be6a81ef5a21391d.svg" src="../../_images/0e2cc19cfcf3b0a788c85e371af0ee131600f35256a37ca9be6a81ef5a21391d.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 25/50] [Batch 34/34] [D loss: 0.000585] [G loss: 0.999990] ETA: 0:00:15.662105
+</pre></div>
+</div>
+<img alt="../../_images/69c8670d721b0e0d1442df57b3509ec651c52a531496898cab0a1193639c315c.svg" src="../../_images/69c8670d721b0e0d1442df57b3509ec651c52a531496898cab0a1193639c315c.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 30/50] [Batch 34/34] [D loss: 0.008619] [G loss: 0.997328] ETA: 0:00:15.388837
+</pre></div>
+</div>
+<img alt="../../_images/08e2f056c2d24088a848801707c2b862be52c1a2522a223f3be6f9abe3fdcca2.svg" src="../../_images/08e2f056c2d24088a848801707c2b862be52c1a2522a223f3be6f9abe3fdcca2.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 35/50] [Batch 34/34] [D loss: 0.201541] [G loss: 0.998293] ETA: 0:00:15.455658
+</pre></div>
+</div>
+<img alt="../../_images/540af1c1346ec9ee032157b6736c350b5c30db51b803246a3f9396b5d07e1672.svg" src="../../_images/540af1c1346ec9ee032157b6736c350b5c30db51b803246a3f9396b5d07e1672.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 40/50] [Batch 34/34] [D loss: 0.011544] [G loss: 0.999389] ETA: 0:00:15.419755
+</pre></div>
+</div>
+<img alt="../../_images/59dc5367caa9397dc336a8198e8fe7cdc1d201350862fd92048cf3b1e14fea4e.svg" src="../../_images/59dc5367caa9397dc336a8198e8fe7cdc1d201350862fd92048cf3b1e14fea4e.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 45/50] [Batch 34/34] [D loss: 0.000001] [G loss: 0.999999] ETA: 0:00:15.365898
+</pre></div>
+</div>
+<img alt="../../_images/9e7fa1eac7c27a199a065c4bf6918d0b1cf23d1d3ee7eb8177feea3de0f1b713.svg" src="../../_images/9e7fa1eac7c27a199a065c4bf6918d0b1cf23d1d3ee7eb8177feea3de0f1b713.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Epoch 50/50] [Batch 34/34] [D loss: 0.158762] [G loss: 0.997427] ETA: 0:00:15.460645
+</pre></div>
+</div>
+<img alt="../../_images/557dbd17131d4c5a310bbc4ba537814c884b6369ede473a1717f7772ca25e593.svg" src="../../_images/557dbd17131d4c5a310bbc4ba537814c884b6369ede473a1717f7772ca25e593.svg" />
+</div>
+</div>
+<p>每 5 个 epoch 保存生成模型和判别模型的权重，以便以后可以重新实现学习的模型。然后，输出每个模型的损失值和生成模型生成的图像，以检查它是如何学习的。</p>
+<p>通过检查生成模型的损失和判别模型的损失之间的关系来确定适当的 epoch 数非常重要。否则，一种模型将会过度拟合，进一步的学习将变得毫无意义。</p>
+</section>
+<section id="id5">
+<h2>3.5 预测和性能评估<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<p>现在学习已经完成，让我们将其应用到新的黑白图像并将其预测（着色）为彩色图像。加载上面学习的模型的权重，并输入测试数据加载器的图像来进行预测。在本教程中，我们将加载 35 个 epoch 的权重。您可以通过查看图像输出来加载所需纪元的权重，如下所示。</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Gener</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;generator_35.pth&quot;</span> <span class="p">))</span>
+<span class="n">Discri</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;discriminator_35.pth&quot;</span> <span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;All keys matched successfully&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Discri</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="n">Gener</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+
+<span class="n">fixed_noise</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">test_batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">)</span><span class="o">.</span><span class="n">uniform_</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">test_loader</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="p">:</span>
+    <span class="n">images</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;B&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="n">test_batch_size</span><span class="p">:</span>
+        <span class="k">continue</span>
+
+    <span class="n">grays</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">test_batch_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img_height</span><span class="p">,</span> <span class="n">img_width</span><span class="p">)))</span>    
+    <span class="n">gray</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">grays</span><span class="p">,</span><span class="n">fixed_noise</span><span class="p">],</span><span class="n">dim</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cuda</span><span class="p">(</span><span class="n">gpu</span><span class="p">))</span>
+    
+    <span class="n">output</span> <span class="o">=</span> <span class="n">Gener</span><span class="p">(</span><span class="n">gray</span><span class="p">)</span>
+
+    <span class="n">inputs</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">grays</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">torchvision</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">make_grid</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================input==================&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reNormalize</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">gray_mean</span><span class="p">,</span> <span class="n">gray_std</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================target==================&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reNormalize</span><span class="p">(</span><span class="n">labels</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">color_mean</span><span class="p">,</span> <span class="n">color_std</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;==================output==================&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reNormalize</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">cpu</span><span class="p">(),</span> <span class="n">color_mean</span><span class="p">,</span> <span class="n">color_std</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================input==================
+</pre></div>
+</div>
+<img alt="../../_images/b486df17ca4ff707d55f70076007a0bd8938cd2865a2e9ed2ba0b12962aec066.svg" src="../../_images/b486df17ca4ff707d55f70076007a0bd8938cd2865a2e9ed2ba0b12962aec066.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================target==================
+</pre></div>
+</div>
+<img alt="../../_images/a5aaba24ea65b1109f782100092c9492e0fc7c0add65d70337a3629b5467c1c8.svg" src="../../_images/a5aaba24ea65b1109f782100092c9492e0fc7c0add65d70337a3629b5467c1c8.svg" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>==================output==================
+</pre></div>
+</div>
+<img alt="../../_images/a232e1a0be70e7d2f221f51bfea1e0d5d40814c74a2c40d6c2a8ad0a75354c5b.svg" src="../../_images/a232e1a0be70e7d2f221f51bfea1e0d5d40814c74a2c40d6c2a8ad0a75354c5b.svg" />
+</div>
+</div>
+<p>结果按以下顺序输出：黑白（输入）、彩色（目标）和生成的图像（输出）。虽然看不清楚，但可以看出相似的颜色在某种程度上被着色了。</p>
+<p>到目前为止，在第 3 章中，我们已经构建了一个生成模型 GAN，它将黑白图像转换为彩色图像。在下一章中，我们将使用 pix2pix 模型进行比较，该模型更专门于着色。</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./chapters\chpt3"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="Ch3.2-EDA.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">2. 数据探索</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="Ch3.4-pix2pix.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">4. pix2pix</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">3.1 数据集下载</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">3.2 数据集类定义¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">3.3 模型构建¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">3.4 模型训练¶</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">3.5 预测和性能评估</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By <a href="https://fangli-ying.github.io/">Dr. Fangli Ying</a>
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+<div class="extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

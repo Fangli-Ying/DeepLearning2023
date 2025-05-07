@@ -25,7 +25,6 @@
 - [Detectron 2 Face Detection](https://www.kaggle.com/dhiiyaur/detectron-2-face-detection/data)
 - [Face Mask Detection using SSD [Tutorial]](https://www.kaggle.com/aman10kr/face-mask-detection-using-ssd-tutorial
 )
-- [albumentations - fast image augmentation library 소개 및 사용법 Tutorial](https://hoya012.github.io/blog/albumentation_tutorial/)
 - [TORCHVISION OBJECT DETECTION FINETUNING TUTORIAL](https://pytorch.org/tutorials/intermediate/torchvision_tutorial.html)
 - [SAVING AND LOADING MODELS](https://pytorch.org/tutorials/beginner/saving_loading_models.html)
 - [VISUALIZING MODELS, DATA, AND TRAINING WITH TENSORBOARD](https://pytorch.org/tutorials/intermediate/tensorboard_tutorial.html)
@@ -49,7 +48,6 @@
 - [A Step-by-Step Introduction to the Basic Object Detection Algorithms (Part 1)](https://www.analyticsvidhya.com/blog/2018/10/a-step-by-step-introduction-to-the-basic-object-detection-algorithms-part-1/)
 - [[Object Detection] one-stage detector vs two-stage detector](https://jdselectron.tistory.com/101)
 - [1-Stage detector and 2-Stage detector](https://ganghee-lee.tistory.com/34)
-- [RCNN 부터 Mask R-CNN까지 (1) R-CNN ~ Fast R-CNN](https://woosikyang.github.io/fast-rcnn.html)
 - [Data Augmentation](https://nanonets.com/blog/data-augmentation-how-to-use-deep-learning-when-you-have-limited-data-part-2/
 )
 - [Albumentations: Fast and Flexible Image Augmentations](https://www.mdpi.com/2078-2489/11/2/125/htm)
