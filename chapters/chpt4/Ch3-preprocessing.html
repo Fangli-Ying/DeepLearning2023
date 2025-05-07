@@ -172,24 +172,30 @@
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/Ch1.1-DeepLearning.html">1.深度学习基础</a></li>
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch1-Object-Detection.html">1. 目标检测简介</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2-EDA.html">2. 数据探索</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch4-RetinaNet.html">4. RetinaNet</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-References.html">6. 참고 문헌</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.3_preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.6-YOLO.html">6. YOLOv8 追踪计数</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.7-References.html">7. References</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder（未完成）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.5-VAE.html">Variational Autoencoder（未完成）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.6-Reference.html">5. References</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
 <ul class="current nav bd-sidenav">
@@ -540,8 +546,7 @@
 </div>
 <p>为了使上述时间序列数据能够被模型用于监督学习，必须将数据处理成输入变量和目标变量对。在时间序列问题中，此类数据也称为序列数据。为了将其处理成序列数据，必须首先定义序列长度。序列长度决定了有多少过去的数据可以预测未来。例如，如果序列长度为5t
 过去来预测某个时间点 <span class="math notranslate nohighlight">\(t-1\)</span>, <span class="math notranslate nohighlight">\(t-2\)</span>, <span class="math notranslate nohighlight">\(t-3\)</span>, <span class="math notranslate nohighlight">\(t-4\)</span>, <span class="math notranslate nohighlight">\(t-5\)</span> 您将利用该时间点的数据。像这样 <span class="math notranslate nohighlight">\(t-k\)</span> 从터 <span class="math notranslate nohighlight">\(t-1\)</span> 数据高达 <span class="math notranslate nohighlight">\(t\)</span> 预测时间称为一步预测任务。
-下面定义的函数create_sequences将大小为N的时间序列数据转换为N-seq_length的监督学习数据，如图3-1所示。</p>
-<p><img alt="" src="https://github.com/Pseudo-Lab/Tutorial-Book/blob/master/book/pics/TS-ch3img01.png?raw=true" /></p>
+下面定义的函数create_sequences将大小为N的时间序列数据转换为N-seq_length的监督学习数据，</p>
 <ul class="simple">
 <li><p>图3-1 时间序列数据转换流程</p></li>
 </ul>

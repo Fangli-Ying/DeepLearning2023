@@ -170,24 +170,30 @@
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度学习基础</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chpt1/DeepLearning.html">第一章 深度学习基础</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt1/Ch1.1-DeepLearning.html">1.深度学习基础</a></li>
 
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">视觉基本任务</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch1-Object-Detection.html">1. 目标检测简介</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2-EDA.html">2. 数据探索</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch4-RetinaNet.html">4. RetinaNet</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch5-References.html">6. 참고 문헌</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.1-Object-Detection.html">1. 目标检测简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.3_preprocessing.html">3. 数据预处理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.4-RetinaNet.html">4. RetinaNet</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.5-Faster-R-CNN.html">5. Faster R-CNN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.6-YOLO.html">6. YOLOv8 追踪计数</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="../chpt2/Ch2.7-References.html">7. References</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">深度生成模型</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch2-EDA.html">2. EDA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3-GAN.html">3. GAN</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch4-pix2pix.html">4. pix2pix</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch5-VAE.html">Variational Autoencoder（未完成）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.1-Introduction.html">1. 生成对抗网络（GAN）简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.2-EDA.html">2. 数据探索</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.3-GAN.html">3. GAN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.4-pix2pix.html">4. pix2pix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.5-VAE.html">Variational Autoencoder（未完成）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt3/Ch3.6-Reference.html">5. References</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">序列模型</span></p>
 <ul class="current nav bd-sidenav">
@@ -465,7 +471,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x287a67f21f0&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;torch._C.Generator at 0x1f06e88b1f0&gt;
 </pre></div>
 </div>
 </div>
@@ -874,14 +880,14 @@ tensor([0.5037], requires_grad=True)
                 
             <span class="n">val_hist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_data</span><span class="p">))</span> <span class="c1"># val hist에 추가</span>
 
-            <span class="c1">## verbose 번째 마다 loss 출력 </span>
+            <span class="c1">## verbose loss </span>
             <span class="k">if</span> <span class="n">t</span> <span class="o">%</span> <span class="n">verbose</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Epoch </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1"> train loss: </span><span class="si">{</span><span class="n">epoch_loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span><span class="si">}</span><span class="s1"> val loss: </span><span class="si">{</span><span class="n">val_loss</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">val_data</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-            <span class="c1">## patience 번째 마다 early stopping 여부 확인</span>
+            <span class="c1">## patience  early stopping </span>
             <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">%</span> <span class="n">patience</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">t</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
                 
-                <span class="c1">## loss가 커졌다면 early stop</span>
+                <span class="c1">## loss early stop</span>
                 <span class="k">if</span> <span class="n">val_hist</span><span class="p">[</span><span class="n">t</span> <span class="o">-</span> <span class="n">patience</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">val_hist</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="p">:</span>
 
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Early Stopping&#39;</span><span class="p">)</span>

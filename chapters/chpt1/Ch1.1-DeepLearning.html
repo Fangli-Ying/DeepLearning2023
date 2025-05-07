@@ -464,6 +464,7 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="id1">
 <h1>1.深度学习基础<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://colab.research.google.com/github/Fangli-Ying/DeepLearning2023/blob/main/chapters/chpt2/Ch1.1-DeepLearning.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
 <p>深度学习通过构建和训练多层神经网络来学习数据表示和模式。深度学习在各个领域都取得了巨大的成功，包括计算机视觉、自然语言处理、语音识别和推荐系统等。深度学习的核心是神经网络模型，它由许多神经元组成，这些神经元按层次组织在一起。输入数据从网络的输入层传递到输出层，期间经过多个中间层，这些层被称为隐藏层。每个神经元都执行一些计算，并将结果传递给下一层的神经元，以此实现复杂的数据处理和特征提取。深度学习的一个关键优势是它可以从原始数据中学习特征表示，而无需手动设计特征提取器。这种自动学习特征表示的能力使得深度学习在许多任务上表现出色。</p>
 <section id="id2">
 <h2>1.1 神经网络及其基本组成<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
@@ -681,9 +682,9 @@ $<span class="math notranslate nohighlight">\(
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: torch in d:\program files\python39\lib\site-packages (2.5.1)
 Requirement already satisfied: torchvision in d:\program files\python39\lib\site-packages (0.20.1)
 Requirement already satisfied: networkx in d:\program files\python39\lib\site-packages (from torch) (3.2.1)
-Requirement already satisfied: typing-extensions&gt;=4.8.0 in d:\program files\python39\lib\site-packages (from torch) (4.12.2)
 Requirement already satisfied: fsspec in d:\program files\python39\lib\site-packages (from torch) (2024.10.0)
 Requirement already satisfied: jinja2 in d:\program files\python39\lib\site-packages (from torch) (3.1.4)
+Requirement already satisfied: typing-extensions&gt;=4.8.0 in d:\program files\python39\lib\site-packages (from torch) (4.12.2)
 Requirement already satisfied: sympy==1.13.1 in d:\program files\python39\lib\site-packages (from torch) (1.13.1)
 Requirement already satisfied: filelock in d:\program files\python39\lib\site-packages (from torch) (3.16.1)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in d:\program files\python39\lib\site-packages (from sympy==1.13.1-&gt;torch) (1.3.0)
@@ -796,13 +797,10 @@ Requirement already satisfied: MarkupSafe&gt;=2.0 in d:\program files\python39\l
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [1/10], Loss: 0.3388
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [1/10], Loss: 0.3426
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [2/10], Loss: 0.1538
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [3/10], Loss: 0.1069
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [2/10], Loss: 0.1622
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
@@ -870,12 +868,12 @@ Requirement already satisfied: MarkupSafe&gt;=2.0 in d:\program files\python39\l
 <span class="g g-Whitespace">    </span><span class="mi">136</span><span class="sd">     &quot;&quot;&quot;</span>
 <span class="ne">--&gt; </span><span class="mi">137</span>     <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">(</span><span class="n">pic</span><span class="p">)</span>
 
-<span class="nn">File D:\Program Files\Python39\lib\site-packages\torchvision\transforms\functional.py:174,</span> in <span class="ni">to_tensor</span><span class="nt">(pic)</span>
-<span class="g g-Whitespace">    </span><span class="mi">172</span> <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pic</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pic</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">F_pil</span><span class="o">.</span><span class="n">get_image_num_channels</span><span class="p">(</span><span class="n">pic</span><span class="p">))</span>
-<span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="c1"># put it from HWC to CHW format</span>
-<span class="ne">--&gt; </span><span class="mi">174</span> <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">permute</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torchvision\transforms\functional.py:176,</span> in <span class="ni">to_tensor</span><span class="nt">(pic)</span>
+<span class="g g-Whitespace">    </span><span class="mi">174</span> <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">permute</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
 <span class="g g-Whitespace">    </span><span class="mi">175</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ByteTensor</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">176</span>     <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">default_float_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">176</span>     <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">default_float_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">178</span>     <span class="k">return</span> <span class="n">img</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
