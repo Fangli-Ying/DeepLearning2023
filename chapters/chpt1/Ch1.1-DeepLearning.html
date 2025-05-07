@@ -211,7 +211,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">图表示学习</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">第六章 图理论基础 （未完待续）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../chpt6/graph.html">6. 图理论基础 （未完待续）</a></li>
 </ul>
 
     </div>
@@ -682,14 +682,14 @@ $<span class="math notranslate nohighlight">\(
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: torch in d:\program files\python39\lib\site-packages (2.5.1)
 Requirement already satisfied: torchvision in d:\program files\python39\lib\site-packages (0.20.1)
 Requirement already satisfied: networkx in d:\program files\python39\lib\site-packages (from torch) (3.2.1)
-Requirement already satisfied: fsspec in d:\program files\python39\lib\site-packages (from torch) (2024.10.0)
-Requirement already satisfied: jinja2 in d:\program files\python39\lib\site-packages (from torch) (3.1.4)
+Requirement already satisfied: filelock in d:\program files\python39\lib\site-packages (from torch) (3.16.1)
 Requirement already satisfied: typing-extensions&gt;=4.8.0 in d:\program files\python39\lib\site-packages (from torch) (4.12.2)
 Requirement already satisfied: sympy==1.13.1 in d:\program files\python39\lib\site-packages (from torch) (1.13.1)
-Requirement already satisfied: filelock in d:\program files\python39\lib\site-packages (from torch) (3.16.1)
+Requirement already satisfied: fsspec in d:\program files\python39\lib\site-packages (from torch) (2024.10.0)
+Requirement already satisfied: jinja2 in d:\program files\python39\lib\site-packages (from torch) (3.1.4)
 Requirement already satisfied: mpmath&lt;1.4,&gt;=1.1.0 in d:\program files\python39\lib\site-packages (from sympy==1.13.1-&gt;torch) (1.3.0)
-Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in d:\program files\python39\lib\site-packages (from torchvision) (9.5.0)
 Requirement already satisfied: numpy in d:\program files\python39\lib\site-packages (from torchvision) (1.26.4)
+Requirement already satisfied: pillow!=8.3.*,&gt;=5.3.0 in d:\program files\python39\lib\site-packages (from torchvision) (9.5.0)
 Requirement already satisfied: MarkupSafe&gt;=2.0 in d:\program files\python39\lib\site-packages (from jinja2-&gt;torch) (3.0.2)
 </pre></div>
 </div>
@@ -797,10 +797,13 @@ Requirement already satisfied: MarkupSafe&gt;=2.0 in d:\program files\python39\l
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [1/10], Loss: 0.3426
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [1/10], Loss: 0.3489
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [2/10], Loss: 0.1622
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [2/10], Loss: 0.1577
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Epoch [3/10], Loss: 0.1104
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
@@ -868,12 +871,12 @@ Requirement already satisfied: MarkupSafe&gt;=2.0 in d:\program files\python39\l
 <span class="g g-Whitespace">    </span><span class="mi">136</span><span class="sd">     &quot;&quot;&quot;</span>
 <span class="ne">--&gt; </span><span class="mi">137</span>     <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">to_tensor</span><span class="p">(</span><span class="n">pic</span><span class="p">)</span>
 
-<span class="nn">File D:\Program Files\Python39\lib\site-packages\torchvision\transforms\functional.py:176,</span> in <span class="ni">to_tensor</span><span class="nt">(pic)</span>
+<span class="nn">File D:\Program Files\Python39\lib\site-packages\torchvision\transforms\functional.py:172,</span> in <span class="ni">to_tensor</span><span class="nt">(pic)</span>
+<span class="g g-Whitespace">    </span><span class="mi">170</span> <span class="k">if</span> <span class="n">pic</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">171</span>     <span class="n">img</span> <span class="o">=</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">img</span>
+<span class="ne">--&gt; </span><span class="mi">172</span> <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">pic</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pic</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">F_pil</span><span class="o">.</span><span class="n">get_image_num_channels</span><span class="p">(</span><span class="n">pic</span><span class="p">))</span>
+<span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="c1"># put it from HWC to CHW format</span>
 <span class="g g-Whitespace">    </span><span class="mi">174</span> <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">permute</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">contiguous</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">175</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ByteTensor</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">176</span>     <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">default_float_dtype</span><span class="p">)</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">178</span>     <span class="k">return</span> <span class="n">img</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>
